@@ -10,6 +10,7 @@ import { useSnackBar } from '../../../context/useSnackbarContext';
 export default function DemoLoginButton(): JSX.Element {
   const { updateLoginContext } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
+  const classes = useStyles();
   const handleSubmit = (
     { email, password }: { email: string; password: string },
     { setSubmitting }: FormikHelpers<{ email: string; password: string }>,
@@ -27,8 +28,6 @@ export default function DemoLoginButton(): JSX.Element {
       }
     });
   };
-  const classes = useStyles();
-
   return (
     <Formik
       initialValues={{
