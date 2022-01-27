@@ -68,7 +68,7 @@ export default function Home(): JSX.Element {
               margin="normal"
               style={{ width: '46%', color: 'black' }}
               name="WHERE"
-              placeholder="AnyWhere"
+              placeholder="Anywhere"
               autoComplete="city"
               autoFocus
             />
