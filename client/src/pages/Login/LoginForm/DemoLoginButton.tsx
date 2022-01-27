@@ -4,28 +4,29 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import useStyles from './useStyles';
-import FormInput from '../../../components/FormInput/FormInput';
-
-interface Props {
-  handleSubmit: (
-    {
-      email,
-      password,
-    }: {
-      email: string;
-      password: string;
-    },
-    {
-      setStatus,
-      setSubmitting,
-    }: FormikHelpers<{
-      email: string;
-      password: string;
-    }>,
-  ) => void;
-}
-
-export default function DemoLoginButton({ handleSubmit }: Props): JSX.Element {
+import login from '../../../helpers/APICalls/login';
+import { useAuth } from '../../../context/useAuthContext';
+import { useSnackBar } from '../../../context/useSnackbarContext';
+export default function DemoLoginButton(): JSX.Element {
+  const { updateLoginContext } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
+  const handleSubmit = (
+    { email, password }: { email: string; password: string },
+    { setSubmitting }: FormikHelpers<{ email: string; password: string }>,
+  ) => {
+    login(email, password).then((data) => {
+      if (data.error) {
+        setSubmitting(false);
+        updateSnackBarMessage(data.error.message);
+      } else if (data.success) {
+        updateLoginContext(data.success);
+      } else {
+        console.error({ data });
+        setSubmitting(false);
+        updateSnackBarMessage('An unexpected error occurred. Please try again');
+      }
+    });
+  };
   const classes = useStyles();
 
   return (
@@ -36,9 +37,9 @@ export default function DemoLoginButton({ handleSubmit }: Props): JSX.Element {
       }}
       onSubmit={handleSubmit}
     >
-      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
-        <form onSubmit={handleSubmit} className={classes.form} noValidate>
-          <Box textAlign="center" marginTop={5}>
+      {({ handleSubmit, isSubmitting }) => (
+        <form onSubmit={handleSubmit} className={classes.demoForm} noValidate>
+          <Box textAlign="center" marginTop={0}>
             <Button
               type="submit"
               size="large"
