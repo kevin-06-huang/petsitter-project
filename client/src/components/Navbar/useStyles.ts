@@ -5,7 +5,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
   navbar: {
     boxShadow: '4px 4px 13px 7px rgba(217,217,217,0.26)',
     padding: theme.spacing(2),
-    // background: 'white',
   },
   transparentNavbar: {
     boxShadow: 'none',
@@ -14,7 +13,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     position: 'absolute',
   },
   navbarItem: {
-    // color: theme.palette.grey[900],
     color: 'white',
     fontWeight: 700,
     textDecoration: 'none',

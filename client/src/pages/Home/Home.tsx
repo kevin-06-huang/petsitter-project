@@ -101,7 +101,7 @@ export default function Home(): JSX.Element {
         </Formik>
       </Grid>
       <Grid xs={6} item className={classes.imageGrid}>
-        <img className={classes.imageInfo} src={homeImage} />
+        <img className={classes.imageInfo} src={homeImage} alt="home image" />
       </Grid>
     </Grid>
   );
