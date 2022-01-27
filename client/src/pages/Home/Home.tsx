@@ -86,28 +86,22 @@ export default function Home(): JSX.Element {
                 }}
                 renderInput={(startProps, endProps) => (
                   <React.Fragment>
-                    <TextField id="dropIn" style={{ width: '23%' }} {...startProps} />
-                    <TextField id="dropOff" style={{ width: '23%' }} {...endProps} />
+                    <TextField id="dropIn" className={classes.dropInfo} {...startProps} />
+                    <TextField id="dropOff" className={classes.dropInfo} {...endProps} />
                   </React.Fragment>
                 )}
               />
             </LocalizationProvider>
             <Box marginTop={5}>
-              <Button
-                type="submit"
-                style={{ width: '170px', height: '50px' }}
-                variant="contained"
-                color="primary"
-                disableElevation
-              >
+              <Button type="submit" className={classes.dogLabel} variant="contained" color="primary" disableElevation>
                 find my dog sitter
               </Button>
             </Box>
           </form>
         </Formik>
       </Grid>
-      <Grid xs={6} item style={{ backgroundColor: 'red', height: '100vh' }}>
-        <img style={{ objectFit: 'cover', width: '100%', height: '100vh' }} src={homeImage} />
+      <Grid xs={6} item className={classes.imageGrid}>
+        <img className={classes.imageInfo} src={homeImage} />
       </Grid>
     </Grid>
   );

@@ -7,18 +7,33 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(15),
   },
-  label: {
-    fontSize: 19,
-    color: 'rgb(0,0,0,0.4)',
-    paddingLeft: '5px',
+  imageGrid: {
+    backgroundColor: 'red',
+    height: '100vh',
   },
-  inputs: {
-    marginTop: '.8rem',
-    height: '2rem',
-    padding: '5px',
+  imageInfo: {
+    objectFit: 'cover',
+    width: '100%',
+    height: '100vh',
   },
-  forgot: {
-    paddingRight: 10,
+  dogLabel: {
+    width: '170px',
+    height: '50px',
+  },
+  dropInfo: {
+    width: '23%',
+  },
+  dropLabel: {
+    width: '46%',
+    color: 'black',
+    fontWeight: 700,
+    fontSize: '12px',
+  },
+  labelName: {
+    textAlign: 'center',
+    marginTop: '160px',
+    fontSize: '58px',
+    fontWeight: '700',
   },
   submit: {
     margin: theme.spacing(3, 2, 2),
