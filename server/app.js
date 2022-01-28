@@ -9,7 +9,7 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const multer = require("multer");
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'upload/' });
 const { uploadFile } = require("./utils/s3");
 
 const authRouter = require("./routes/auth");
