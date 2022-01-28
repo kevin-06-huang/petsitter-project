@@ -10,7 +10,7 @@ exports.uploadImage = asyncHandler(async (req, res) => {
   const result = await uploadFile(file);
   res.status(200).json({
     success: {
-      imagePath: `/images/${result.Key}`,
+      imagePath: result.Location,
     },
   });
 });

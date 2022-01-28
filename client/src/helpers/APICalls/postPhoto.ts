@@ -1,7 +1,7 @@
-import { AuthApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
+import { ImageApiData } from '../../interface/ImageApiData';
 
-const postPhoto = async (file: File): Promise<AuthApiData> => {
+const postPhoto = async (file: File): Promise<ImageApiData> => {
   const formData = new FormData();
   formData.append('image', file);
   const fetchOptions: FetchOptions = {

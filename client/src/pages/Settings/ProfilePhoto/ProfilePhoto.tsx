@@ -48,7 +48,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
               console.error({ error: data.error.message });
               updateSnackBarMessage(data.error.message);
             } else if (data.success) {
-              //setImages([data.image, ...images])
+              console.log(data.success.imagePath);
               updateSnackBarMessage('Photo updated!');
             } else {
               // should not get here from backend but this catch is for an unknown issue
