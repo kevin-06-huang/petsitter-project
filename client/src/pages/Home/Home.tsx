@@ -44,49 +44,49 @@ export default function Home(): JSX.Element {
   const [value, setValue] = React.useState<DateRange<Date>>([null, null]);
   const classes = useStyles();
   return (
-    <Grid container>
-      <Grid xs={6} className={classes.column}>
-        <Info className={classes.pageLabel}>Find the care your dog deserves</Info>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Grid container>
+        <Grid xs={6} className={classes.column}>
+          <Info className={classes.pageLabel}>Find the care your dog deserves</Info>
 
-        <Formik
-          initialValues={{
-            where: '',
-            dropIn: new Date(),
-            dropOff: new Date(),
-          }}
-          validationSchema={Yup.object().shape({
-            location: Yup.string().required('City is required'),
-            dropIn: Yup.date().required('Drop in date is required'),
-            dropOff: Yup.date().required('Drop off date is required'),
-          })}
-          onSubmit={handleSubmit}
-        >
-          <form className={classes.form}>
-            <Box className={classes.box}>
-              <FormInput
-                id="where"
-                label="WHERE"
-                margin="normal"
-                fullWidth
-                InputProps={{
-                  classes: { input: classes.input },
-                }}
-                name="WHERE"
-                placeholder="Anywhere"
-                autoComplete="city"
-                autoFocus
-              />
-              <FormLabel
-                style={{
-                  fontWeight: 700,
-                  fontSize: '12',
-                  color: 'black',
-                }}
-                className={classes.formLabel}
-              >
-                drop in / drop off
-              </FormLabel>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Formik
+            initialValues={{
+              where: '',
+              dropIn: new Date(),
+              dropOff: new Date(),
+            }}
+            validationSchema={Yup.object().shape({
+              location: Yup.string().required('City is required'),
+              dropIn: Yup.date().required('Drop in date is required'),
+              dropOff: Yup.date().required('Drop off date is required'),
+            })}
+            onSubmit={handleSubmit}
+          >
+            <form className={classes.form}>
+              <Box className={classes.box}>
+                <FormInput
+                  id="where"
+                  label="WHERE"
+                  margin="normal"
+                  fullWidth
+                  InputProps={{
+                    classes: { input: classes.input },
+                  }}
+                  name="WHERE"
+                  placeholder="Anywhere"
+                  autoComplete="city"
+                  autoFocus
+                />
+                <FormLabel
+                  style={{
+                    fontWeight: 700,
+                    fontSize: '12',
+                    color: 'black',
+                  }}
+                  className={classes.formLabel}
+                >
+                  drop in / drop off
+                </FormLabel>
                 <DateRangePicker
                   minDate={new Date()}
                   startText="mm/dd/yyyy"
@@ -102,19 +102,19 @@ export default function Home(): JSX.Element {
                     </>
                   )}
                 />
-              </LocalizationProvider>
-            </Box>
-            <Box marginTop={5}>
-              <Button type="submit" className={classes.dogLabel} variant="contained" color="primary" disableElevation>
-                find my dog sitter
-              </Button>
-            </Box>
-          </form>
-        </Formik>
+              </Box>
+              <Box marginTop={5}>
+                <Button type="submit" className={classes.dogLabel} variant="contained" color="primary" disableElevation>
+                  find my dog sitter
+                </Button>
+              </Box>
+            </form>
+          </Formik>
+        </Grid>
+        <Grid xs={6} item className={classes.imageGrid}>
+          <img className={classes.imageInfo} src={homeImage} alt="home image" />
+        </Grid>
       </Grid>
-      <Grid xs={6} item className={classes.imageGrid}>
-        <img className={classes.imageInfo} src={homeImage} alt="home image" />
-      </Grid>
-    </Grid>
+    </LocalizationProvider>
   );
 }
