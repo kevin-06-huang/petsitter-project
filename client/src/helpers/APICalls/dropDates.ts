@@ -8,7 +8,7 @@ const dropDates = async (where: string, dropIn: Date, dropOut: Date): Promise<Au
     body: JSON.stringify({ where, dropIn, dropOut }),
     credentials: 'include',
   };
-  return await fetch(`/getInfo`, fetchOptions)
+  return await fetch(`/get-Info`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },

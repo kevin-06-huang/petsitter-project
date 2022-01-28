@@ -16,24 +16,29 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: '100vh',
   },
+  column: {
+    marginTop: '20vh',
+  },
+  pageLabel: {
+    textAlign: 'center',
+  },
   dogLabel: {
-    width: '170px',
-    height: '50px',
+    width: '12vw',
+    height: '6vh',
   },
   dropInfo: {
-    width: '23%',
+    width: '50%',
   },
-  dropLabel: {
-    width: '46%',
+  formLabel: {
+    textTransform: 'uppercase',
+  },
+  input: {
+    width: '4%',
     color: 'black',
-    fontWeight: 700,
-    fontSize: '12px',
   },
-  labelName: {
-    textAlign: 'center',
-    marginTop: '160px',
-    fontSize: '58px',
-    fontWeight: '700',
+  box: {
+    width: '50%',
+    height: '50%',
   },
   submit: {
     margin: theme.spacing(3, 2, 2),

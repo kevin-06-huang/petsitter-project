@@ -12,8 +12,13 @@ import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import * as Yup from 'yup';
 import dropDates from '../../helpers/APICalls/dropDates';
-
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 export default function Home(): JSX.Element {
+  const Info = styled(Typography)(({ theme }) => ({
+    ...theme.typography.h2,
+    fontSize: '5em',
+    fontWeight: 700,
+  }));
   const { updateLoginContext } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
   const handleSubmit = (
@@ -40,14 +45,9 @@ export default function Home(): JSX.Element {
   const classes = useStyles();
   return (
     <Grid container>
-      <Grid xs={6}>
-        <Typography
-          sx={{ textAlign: 'center', marginTop: '160px', fontSize: '58px', fontWeight: '700' }}
-          variant="h4"
-          component="h1"
-        >
-          Find the care your dog deserves
-        </Typography>
+      <Grid xs={6} className={classes.column}>
+        <Info className={classes.pageLabel}>Find the care your dog deserves</Info>
+
         <Formik
           initialValues={{
             where: '',
@@ -62,36 +62,48 @@ export default function Home(): JSX.Element {
           onSubmit={handleSubmit}
         >
           <form className={classes.form}>
-            <FormInput
-              id="where"
-              label="WHERE"
-              margin="normal"
-              style={{ width: '46%', color: 'black' }}
-              name="WHERE"
-              placeholder="Anywhere"
-              autoComplete="city"
-              autoFocus
-            />
-            <FormLabel style={{ width: '46%', color: 'black', fontWeight: 700, fontSize: '12px' }}>
-              DROP IN / DROP OUT
-            </FormLabel>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateRangePicker
-                minDate={new Date()}
-                startText="mm/dd/yyyy"
-                endText="mm/dd/yyyy"
-                value={value}
-                onChange={(newValue) => {
-                  setValue(newValue);
+            <Box className={classes.box}>
+              <FormInput
+                id="where"
+                label="WHERE"
+                margin="normal"
+                fullWidth
+                InputProps={{
+                  classes: { input: classes.input },
                 }}
-                renderInput={(startProps, endProps) => (
-                  <React.Fragment>
-                    <TextField id="dropIn" className={classes.dropInfo} {...startProps} />
-                    <TextField id="dropOff" className={classes.dropInfo} {...endProps} />
-                  </React.Fragment>
-                )}
+                name="WHERE"
+                placeholder="Anywhere"
+                autoComplete="city"
+                autoFocus
               />
-            </LocalizationProvider>
+              <FormLabel
+                style={{
+                  fontWeight: 700,
+                  fontSize: '12',
+                  color: 'black',
+                }}
+                className={classes.formLabel}
+              >
+                drop in / drop off
+              </FormLabel>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateRangePicker
+                  minDate={new Date()}
+                  startText="mm/dd/yyyy"
+                  endText="mm/dd/yyyy"
+                  value={value}
+                  onChange={(newValue) => {
+                    setValue(newValue);
+                  }}
+                  renderInput={(startProps, endProps) => (
+                    <>
+                      <TextField id="dropIn" className={classes.dropInfo} {...startProps} />
+                      <TextField id="dropOff" className={classes.dropInfo} {...endProps} />
+                    </>
+                  )}
+                />
+              </LocalizationProvider>
+            </Box>
             <Box marginTop={5}>
               <Button type="submit" className={classes.dogLabel} variant="contained" color="primary" disableElevation>
                 find my dog sitter
