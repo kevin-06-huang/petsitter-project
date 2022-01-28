@@ -7,6 +7,8 @@ import postPhoto from '../../../helpers/APICalls/postPhoto';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import { useState } from 'react';
 
+import editProfilePhotoUri from '../../../helpers/APICalls/editProfilePhotoUri';
+
 const useStyles = makeStyles({
   dateInput: {
     borderRadius: 8,
@@ -48,7 +50,8 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
               console.error({ error: data.error.message });
               updateSnackBarMessage(data.error.message);
             } else if (data.success) {
-              console.log(data.success.imagePath);
+              const values = { photo: data.success.imagePath };
+              editProfilePhotoUri(values);
               updateSnackBarMessage('Photo updated!');
             } else {
               // should not get here from backend but this catch is for an unknown issue

@@ -56,7 +56,6 @@ const EditProfile: React.FC<EditProfileProps> = ({ header, currentUser, currentP
     }>,
   ) => {
     editProfile(values).then((data) => {
-      console.log('data');
       if (data.error) {
         console.error({ error: data.error.message });
         setSubmitting(false);
