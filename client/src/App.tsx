@@ -13,6 +13,7 @@ import { SnackBarProvider } from './context/useSnackbarContext';
 import { Navbar } from './components/Navbar/Navbar';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
+import { AuthRoute } from './components/AuthRoute/AuthRoute';
 
 function App(): JSX.Element {
   return (
@@ -26,8 +27,8 @@ function App(): JSX.Element {
               <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
-                <Route exact path="/dashboard" component={Dashboard} />
-                <Route path="/profile/settings" component={Settings} />
+                <AuthRoute exact path="/dashboard" component={Dashboard} />
+                <AuthRoute path="/profile/settings" component={Settings} />
                 <Route path="*">
                   <NotFound />
                 </Route>
