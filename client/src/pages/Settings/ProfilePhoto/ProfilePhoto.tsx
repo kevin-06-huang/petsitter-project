@@ -82,7 +82,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
             onChange={fileSelected}
             type="file"
             accept="image/*"
-            multiple
+            multiple={false}
           ></input>
           <Button
             sx={{
