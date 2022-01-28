@@ -7,6 +7,7 @@ const uploadFile = require("../utils/s3");
 // @access Private
 exports.uploadImage = asyncHandler(async (req, res) => {
   const file = req.file;
+  console.log(typeof(req.body));
   const result = await uploadFile(file);
   console.log(result);
   const description = req.body.description;

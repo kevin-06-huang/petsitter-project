@@ -35,10 +35,12 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
 
   const fileSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files![0];
-    console.log(file.name);
     //setFile(file);
     setSubmitting(true);
-    postPhoto({ image: file }).then((data) => {
+    postPhoto(file).then((data) => {
+      console.log('data');
+      console.log(data);
+      console.log('data2');
       if (data.error) {
         console.error({ error: data.error.message });
         setSubmitting(false);
