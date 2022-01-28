@@ -34,25 +34,33 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
   console.log(currentProfile);
 
   const fileSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files![0];
+    const files = event.target.files!;
     //setFile(file);
     setSubmitting(true);
-    postPhoto(file).then((data) => {
-      if (data.error) {
-        console.error({ error: data.error.message });
-        setSubmitting(false);
-        updateSnackBarMessage(data.error.message);
-      } else if (data.success) {
-        setSubmitting(false);
-        //setImages([data.image, ...images])
-        updateSnackBarMessage('Photo updated!');
-      } else {
-        // should not get here from backend but this catch is for an unknown issue
-        console.error({ data });
-        setSubmitting(false);
-        updateSnackBarMessage('An unexpected error occurred. Please try again');
-      }
-    });
+    const promises = [];
+    for (let i = 0; i < files.length; i++) {
+      promises.push(postPhoto(files[i]));
+      Promise.all(promises)
+        .then((dataArray) => {
+          for (let j = 0; j < dataArray.length; j++) {
+            const data = dataArray[j];
+            if (data.error) {
+              console.error({ error: data.error.message });
+              updateSnackBarMessage(data.error.message);
+            } else if (data.success) {
+              //setImages([data.image, ...images])
+              updateSnackBarMessage('Photo updated!');
+            } else {
+              // should not get here from backend but this catch is for an unknown issue
+              console.error({ data });
+              updateSnackBarMessage('An unexpected error occurred. Please try again');
+            }
+          }
+        })
+        .then(() => {
+          setSubmitting(false);
+        });
+    }
   };
 
   return (
@@ -71,6 +79,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
             onChange={fileSelected}
             type="file"
             accept="image/*"
+            multiple
           ></input>
           <Button
             sx={{
