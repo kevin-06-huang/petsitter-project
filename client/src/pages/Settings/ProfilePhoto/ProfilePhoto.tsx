@@ -38,9 +38,6 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
     //setFile(file);
     setSubmitting(true);
     postPhoto(file).then((data) => {
-      console.log('data');
-      console.log(data);
-      console.log('data2');
       if (data.error) {
         console.error({ error: data.error.message });
         setSubmitting(false);
