@@ -10,5 +10,9 @@ exports.uploadImage = asyncHandler(async (req, res) => {
   const result = await uploadFile(file);
   console.log(result);
   const description = req.body.description;
-  
+  res.status(200).json({
+    success: {
+      image: result,
+    },
+  });
 });
