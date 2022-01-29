@@ -33,6 +33,10 @@ const availabilitySchema = new mongoose.Schema({
     required: true,
     ref: 'Profile'
   },
+  name:{
+      type:'string',
+      required:'true'
+  },
   days: {
   sunday:dayInformation,
   monday:dayInformation,
