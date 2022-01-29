@@ -7,9 +7,16 @@ const Profile=require("../models/Profile");
 // @access Public
 exports.createSchedule = asyncHandler(async (req, res, next) => {
     const profileId=req.profile.id;
-    const {days}=req.body;
+    const {name,days}=req.body;
+    const schedule = await Availability.findOne({name, petSitterId: req.profile.id });
+      if(schedule)
+         {
+        res.status(400);
+        throw new Error("Schedule name already exist");
+         }
     const newSchedule = new Availability.create({
         profileId,
+        name,
         days,
       });    
       if (newSchedule) {

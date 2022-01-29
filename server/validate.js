@@ -32,7 +32,11 @@ exports.validateLogin = [
 ];
 
 exports.validateDays=[
-  check("days", "Days can not be empty").isEmail(),
+  check("name","Name can not be empty").not().isEmpty(),
+  check("days", "Days can not be empty").not().isEmpty(),
+  check("days.*.startDate","Start date can not be empty").not().isEmpty(),
+  check("days.*.endDate","End date can not be empty").not().isEmpty(),  
+  check("days.*.isAvailable","Available field can not be empty").not().isEmpty(),  
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())

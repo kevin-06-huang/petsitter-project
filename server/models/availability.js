@@ -32,6 +32,10 @@ const availabilitySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'Profile'
+  },  
+  name: {
+    type:'string',
+    required:true
   },
   days: {
   sunday:dayInformation,
