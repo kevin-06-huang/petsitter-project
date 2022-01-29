@@ -8,7 +8,6 @@ const generateToken = require("../utils/generateToken");
 // @access Public
 exports.registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
-
   const emailExists = await User.findOne({ email });
 
   if (emailExists) {
@@ -26,13 +25,13 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   const user = await User.create({
     name,
     email,
-    password
+    password,
   });
 
   if (user) {
     await Profile.create({
       userId: user._id,
-      name
+      name,
     });
 
     const token = generateToken(user._id);
@@ -40,7 +39,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: secondsInWeek * 1000
+      maxAge: secondsInWeek * 1000,
     });
 
     res.status(201).json({
@@ -48,9 +47,9 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
         user: {
           id: user._id,
           name: user.name,
-          email: user.email
-        }
-      }
+          email: user.email,
+        },
+      },
     });
   } else {
     res.status(400);
@@ -72,7 +71,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: secondsInWeek * 1000
+      maxAge: secondsInWeek * 1000,
     });
 
     res.status(200).json({
@@ -80,9 +79,9 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
         user: {
           id: user._id,
           name: user.name,
-          email: user.email
-        }
-      }
+          email: user.email,
+        },
+      },
     });
   } else {
     res.status(401);
@@ -107,10 +106,10 @@ exports.loadUser = asyncHandler(async (req, res, next) => {
       user: {
         id: user._id,
         name: user.name,
-        email: user.email
+        email: user.email,
       },
-      profile
-    }
+      profile,
+    },
   });
 });
 
