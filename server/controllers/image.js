@@ -2,8 +2,8 @@ const asyncHandler = require("express-async-handler");
 
 const uploadFile = require("../utils/s3");
 
-// @route POST /users
-// @desc Search for users
+// @route POST /image/upload
+// @desc Upload image(s)
 // @access Private
 exports.uploadImage = asyncHandler(async (req, res) => {
   const file = req.file;

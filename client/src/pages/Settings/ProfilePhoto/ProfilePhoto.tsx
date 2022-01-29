@@ -6,6 +6,7 @@ import { makeStyles } from '@mui/styles';
 import postPhoto from '../../../helpers/APICalls/postPhoto';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import { useState } from 'react';
+import { Input } from '@mui/material';
 
 import editProfilePhotoUri from '../../../helpers/APICalls/editProfilePhotoUri';
 
@@ -33,11 +34,8 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
   const [images, setImages] = useState([]);
   const [isSubmitting, setSubmitting] = useState(false);
 
-  console.log(currentProfile);
-
   const fileSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files!;
-    //setFile(file);
     setSubmitting(true);
     const promises = [];
     for (let i = 0; i < files.length; i++) {
@@ -76,14 +74,13 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
       <SettingHeader header={header} />
       <Box textAlign="center" marginTop={5}>
         <form>
-          <input
+          <Input
             id="fileInput"
             style={{ display: 'none' }}
             onChange={fileSelected}
             type="file"
-            accept="image/*"
-            multiple={false}
-          ></input>
+            inputProps={{ accept: 'image/*', multiple: false }}
+          ></Input>
           <Button
             sx={{
               padding: '20px 50px',
