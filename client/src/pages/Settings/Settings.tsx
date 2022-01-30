@@ -7,7 +7,6 @@ import { makeStyles } from '@mui/styles';
 import SettingsWrapper from '../../components/SettingsWrapper/SettingsWrapper';
 import EditProfile from './EditProfile/EditProfile';
 import SettingHeader from '../../components/SettingsHeader/SettingsHeader';
-import { AuthRoute } from '../../components/AuthRoute/AuthRoute';
 
 const settingsMenu = [
   {
@@ -83,12 +82,12 @@ export default function Settings(): JSX.Element {
         </Grid>
         <Grid xs={9} item>
           <Switch>
-            <AuthRoute exact path="/profile/settings">
+            <Route exact path="/profile/settings">
               <Redirect to="/profile/settings/edit-profile" />
-            </AuthRoute>
+            </Route>
             <SettingsWrapper>
               {settingsMenu.map((item) => (
-                <AuthRoute
+                <Route
                   key={item.name}
                   path={item.to}
                   render={(props) =>

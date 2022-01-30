@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: theme.spacing(15),
   },
   imageGrid: {
-    backgroundColor: 'red',
     height: '100vh',
   },
   imageInfo: {
@@ -24,10 +23,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   dogLabel: {
     width: '12vw',
-    height: '6vh',
+    height: '9vh',
   },
   dropInfo: {
     width: '50%',
+    marginTop: 100,
+  },
+  dates: {
+    marginTop: 10,
   },
   formLabel: {
     textTransform: 'uppercase',

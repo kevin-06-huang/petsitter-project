@@ -12,11 +12,11 @@ import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import * as Yup from 'yup';
 import dropDates from '../../helpers/APICalls/dropDates';
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 export default function Home(): JSX.Element {
   const Info = styled(Typography)(({ theme }) => ({
     ...theme.typography.h2,
-    fontSize: '5em',
+    fontSize: '10vh',
     fontWeight: 700,
   }));
   const { updateLoginContext } = useAuth();
@@ -78,10 +78,11 @@ export default function Home(): JSX.Element {
                   autoFocus
                 />
                 <FormLabel
-                  style={{
-                    fontWeight: 700,
-                    fontSize: '12',
+                  sx={{
+                    fontSize: 10,
                     color: 'black',
+                    fontWeight: 700,
+                    height: '20vh',
                   }}
                   className={classes.formLabel}
                 >
@@ -96,15 +97,15 @@ export default function Home(): JSX.Element {
                     setValue(newValue);
                   }}
                   renderInput={(startProps, endProps) => (
-                    <>
+                    <Box className={classes.dates}>
                       <TextField id="dropIn" className={classes.dropInfo} {...startProps} />
                       <TextField id="dropOff" className={classes.dropInfo} {...endProps} />
-                    </>
+                    </Box>
                   )}
                 />
               </Box>
               <Box marginTop={5}>
-                <Button type="submit" className={classes.dogLabel} variant="contained" color="primary" disableElevation>
+                <Button type="submit" className={classes.dogLabel} variant="contained" color="primary">
                   find my dog sitter
                 </Button>
               </Box>
