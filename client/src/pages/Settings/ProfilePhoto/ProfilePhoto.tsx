@@ -8,7 +8,7 @@ import { useSnackBar } from '../../../context/useSnackbarContext';
 import { useState } from 'react';
 import { Input } from '@mui/material';
 
-import editProfilePhotoUri from '../../../helpers/APICalls/editProfilePhotoUri';
+import editProfilePhotoKey from '../../../helpers/APICalls/editProfilePhotoKey';
 
 const useStyles = makeStyles({
   dateInput: {
@@ -48,8 +48,8 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
               console.error({ error: data.error.message });
               updateSnackBarMessage(data.error.message);
             } else if (data.success) {
-              const values = { photo: data.success.imagePath };
-              editProfilePhotoUri(values);
+              const values = { photoKey: data.success.imageKey };
+              editProfilePhotoKey(values);
               updateSnackBarMessage('Photo updated!');
             } else {
               // should not get here from backend but this catch is for an unknown issue

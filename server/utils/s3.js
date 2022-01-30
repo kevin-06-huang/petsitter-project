@@ -23,4 +23,13 @@ const uploadFile = (file) => {
     return s3.upload(uploadParams).promise()
 };
 
-module.exports = uploadFile;
+const getFileStream = (fileKey) => {
+  const downloadParams = {
+    Key: fileKey,
+    Bucket: bucketName
+  }
+
+  return s3.getObject(downloadParams).createReadStream()
+};
+
+module.exports = uploadFile, getFileStream;
