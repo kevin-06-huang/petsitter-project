@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea, Rating, Grid } from '@mui/material';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import ProfileCard from './profileCard/ProfileCard';
-function ProfileListing(): JSX.Element {
+function ProfileList(): JSX.Element {
   const classes = useStyle();
   const cards = [1, 2, 3, 4, 5, 6];
 
@@ -77,4 +77,4 @@ function ProfileListing(): JSX.Element {
   );
 }
 
-export default ProfileListing;
+export default ProfileList;
