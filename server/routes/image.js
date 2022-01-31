@@ -4,9 +4,10 @@ const protect = require('../middleware/auth');
 var multer = require("multer")
 var upload = multer({ dest: './upload' })
 const {
-  uploadImage,
+  uploadImage, downloadImage
 } = require('../controllers/image');
 
 router.route('/upload').post(protect, upload.single('image'), uploadImage);
+router.route('/:key').get(protect, downloadImage);
 
 module.exports = router;

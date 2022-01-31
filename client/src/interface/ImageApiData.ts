@@ -1,4 +1,4 @@
 export interface ImageApiData {
   error?: { message: string };
-  success?: { imageKey: string };
+  success?: { image: string | File };
 }

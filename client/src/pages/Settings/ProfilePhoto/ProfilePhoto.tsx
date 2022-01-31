@@ -48,7 +48,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
               console.error({ error: data.error.message });
               updateSnackBarMessage(data.error.message);
             } else if (data.success) {
-              const values = { photoKey: data.success.imageKey };
+              const values = { photoKey: data.success.image as string };
               editProfilePhotoKey(values);
               updateSnackBarMessage('Photo updated!');
             } else {
