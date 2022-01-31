@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, Rating } from '@mui/material';
+import { CardActionArea, Rating, Divider } from '@mui/material';
 function ProfileCard(): JSX.Element {
   const classes = useStyle();
   return (
@@ -33,7 +33,7 @@ function ProfileCard(): JSX.Element {
             those parts in a logical stream that enables the reader to understand you.
           </Typography>
         </CardContent>
-        <hr />
+        <Divider />
         <Box className={classes.footer}>
           <LocationOnIcon sx={{ color: 'pink' }} className={classes.location} />
           <Typography variant="body2" color="text.secondary" className={classes.locationName}>

@@ -55,7 +55,7 @@ function ProfileList(): JSX.Element {
           justifyContent="center"
         >
           {cards.map((card) => (
-            <Box className={classes.card}>
+            <Box key={card} className={classes.card}>
               <ProfileCard />
             </Box>
           ))}
