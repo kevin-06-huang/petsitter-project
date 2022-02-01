@@ -1,54 +1,48 @@
 const mongoose = require("mongoose");
 
 
-const dayInformation={
-    isAvaliable:{
-        type:Boolean,
-        default:'true'
+const dayInformationSchema = {
+    isAvaliable: {
+        type: Boolean,
+        default: 'true'
     },
-    startDate:{
-        type:Number,
-        min:0,
-        max:24,
-        required:isAvaliableForDay
+    startTime: {
+        type: Number,
+        min: 0,
+        max: 24,
+        required: this.isAvaliable
     },
-    endDate:{
-        type:Number,
-        min:0,
-        max:24,
-        required:isAvaliableForDay,
-        validate: [dateValidator, 'Start Date must be less than End Date']
+    endTime: {
+        type: Number,
+        min: 0,
+        max: 24,
+        required:  this.isAvaliable,
+        validate: [timeValidator, 'Start time must be less than End time']
     }
-}
-function isAvaliableForDay(){
-    if(this.isAvaliable > -1){  
-        return true;
-    }
-    return false;
 }
 
 const availabilitySchema = new mongoose.Schema({
-  petSitterId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: 'Profile'
-  },
-  name:{
-      type:'string',
-      required:'true'
-  },
-  days: {
-  sunday:dayInformation,
-  monday:dayInformation,
-  tuesday:dayInformation,
-  wednesday:dayInformation,
-  thursday:dayInformation,
-  friday:dayInformation,
-  saturday:dayInformation
-  },
-  
+    petSitterId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Profile'
+    },
+    name: {
+        type: 'string',
+        required: 'true'
+    },
+    days: {
+        sunday: dayInformationSchema,
+        monday: dayInformationSchema,
+        tuesday: dayInformationSchema,
+        wednesday: dayInformationSchema,
+        thursday: dayInformationSchema,
+        friday: dayInformationSchema,
+        saturday: dayInformationSchema
+    },
+
 });
-function dateValidator(value) {
-    return this.startDate <= value;
+function timeValidator(startTime,endTime) {
+    return startTime < endTime;
 };
 module.exports = Availability = mongoose.model("Availability", availabilitySchema);
