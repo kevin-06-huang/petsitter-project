@@ -14,7 +14,7 @@ import { Navbar } from './components/Navbar/Navbar';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
 import ProfileLists from './pages/ProfileList/profileList';
-import { AuthRoute } from './components/AuthRoute/AuthRoute';
+
 function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
@@ -27,8 +27,8 @@ function App(): JSX.Element {
               <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
-                <AuthRoute exact path="/dashboard" component={Dashboard} />
-                <AuthRoute path="/profile/settings" component={Settings} />
+                <Route exact path="/dashboard" component={Dashboard} />
+                <Route path="/profile/settings" component={Settings} />
                 <Route path="/profileLists" component={ProfileLists} />
                 <Route path="*">
                   <NotFound />
