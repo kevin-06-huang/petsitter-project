@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { Input } from '@mui/material';
 
 import editProfilePhotoKey from '../../../helpers/APICalls/editProfilePhotoKey';
+import AvatarDisplay from '../../../components/AvatarDisplay/AvatarDisplay';
 
 const useStyles = makeStyles({
   dateInput: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '15px',
   },
+  profilePicture: {},
 });
 
 interface ProfilePhotoProps {
@@ -29,10 +31,8 @@ interface ProfilePhotoProps {
 const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, currentProfile }) => {
   const classes = useStyles();
   const { updateSnackBarMessage } = useSnackBar();
-
-  const [file, setFile] = useState();
-  const [images, setImages] = useState([]);
   const [isSubmitting, setSubmitting] = useState(false);
+  const [imageKey, setImagesKey] = useState(currentProfile.photoKey);
 
   const fileSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files!;
@@ -50,6 +50,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
             } else if (data.success) {
               const values = { photoKey: data.success.image as string };
               editProfilePhotoKey(values);
+              setImagesKey(data.success.image as string);
               updateSnackBarMessage('Photo updated!');
             } else {
               // should not get here from backend but this catch is for an unknown issue
@@ -73,6 +74,13 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
     >
       <SettingHeader header={header} />
       <Box textAlign="center" marginTop={5}>
+        <Box className={classes.profilePicture}>
+          {imageKey == '' ? (
+            <AvatarDisplay user={currentUser as User} loggedIn={true} />
+          ) : (
+            <img src={`/image/${imageKey}`} />
+          )}
+        </Box>
         <form>
           <Input
             id="fileInput"
