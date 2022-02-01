@@ -7,6 +7,23 @@ const notificationSchema = new mongoose.Schema({
     type: String,
     enum: ['account', 'appointment', 'message', 'payment'],
   },
+  title: {
+    type: String,
+    default: "",
+    required: true,
+  },
+  description: {
+    type: String,
+    default: "",
+  },
+  read: {
+    type: Boolean,
+    default: false,
+  },
+  dateCreated: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = Notification = mongoose.model("Notification", notificationSchema);
