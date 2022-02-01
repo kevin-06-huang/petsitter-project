@@ -6,7 +6,9 @@ import PageContainer from '../../components/PageContainer/PageContainer';
 import { makeStyles } from '@mui/styles';
 import SettingsWrapper from '../../components/SettingsWrapper/SettingsWrapper';
 import EditProfile from './EditProfile/EditProfile';
+import ProfilePhoto from './ProfilePhoto/ProfilePhoto';
 import SettingHeader from '../../components/SettingsHeader/SettingsHeader';
+import { AuthRoute } from '../../components/AuthRoute/AuthRoute';
 
 const settingsMenu = [
   {
@@ -17,7 +19,7 @@ const settingsMenu = [
   {
     name: 'Profile photo',
     to: '/profile/settings/profile-photo',
-    component: <SettingHeader header="Profile Photo" />,
+    component: <ProfilePhoto header="Profile Photo" />,
   },
   {
     name: 'Availability',
@@ -82,12 +84,12 @@ export default function Settings(): JSX.Element {
         </Grid>
         <Grid xs={9} item>
           <Switch>
-            <Route exact path="/profile/settings">
+            <AuthRoute exact path="/profile/settings">
               <Redirect to="/profile/settings/edit-profile" />
-            </Route>
+            </AuthRoute>
             <SettingsWrapper>
               {settingsMenu.map((item) => (
-                <Route
+                <AuthRoute
                   key={item.name}
                   path={item.to}
                   render={(props) =>
