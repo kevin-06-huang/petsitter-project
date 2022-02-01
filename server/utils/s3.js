@@ -32,4 +32,4 @@ const getFileStream = (fileKey) => {
   return s3.getObject(downloadParams).createReadStream()
 };
 
-module.exports = uploadFile, getFileStream;
+module.exports = { uploadFile, getFileStream };
