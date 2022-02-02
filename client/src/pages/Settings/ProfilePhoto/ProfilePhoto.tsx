@@ -112,8 +112,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
             {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Upload a file from your device'}
           </Button>
           <br></br>
-          <Link
-            component="button"
+          <Button
             onClick={() => {
               if (imageKey !== '') {
                 deletePhoto(imageKey);
@@ -123,12 +122,12 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
             }}
           >
             <ListItemIcon>
-              <DeleteOutline sx={{ marginTop: '20px' }} />
+              <DeleteOutline />
             </ListItemIcon>
-            <Typography variant="body1" display="inline" sx={{ zIndex: 'tooltip' }}>
+            <Typography variant="body2" display="inline" sx={{ zIndex: 'tooltip' }}>
               Delete photo
             </Typography>
-          </Link>
+          </Button>
         </form>
       </Box>
     </Box>

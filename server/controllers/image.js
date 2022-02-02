@@ -27,5 +27,5 @@ exports.deleteImage = asyncHandler(async (req, res) => {
   console.log(req.params)
   const key = req.params.key
   deleteFile(key)
-  res.status(202);
+  res.status(200)
 });
