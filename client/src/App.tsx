@@ -13,7 +13,7 @@ import { SnackBarProvider } from './context/useSnackbarContext';
 import { Navbar } from './components/Navbar/Navbar';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
-
+import Availability from './pages/Availability/Availability';
 function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
@@ -28,6 +28,7 @@ function App(): JSX.Element {
                 <Route exact path="/signup" component={Signup} />
                 <Route exact path="/dashboard" component={Dashboard} />
                 <Route path="/profile/settings" component={Settings} />
+                <Route path="/availability" component={Availability} />
                 <Route path="*">
                   <NotFound />
                 </Route>

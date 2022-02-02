@@ -10,9 +10,9 @@ const {
   setActiveSchedule
 } = require("../controllers/availability");
 
-router.route("/").post(validateDays, createSchedule);
+router.route("/create").post(protect,validateDays, createSchedule);
 
-router.route("/:scheduleId").get(protect, getScheduleId);
+router.route("/get/:scheduleId").get(protect, getScheduleId);
 
 router.route("/all").get(protect, getSchedule);
 

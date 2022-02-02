@@ -2,29 +2,18 @@ const mongoose = require("mongoose");
 
 
 const dayInformation={
-    isAvaliable:{
+    active:{
         type:Boolean,
         default:'true'
     },
-    startDate:{
-        type:Number,
-        min:0,
-        max:24,
-        required:isAvaliableForDay
+    startTime:{
+        type:String,
+        required:this.active
     },
-    endDate:{
-        type:Number,
-        min:0,
-        max:24,
-        required:isAvaliableForDay,
-        validate: [dateValidator, 'Start Date must be less than End Date']
+    endTime:{
+        type:String,
+        required:this.active,
     }
-}
-function isAvaliableForDay(){
-    if(this.isAvaliable > -1){  
-        return true;
-    }
-    return false;
 }
 
 const availabilitySchema = new mongoose.Schema({
@@ -48,7 +37,11 @@ const availabilitySchema = new mongoose.Schema({
   },
   
 });
-function dateValidator(value) {
-    return this.startDate <= value;
-};
+availabilitySchema.pre('validate', function(next) {
+    if (this.startTime > this.endTime) {
+        next(new Error('End time must be greater than Start time'));
+    } else {
+        next();
+    }
+});
 module.exports = Availability = mongoose.model("Availability", availabilitySchema);

@@ -6,22 +6,23 @@ const Profile = require("../models/Profile");
 // @desc Create a schedule
 // @access Public
 exports.createSchedule = asyncHandler(async (req, res, next) => {
-  const profileId = req.profile.id;
+  const profileId =await Profile.findOne({userId:req.user.id});
+  const id=profileId._id;
   const { name, days } = req.body;
-  const schedule = await Availability.findOne({ name, petSitterId: req.profile.id });
+  const schedule = await Availability.findOne({ name, petSitterId: profileId._id }); 
   if (schedule) {
     res.status(400);
     throw new Error("Schedule name already exist");
   }
-  const newSchedule = new Availability.create({
-    profileId,
+  const newSchedule =  Availability.create({
+    petSitterId:id,
     name,
     days,
   });
   if (newSchedule) {
-    if (!req.profile.activeSchedule) {
-      req.profile.set({ activeSchedule: newSchedule.id });
-      await req.profile.save();
+    if (!profileId.activeSchedule) {
+      profileId.set({ activeSchedule: newSchedule.id });
+      await profileId.save();
     }
     res.status(201).json({
       success: {
@@ -49,12 +50,13 @@ exports.getScheduleId = asyncHandler(async (req, res, next) => {
   }
 });
 
-// @route GET /availability
+// @route GET /availability/all
 // @desc Get schedule
-// @access Private
+// @access public
 exports.getSchedule = asyncHandler(async (req, res, next) => {
-  const profileId = req.profile.id;
-  const schedule = await Availability.find({ petSitterId: profileId })
+  const profileId =await Profile.findOne({userId:req.user.id});
+  const id=profileId._id;
+  const schedule = await Availability.find({ petSitterId: id })
   if (schedule) {
     res.status(200);
     res.send(schedule);
