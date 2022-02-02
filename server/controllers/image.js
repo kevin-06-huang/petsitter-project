@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 
-const { uploadFile, getFileStream } = require("../utils/s3");
+const { uploadFile, getFileStream, deleteFile } = require("../utils/s3");
 
 // @route POST /image/upload
 // @desc Upload image(s)
@@ -21,4 +21,11 @@ exports.downloadImage = asyncHandler(async (req, res) => {
   const readStream = getFileStream(key)
 
   readStream.pipe(res)
+});
+
+exports.deleteImage = asyncHandler(async (req, res) => {
+  console.log(req.params)
+  const key = req.params.key
+  deleteFile(key)
+  res.status(202);
 });

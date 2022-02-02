@@ -1,16 +1,17 @@
-import { autocompleteClasses, Button, CircularProgress, InputLabel } from '@mui/material';
+import { Button, CircularProgress, Typography, ListItemIcon, Link } from '@mui/material';
 import { Box } from '@mui/system';
 import SettingHeader from '../../../components/SettingsHeader/SettingsHeader';
 import { User } from '../../../interface/User';
 import { makeStyles } from '@mui/styles';
 import postPhoto from '../../../helpers/APICalls/postPhoto';
+import deletePhoto from '../../../helpers/APICalls/deletePhoto';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import { useState } from 'react';
 import { Input } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 
 import editProfilePhotoKey from '../../../helpers/APICalls/editProfilePhotoKey';
-import AvatarDisplay from '../../../components/AvatarDisplay/AvatarDisplay';
+import { DeleteOutline } from '@mui/icons-material';
 
 const useStyles = makeStyles({
   dateInput: {
@@ -77,11 +78,16 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
         {imageKey == '' ? (
           <Avatar
             src={`https://robohash.org/${currentUser!.email}.png`}
-            sx={{ width: 500, height: 500, margin: 'auto' }}
+            sx={{ width: 125, height: 125, margin: 'auto' }}
           />
         ) : (
-          <Avatar src={`/image/${imageKey}`} sx={{ width: 500, height: 500, margin: 'auto' }} />
+          <Avatar src={`/image/${imageKey}`} sx={{ width: 125, height: 125, margin: 'auto' }} />
         )}
+        <Typography sx={{ textAlign: 'center', marginTop: '50px' }} variant="body1">
+          Be sure to use a photo that
+          <br />
+          clearly shows your face
+        </Typography>
         <form>
           <Input
             id="fileInput"
@@ -96,7 +102,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
               padding: '20px 50px',
             }}
             size="large"
-            variant="contained"
+            variant="outlined"
             color="primary"
             disableElevation
             onClick={() => {
@@ -105,6 +111,24 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
           >
             {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Upload a file from your device'}
           </Button>
+          <br></br>
+          <Link
+            component="button"
+            onClick={() => {
+              if (imageKey !== '') {
+                deletePhoto(imageKey);
+                setImagesKey('');
+                editProfilePhotoKey({ photoKey: '' });
+              }
+            }}
+          >
+            <ListItemIcon>
+              <DeleteOutline sx={{ marginTop: '20px' }} />
+            </ListItemIcon>
+            <Typography variant="body1" display="inline" sx={{ zIndex: 'tooltip' }}>
+              Delete photo
+            </Typography>
+          </Link>
         </form>
       </Box>
     </Box>
