@@ -1,7 +1,6 @@
 import { FormikHelpers } from 'formik';
 import login from '../../helpers/APICalls/login';
 import LoginForm from './LoginForm/LoginForm';
-import DemoLoginButton from './LoginForm/DemoLoginButton';
 import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import PageContainer from '../../components/PageContainer/PageContainer';
@@ -36,7 +35,6 @@ export default function Login(): JSX.Element {
     <PageContainer>
       <AuthPageWrapper header="Log in">
         <LoginForm handleSubmit={handleSubmit} />
-        <DemoLoginButton />
         <AuthPageFooter text="Not a member?" anchorText="Sign up" anchorTo="/signup" />
       </AuthPageWrapper>
     </PageContainer>
