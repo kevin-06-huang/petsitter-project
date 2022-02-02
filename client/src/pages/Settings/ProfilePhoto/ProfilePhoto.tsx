@@ -1,4 +1,4 @@
-import { Button, CircularProgress, InputLabel } from '@mui/material';
+import { autocompleteClasses, Button, CircularProgress, InputLabel } from '@mui/material';
 import { Box } from '@mui/system';
 import SettingHeader from '../../../components/SettingsHeader/SettingsHeader';
 import { User } from '../../../interface/User';
@@ -7,6 +7,7 @@ import postPhoto from '../../../helpers/APICalls/postPhoto';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import { useState } from 'react';
 import { Input } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 
 import editProfilePhotoKey from '../../../helpers/APICalls/editProfilePhotoKey';
 import AvatarDisplay from '../../../components/AvatarDisplay/AvatarDisplay';
@@ -19,7 +20,6 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '15px',
   },
-  profilePicture: {},
 });
 
 interface ProfilePhotoProps {
@@ -74,13 +74,14 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
     >
       <SettingHeader header={header} />
       <Box textAlign="center" marginTop={5}>
-        <Box className={classes.profilePicture}>
-          {imageKey == '' ? (
-            <AvatarDisplay user={currentUser as User} loggedIn={true} />
-          ) : (
-            <img src={`/image/${imageKey}`} />
-          )}
-        </Box>
+        {imageKey == '' ? (
+          <Avatar
+            src={`https://robohash.org/${currentUser!.email}.png`}
+            sx={{ width: 500, height: 500, margin: 'auto' }}
+          />
+        ) : (
+          <Avatar src={`/image/${imageKey}`} sx={{ width: 500, height: 500, margin: 'auto' }} />
+        )}
         <form>
           <Input
             id="fileInput"
@@ -91,6 +92,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
           ></Input>
           <Button
             sx={{
+              marginTop: '50px',
               padding: '20px 50px',
             }}
             size="large"
