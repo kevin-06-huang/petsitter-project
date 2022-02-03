@@ -6,16 +6,16 @@ const Profile = require("../models/Profile");
 // @desc Create a schedule
 // @access Public
 exports.createSchedule = asyncHandler(async (req, res, next) => {
-  const profileId =await Profile.findOne({userId:req.user.id});
-  const id=profileId._id;
+  const profileId = await Profile.findOne({ userId: req.user.id });
+  const id = profileId._id;
   const { name, days } = req.body;
-  const schedule = await Availability.findOne({ name, petSitterId: profileId._id }); 
+  const schedule = await Availability.findOne({ name, petSitterId: profileId._id });
   if (schedule) {
     res.status(400);
     throw new Error("Schedule name already exist");
   }
-  const newSchedule =  Availability.create({
-    petSitterId:id,
+  const newSchedule = Availability.create({
+    petSitterId: id,
     name,
     days,
   });
@@ -54,8 +54,8 @@ exports.getScheduleId = asyncHandler(async (req, res, next) => {
 // @desc Get schedule
 // @access public
 exports.getSchedule = asyncHandler(async (req, res, next) => {
-  const profileId =await Profile.findOne({userId:req.user.id});
-  const id=profileId._id;
+  const profileId = await Profile.findOne({ userId: req.user.id });
+  const id = profileId._id;
   const schedule = await Availability.find({ petSitterId: id })
   if (schedule) {
     res.status(200);

@@ -38,7 +38,9 @@ const availabilitySchema = new mongoose.Schema({
   
 });
 availabilitySchema.pre('validate', function(next) {
-    if (this.startTime > this.endTime) {
+    var startHour = this.startTime.split(":")[0];
+    var endHour=this.endTime.split(":")[0];
+    if (startHour > endHour) {
         next(new Error('End time must be greater than Start time'));
     } else {
         next();

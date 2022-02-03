@@ -61,7 +61,7 @@ export default function Availability(): JSX.Element {
   useEffect(() => {
     setDropDownSelected(false);
     if (check === 1) {
-      GetSchedule().then(async (data) => {
+      GetSchedule().then((data) => {
         if (data) {
           data.forEach((element: any) => {
             schedules.push({ name: element.name, id: element._id });
@@ -161,7 +161,6 @@ export default function Availability(): JSX.Element {
     }>,
   ) => {
     CreateSchedule(values).then((data) => {
-      console.log(values);
       if (data.error) {
         setSubmitting(false);
         updateSnackBarMessage(data.error.message);
