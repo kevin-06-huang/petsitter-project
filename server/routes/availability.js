@@ -12,7 +12,7 @@ const {
 
 router.route("/create").post(protect,validateDays, createSchedule);
 
-router.route("/get/:scheduleId").get(protect, getScheduleId);
+router.route("/get/:scheduleId").get(getScheduleId);
 
 router.route("/all").get(protect, getSchedule);
 

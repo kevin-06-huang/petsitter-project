@@ -1,87 +1,55 @@
-import { Button, CircularProgress } from '@mui/material';
+import { Button, InputLabel, FormControl } from '@mui/material';
 import { Box } from '@mui/system';
 import SettingHeader from '../../components/SettingsHeader/SettingsHeader';
 import { Typography } from '@mui/material';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import GenerateFormInterface from './FormInterface';
-import { Formik, FormikHelpers, Field, validateYupSchema } from 'formik';
+import CreateAvailInterface from './AvailInterface';
+import { Formik, FormikHelpers } from 'formik';
 import React, { useState, useEffect } from 'react';
 import FormInput from '../../components/FormInput/FormInput';
 import CreateSchedule from '../../helpers/APICalls/createSchedule';
 import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import GetSchedule from '../../helpers/APICalls/getSchedules';
+import getSchedulesById from '../../helpers/APICalls/getScheduleById';
 const week = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-const generateSchedules = (scheduleName: string): JSX.Element => {
-  return (
-    <MenuItem key={scheduleName} value={scheduleName}>
-      {scheduleName}
-    </MenuItem>
-  );
-};
-
-interface AvailabilityProps {
-  header: string;
-}
-
-interface Values {
-  name: string;
-  monday: {
-    active: boolean;
-    startTime: string;
-    endTime: string;
-  };
-  tuesday: {
-    active: boolean;
-    startTime: string;
-    endTime: string;
-  };
-  wednesday: {
-    active: boolean;
-    startTime: string;
-    endTime: string;
-  };
-  thursday: {
-    active: boolean;
-    startTime: string;
-    endTime: string;
-  };
-  friday: {
-    active: boolean;
-    startTime: string;
-    endTime: string;
-  };
-  saturday: {
-    active: boolean;
-    startTime: string;
-    endTime: string;
-  };
-  sunday: {
-    active: boolean;
-    startTime: string;
-    endTime: string;
-  };
-}
-
 export default function Availability(): JSX.Element {
-  const [schedules, setSchedules] = useState(['Select']);
+  const [schedules, setSchedules] = useState([{ name: 'Select', id: 'Select' }]);
   const [newSchedule, setNewSchedule] = useState(false);
-  const [daysInfo, setdaysInfo] = useState([0]);
+  const [daysInfo, setDaysInfo] = useState<any>([]);
   const { updateLoginContext } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
-  useEffect(() => {
-    GetSchedule().then((data) => {
+  const [selectedSchedule, setSelectedSchedule] = useState('select');
+  const [check, setCheck] = useState(1);
+  const [dropDownSelected, setDropDownSelected] = useState(false);
+  const generateSchedules = (scheduleName: any, id: any) => {
+    return (
+      <MenuItem
+        onClick={(e) => {
+          getSelectedScheduleById(e.currentTarget.id);
+          setDropDownSelected(true);
+        }}
+        key={id}
+        id={id}
+        value={scheduleName}
+      >
+        {scheduleName}
+      </MenuItem>
+    );
+  };
+  const handleChange = (e: any) => {
+    setSelectedSchedule(e.target.value);
+  };
+  const fillDataInfo = async (data: any) => {
+    setDaysInfo(data);
+  };
+  const getSelectedScheduleById = async (id: any) => {
+    daysInfo.length = 0;
+    await getSchedulesById(id).then(async (data) => {
       if (data) {
-        schedules.length = 0;
-        daysInfo.length = 0;
-        data.forEach((element: any) => {
-          schedules.push(element.name);
-        });
-        // setdaysInfo(data[data.length - 1].days);
-        daysInfo.push(data[data.length - 1].days);
-        console.log(data[data.length - 1].days);
+        fillDataInfo(data.days);
       }
       if (data.error) {
         updateSnackBarMessage(data.error.message);
@@ -89,7 +57,25 @@ export default function Availability(): JSX.Element {
         updateLoginContext(data.success);
       }
     });
-  });
+  };
+  useEffect(() => {
+    setDropDownSelected(false);
+    if (check === 1) {
+      GetSchedule().then(async (data) => {
+        if (data) {
+          data.forEach((element: any) => {
+            schedules.push({ name: element.name, id: element._id });
+          });
+        }
+        if (data.error) {
+          updateSnackBarMessage(data.error.message);
+        } else if (data.success) {
+          updateLoginContext(data.success);
+        }
+      });
+      setCheck(0);
+    }
+  }, [schedules, updateLoginContext, updateSnackBarMessage, check]);
   const handleSubmit = (
     values: {
       name: string;
@@ -182,9 +168,7 @@ export default function Availability(): JSX.Element {
       } else if (data.success) {
         updateLoginContext(data.success);
       } else {
-        // should not get here from backend but this catch is for an unknown issue
         console.error({ data });
-
         setSubmitting(false);
         updateSnackBarMessage('An unexpected error occurred. Please try again');
       }
@@ -193,24 +177,24 @@ export default function Availability(): JSX.Element {
   return (
     <Box>
       <SettingHeader header="Your Availability" />
-
-      <Select
-        id="scheduleSelect"
-        sx={{ height: '35px', width: 'auto', marginRight: '1rem', fontWeight: 700 }}
-        name="scheduleSelect"
-      >
-        <option selected defaultValue={10}>
-          Select
-        </option>
-        {schedules.map((schedule) => generateSchedules(schedule))}
-      </Select>
+      <FormControl sx={{ width: '20%', height: '10%' }}>
+        <InputLabel id="scheduleName">Select</InputLabel>
+        <Select
+          id="scheduleName"
+          sx={{ marginRight: '1rem', fontWeight: 700 }}
+          name="schedule"
+          value={selectedSchedule}
+          onChange={(e) => handleChange(e)}
+        >
+          {schedules.map((schedule) => generateSchedules(schedule.name, schedule.id))}
+        </Select>
+      </FormControl>
       <Button
         variant="contained"
         color="primary"
-        sx={{ height: '35px' }}
+        sx={{ height: '6vh' }}
         disableElevation
         onClick={() => {
-          setSchedules(schedules.concat(['New Schedule']));
           setNewSchedule(true);
         }}
       >
@@ -261,27 +245,37 @@ export default function Availability(): JSX.Element {
           onSubmit={handleSubmit}
         >
           {({ values, setFieldValue, handleChange, handleSubmit, isSubmitting }) => (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
               <FormInput
                 id="scheduleSelect"
-                fullWidth
                 label="New Schedule"
-                margin="normal"
+                margin="dense"
                 name="name"
-                placeholder="Schedulename"
+                sx={{ width: '20%' }}
+                placeholder="Schedule name"
                 autoComplete="name"
                 autoFocus
                 value={values.name}
                 onChange={handleChange}
               />
-              <Typography variant="h3" sx={{ fontWeight: 500, fontSize: '18px', marginTop: 4, marginBottom: 2 }}>
+              <Typography variant="h3" sx={{ fontWeight: 500, fontSize: '2.4em', marginTop: 4, marginBottom: 2 }}>
                 Set your weekly hours
               </Typography>
               <Box sx={{ border: '1px solid #dbdbdb', borderWidth: '1px 1px 0px 1px' }}>
-                {week.map((day) => GenerateFormInterface(day, values, setFieldValue, handleSubmit, newSchedule))}
+                {week.map((day) => CreateAvailInterface(day, values, setFieldValue))}
               </Box>
               <Box textAlign="center" marginTop={5}>
-                <Button type="submit" size="large" variant="contained" color="primary" disableElevation>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    setCheck(1);
+                    window.location.reload();
+                  }}
+                  size="large"
+                  variant="contained"
+                  color="primary"
+                  disableElevation
+                >
                   Submit
                 </Button>
               </Box>

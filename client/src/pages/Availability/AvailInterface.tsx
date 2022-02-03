@@ -6,9 +6,8 @@ import Checkbox from '@mui/material/Checkbox';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Field } from 'formik';
-import FormInput from '../../components/FormInput/FormInput';
 
-const twentyFourHours = () => {
+const Time = () => {
   const output = [];
   for (let i = 0; i < 24; i++) {
     const listItem = <MenuItem value={`${i}:00`}>{`${i}:00`}</MenuItem>;
@@ -17,7 +16,7 @@ const twentyFourHours = () => {
   return output;
 };
 
-const GenerateFormInterface = (day: string, values: any, setFieldValue: any, handleSubmit: any, newSchedule: any) => (
+const createAvailbilityInterface = (day: string, values: any, setFieldValue: any) => (
   <Grid
     container
     columns={3}
@@ -28,7 +27,6 @@ const GenerateFormInterface = (day: string, values: any, setFieldValue: any, han
       opacity: values.days[day].active ? 1 : 0.4,
     }}
   >
-    {/* {console.log(`days.${day}.endTime`.)} */}
     <FormGroup sx={{ marginTop: 'auto', marginBottom: 'auto', width: '25%' }}>
       <FormControlLabel
         control={
@@ -51,8 +49,8 @@ const GenerateFormInterface = (day: string, values: any, setFieldValue: any, han
             component={Checkbox}
           />
         }
-        label={<Typography sx={{ fontSize: '15px', fontWeight: 500, textTransform: 'capitalize' }}>{day}</Typography>}
-        sx={{ fontSize: '25px', fontWeight: 700 }}
+        label={<Typography sx={{ fontSize: '15', fontWeight: 500, textTransform: 'capitalize' }}>{day}</Typography>}
+        sx={{ fontSize: '25', fontWeight: 700 }}
       />
     </FormGroup>
     <FormControlLabel
@@ -63,7 +61,6 @@ const GenerateFormInterface = (day: string, values: any, setFieldValue: any, han
           name={`days[${day}].startTime`}
           type="time"
           onChange={(e: any) => {
-            console.log('vaaaaaaaaaaaaaaa', e.target.value);
             if (values.days[day].active) {
               const val = e.target.value;
 
@@ -75,7 +72,7 @@ const GenerateFormInterface = (day: string, values: any, setFieldValue: any, han
               setFieldValue(`days[${day}].startTime`, val);
             }
           }}
-          sx={{ marginTop: 'auto', marginBottom: 'auto', width: '100px', height: '30px' }}
+          sx={{ marginTop: 'auto', marginBottom: 'auto', width: '25%', height: '38%' }}
           MenuProps={{
             anchorOrigin: {
               vertical: 'top',
@@ -84,13 +81,13 @@ const GenerateFormInterface = (day: string, values: any, setFieldValue: any, han
           }}
           as={Select}
         >
-          {twentyFourHours()}
+          {Time()}
         </Field>
       }
       label={
         <Typography
           sx={{
-            fontSize: '12px',
+            fontSize: '12',
             fontWeight: 700,
             marginLeft: '1rem',
             marginRight: '0.5rem',
@@ -100,7 +97,7 @@ const GenerateFormInterface = (day: string, values: any, setFieldValue: any, han
           from
         </Typography>
       }
-      sx={{ fontSize: '25px', fontWeight: 700, width: '35%' }}
+      sx={{ fontSize: '25', fontWeight: 700, width: '35%' }}
     />
     <FormControlLabel
       labelPlacement="start"
@@ -120,7 +117,7 @@ const GenerateFormInterface = (day: string, values: any, setFieldValue: any, han
               setFieldValue(`days[${day}].endTime`, val);
             }
           }}
-          sx={{ marginTop: 'auto', marginBottom: 'auto', width: '100px', height: '30px' }}
+          sx={{ marginTop: 'auto', marginBottom: 'auto', width: '25%', height: '38%' }}
           MenuProps={{
             anchorOrigin: {
               vertical: 'top',
@@ -129,13 +126,13 @@ const GenerateFormInterface = (day: string, values: any, setFieldValue: any, han
           }}
           as={Select}
         >
-          {twentyFourHours()}
+          {Time()}
         </Field>
       }
       label={
         <Typography
           sx={{
-            fontSize: '12px',
+            fontSize: '12',
             fontWeight: 700,
             marginLeft: '1rem',
             marginRight: '0.5rem',
@@ -145,9 +142,9 @@ const GenerateFormInterface = (day: string, values: any, setFieldValue: any, han
           to
         </Typography>
       }
-      sx={{ fontSize: '25px', fontWeight: 700, width: '30%' }}
+      sx={{ fontSize: '25', fontWeight: 700, width: '30%' }}
     />
   </Grid>
 );
 
-export default GenerateFormInterface;
+export default createAvailbilityInterface;
