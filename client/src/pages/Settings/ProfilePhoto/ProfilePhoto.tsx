@@ -83,7 +83,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
         ) : (
           <Avatar src={`/image/${imageKey}`} sx={{ width: 125, height: 125, margin: 'auto' }} />
         )}
-        <Typography sx={{ textAlign: 'center', marginTop: '50px' }} variant="body1">
+        <Typography sx={{ color: '#808080', textAlign: 'center', marginTop: '20px' }} variant="body1">
           Be sure to use a photo that
           <br />
           clearly shows your face
@@ -98,7 +98,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
           ></Input>
           <Button
             sx={{
-              marginTop: '50px',
+              marginTop: '40px',
               padding: '20px 50px',
             }}
             size="large"
@@ -113,6 +113,9 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
           </Button>
           <br></br>
           <Button
+            sx={{
+              marginTop: '40px',
+            }}
             onClick={() => {
               if (imageKey !== '') {
                 deletePhoto(imageKey);
@@ -124,7 +127,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
             <ListItemIcon>
               <DeleteOutline />
             </ListItemIcon>
-            <Typography variant="body2" display="inline" sx={{ zIndex: 'tooltip' }}>
+            <Typography display="inline" sx={{ color: '#808080' }}>
               Delete photo
             </Typography>
           </Button>
