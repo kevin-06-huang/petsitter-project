@@ -16,7 +16,6 @@ exports.uploadImage = asyncHandler(async (req, res) => {
 });
 
 exports.downloadImage = asyncHandler(async (req, res) => {
-  console.log(req.params)
   const key = req.params.key
   const readStream = getFileStream(key)
 
@@ -24,7 +23,6 @@ exports.downloadImage = asyncHandler(async (req, res) => {
 });
 
 exports.deleteImage = asyncHandler(async (req, res) => {
-  console.log(req.params)
   const key = req.params.key
   deleteFile(key)
   res.status(200)
