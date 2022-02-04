@@ -1,8 +1,8 @@
 
-   
+
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
-
+const Availability = require("../models/availability");
 // @route PUT /profile/edit
 // @desc edit user profile
 // @access Public
@@ -40,17 +40,36 @@ exports.loadProfile = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.getAllSitter = asyncHandler(async (req, res, next) => {
-  const profile = await User.findById(req.user.id, "profile");
+// @route GET /profile/sitter
+// @desc Get all profile data
+// @access Private
+exports.getAllSitters = asyncHandler(async (req, res) => {
+  const result=[];
 
-  if (!profile) {
-    res.status(401);
-    throw new Error("Not authorized");
-  }
-
+  const profiles = await Profile.find({
+    isSitter: {
+      $eq: true,
+    },
+    price: {
+      $exists: true,
+    }
+  })   
+  if(profiles) 
+  {
+   profiles.filter((profile)=>{
+          if(profile.address.search(req.query.location))
+          {
+            result.push(profile);
+          }
+        })
   res.status(200).json({
     success: {
-      profile: profile,
+      profiles: result
     },
   });
+}
+else {
+  res.status(204).json({});
+  throw new Error("No Profile found");
+}
 });
