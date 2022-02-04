@@ -41,29 +41,29 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
     const promises = [];
     for (let i = 0; i < files.length; i++) {
       promises.push(postPhoto(files[i]));
-      Promise.all(promises)
-        .then((dataArray) => {
-          for (let j = 0; j < dataArray.length; j++) {
-            const data = dataArray[j];
-            if (data.error) {
-              console.error({ error: data.error.message });
-              updateSnackBarMessage(data.error.message);
-            } else if (data.success) {
-              const values = { photoKey: data.success.image as string };
-              editProfilePhotoKey(values);
-              setImagesKey(data.success.image as string);
-              updateSnackBarMessage('Photo updated!');
-            } else {
-              // should not get here from backend but this catch is for an unknown issue
-              console.error({ data });
-              updateSnackBarMessage('An unexpected error occurred. Please try again');
-            }
-          }
-        })
-        .then(() => {
-          setSubmitting(false);
-        });
     }
+    Promise.all(promises)
+      .then((dataArray) => {
+        for (let j = 0; j < dataArray.length; j++) {
+          const data = dataArray[j];
+          if (data.error) {
+            console.error({ error: data.error.message });
+            updateSnackBarMessage(data.error.message);
+          } else if (data.success) {
+            const values = { photoKey: data.success.image as string };
+            editProfilePhotoKey(values);
+            setImagesKey(data.success.image as string);
+            updateSnackBarMessage('Photo updated!');
+          } else {
+            // should not get here from backend but this catch is for an unknown issue
+            console.error({ data });
+            updateSnackBarMessage('An unexpected error occurred. Please try again');
+          }
+        }
+      })
+      .then(() => {
+        setSubmitting(false);
+      });
   };
 
   return (
