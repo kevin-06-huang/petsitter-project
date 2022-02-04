@@ -24,19 +24,20 @@ interface Props {
 function ProfileList(): JSX.Element {
   const { updateSnackBarMessage } = useSnackBar();
   const classes = useStyle();
-  const cards = [1, 2, 3, 4, 5, 6];
   const [value, setValue] = React.useState<DateRange<Date>>([new Date(), new Date()]);
-  const [location, setLocation] = useState<string>('test');
+  const [location, setLocation] = useState<string>('');
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const saveProfiles = (profiles: Profile[]) => {
+    setProfiles(profiles);
+    console.log(profiles);
+  };
   const getAllProfiles = () => {
     getAllSitter(location).then((response) => {
       if (response.error) {
         updateSnackBarMessage(JSON.stringify(response.error));
       } else if (response.success) {
         console.log(response);
-        // if (ignore) {
-        //   saveProfiles(response.success.profiles);
-        // }
+        saveProfiles(response.success.profiles as Profile[]);
       } else {
         updateSnackBarMessage('An unexpected error has occurred. Please try again later.');
       }
@@ -59,14 +60,18 @@ function ProfileList(): JSX.Element {
             name="location"
             placeholder="location"
             value={location}
+            onKeyPress={(e) => {
+              if (e.charCode == 13) {
+                getAllProfiles();
+              }
+            }}
             onChange={(e) => {
               setLocation(e.target.value);
-              getAllProfiles();
             }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon />
+                  <SearchIcon onClick={getAllProfiles} />
                 </InputAdornment>
               ),
             }}
@@ -112,11 +117,28 @@ function ProfileList(): JSX.Element {
           alignItems="center"
           justifyContent="center"
         >
-          {cards.map((card) => (
-            <Box key={card} className={classes.card}>
-              <ProfileCard />
+          {profiles.length ? (
+            profiles.map(({ _id, address, description, name, rating, gender, phoneNumber, price, tagLine }) => (
+              <Box key={_id} className={classes.card}>
+                <ProfileCard
+                  key={_id}
+                  image="https://th.bing.com/th/id/R.ea1b9ab324ce1e392dab4771e9524042?rik=iHtWE4I7L9%2bcaQ&pid=ImgRaw&r=0"
+                  name={name}
+                  rating={rating}
+                  tagLine={tagLine}
+                  description={description}
+                  address={address}
+                  price={price}
+                />
+              </Box>
+            ))
+          ) : (
+            <Box className={classes.title}>
+              <Typography gutterBottom variant="h1" component="div" sx={{ fontWeight: '500', fontSize: 30 }}>
+                No records found
+              </Typography>
             </Box>
-          ))}
+          )}
         </Grid>
         <Box textAlign="center" marginTop={5} className={classes.showMore}>
           <Button

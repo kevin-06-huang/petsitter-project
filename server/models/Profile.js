@@ -45,6 +45,10 @@ const profileSchema = new mongoose.Schema({
   isSitter:{
     type:Boolean,
     default:false
+  },
+  rating:{
+    type:Number,
+    default:0
   }
 
 });

@@ -1,13 +1,14 @@
 export interface Profile {
-  firstName: string;
-  lastName: string;
+  name: string;
   gender: string;
   birthDate: Date | null;
   phoneNumber: string;
   address: string;
   description: string;
   _id?: string;
-  price?: Number;
+  price?: number;
+  rating?: number;
+  tagLine?: string;
 }
 
 export interface ProfileApiDataSuccess {
