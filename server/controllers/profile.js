@@ -44,20 +44,18 @@ exports.loadProfile = asyncHandler(async (req, res, next) => {
 // @desc Get all profile data
 // @access Private
 exports.getAllSitters = asyncHandler(async (req, res) => {
+  console.log(req.query.location)
   const result=[];
-
-  const profiles = await Profile.find({
+  const query={
     isSitter: {
       $eq: true,
-    },
-    price: {
-      $exists: true,
     }
-  })   
+  }
+  const profiles = await Profile.find({isSitter:true,price:{$gt:0}})   
   if(profiles) 
   {
    profiles.filter((profile)=>{
-          if(profile.address.search(req.query.location))
+          if(profile.address.search(req.query.location)>-1)
           {
             result.push(profile);
           }
