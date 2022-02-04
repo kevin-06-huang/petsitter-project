@@ -5,7 +5,7 @@ import useStyle from './useStyles';
 import moment from 'moment';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import React, { useState } from 'react';
-
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 function SearchBar(): JSX.Element {
   const classes = useStyle();
   const [value, setValue] = React.useState<DateRange<Date>>([new Date(), new Date()]);
@@ -46,7 +46,11 @@ function SearchBar(): JSX.Element {
               value: [moment(value[0]).format('DD MMM'), moment(value[1]).format('DD MMM yyyy')].join(' - '),
             }}
             InputProps={{
-              startAdornment: startProps.InputProps?.endAdornment,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CalendarTodayIcon />
+                </InputAdornment>
+              ),
             }}
           />
         )}
