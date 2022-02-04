@@ -28,10 +28,7 @@ const useStyles = makeStyles(() => ({
     margin: 'auto',
   },
   card: {
-    marginLeft: 30,
-    marginRight: 30,
-    marginTop: 30,
-    marginBottom: 30,
+    margin: 30,
   },
 }));
 
