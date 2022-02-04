@@ -4,21 +4,44 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { useSnackBar } from '../../context/useSnackbarContext';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import useStyle from './useStyles';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
+import { Profile } from '../../interface/ProfileApiData';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, Rating, Grid } from '@mui/material';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import ProfileCard from './profileCard/ProfileCard';
+import { getAllSitter } from '../../helpers/APICalls/getSitter';
+import moment from 'moment';
+interface Props {
+  location: string;
+}
 function ProfileList(): JSX.Element {
+  const { updateSnackBarMessage } = useSnackBar();
   const classes = useStyle();
   const cards = [1, 2, 3, 4, 5, 6];
-
+  const [value, setValue] = React.useState<DateRange<Date>>([new Date(), new Date()]);
+  const [location, setLocation] = useState<string>('test');
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const getAllProfiles = () => {
+    getAllSitter(location).then((response) => {
+      if (response.error) {
+        updateSnackBarMessage(JSON.stringify(response.error));
+      } else if (response.success) {
+        console.log(response);
+        // if (ignore) {
+        //   saveProfiles(response.success.profiles);
+        // }
+      } else {
+        updateSnackBarMessage('An unexpected error has occurred. Please try again later.');
+      }
+    });
+  };
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -35,6 +58,11 @@ function ProfileList(): JSX.Element {
             type="text"
             name="location"
             placeholder="location"
+            value={location}
+            onChange={(e) => {
+              setLocation(e.target.value);
+              getAllProfiles();
+            }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -43,7 +71,37 @@ function ProfileList(): JSX.Element {
               ),
             }}
           />
-          <TextField id="location" fullWidth margin="normal" type="date" name="location" placeholder="location" />
+          <DateRangePicker
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            minDate={new Date()}
+            OpenPickerButtonProps={{ sx: { ml: 0, mr: 0.5 } }}
+            renderInput={(startProps) => (
+              <TextField
+                sx={{ width: '15vw', marginTop: 1.9 }}
+                {...startProps}
+                placeholder="DD-DD MMM yy"
+                fullWidth
+                label=""
+                inputProps={{
+                  ...startProps.inputProps,
+                  value: [moment(value[0]).format('DD MMM'), moment(value[1]).format('DD MMM yyyy')].join(' - '),
+                }}
+                InputProps={{
+                  startAdornment: startProps.InputProps?.endAdornment,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {/* <IconButton onClick={handleReset}>
+                        <Close color="inherit" fontSize="medium" />
+                      </IconButton> */}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            )}
+          />
         </form>
         <Grid
           className={classes.box}
