@@ -39,7 +39,7 @@ const profileSchema = new mongoose.Schema({
     default:''
   },
   price:{
-    type:Number,
+    type:mongoose.Schema.Types.Decimal128,
     default:0
   },
   isSitter:{
