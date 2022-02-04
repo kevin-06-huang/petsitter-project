@@ -39,3 +39,18 @@ exports.loadProfile = asyncHandler(async (req, res, next) => {
     },
   });
 });
+
+exports.getAllSitter = asyncHandler(async (req, res, next) => {
+  const profile = await User.findById(req.user.id, "profile");
+
+  if (!profile) {
+    res.status(401);
+    throw new Error("Not authorized");
+  }
+
+  res.status(200).json({
+    success: {
+      profile: profile,
+    },
+  });
+});

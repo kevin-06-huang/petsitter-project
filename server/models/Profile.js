@@ -34,6 +34,19 @@ const profileSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  tagLine:{
+    type:String,
+    default:''
+  },
+  price:{
+    type:Number,
+    default:0
+  },
+  isSitter:{
+    type:Boolean,
+    default:false
+  }
+
 });
 
 module.exports = Profile = mongoose.model("Profile", profileSchema);
