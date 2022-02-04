@@ -37,6 +37,12 @@ const menuItems = [
     authenticated: false,
   },
   {
+    item: 'Notifications',
+    resource: '/notifications',
+    canView: [AccountType.PET_SITTER, AccountType.PET_OWNER],
+    authenticated: true,
+  },
+  {
     item: 'My Jobs',
     resource: '/my-jobs',
     canView: [AccountType.PET_SITTER],
