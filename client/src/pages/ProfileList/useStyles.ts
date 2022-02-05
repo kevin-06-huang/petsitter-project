@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => ({
   },
   showMore: {
     paddingBottom: 40,
+    display: 'none',
   },
   box: {
     paddingLeft: 170,
@@ -28,10 +29,7 @@ const useStyles = makeStyles(() => ({
     margin: 'auto',
   },
   card: {
-    marginLeft: 30,
-    marginRight: 30,
-    marginTop: 30,
-    marginBottom: 30,
+    margin: 30,
   },
 }));
 

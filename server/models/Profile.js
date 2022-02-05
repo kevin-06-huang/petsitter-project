@@ -34,21 +34,20 @@ const profileSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  tagLine:{
-    type:String,
-    default:''
+  tagLine: {
+    type: String,
+    default: ''
   },
-  price:{
-    type:Number,
-    default:0
+  price: {
+    type: String,
   },
-  isSitter:{
-    type:Boolean,
-    default:false
+  isSitter: {
+    type: Boolean,
+    default: false
   },
-  rating:{
-    type:Number,
-    default:0
+  rating: {
+    type: String,
+    default: 0
   }
 
 });

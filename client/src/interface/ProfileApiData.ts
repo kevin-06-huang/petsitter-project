@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js';
+
 export interface Profile {
   name: string;
   gender: string;
@@ -6,9 +8,10 @@ export interface Profile {
   address: string;
   description: string;
   _id?: string;
-  price?: number;
-  rating?: number;
+  price?: string;
+  rating?: string;
   tagLine?: string;
+  photo?: string;
 }
 
 export interface ProfileApiDataSuccess {

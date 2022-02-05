@@ -1,8 +1,6 @@
-
-
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
-const Availability = require("../models/availability");
+
 // @route PUT /profile/edit
 // @desc edit user profile
 // @access Public
@@ -44,30 +42,29 @@ exports.loadProfile = asyncHandler(async (req, res, next) => {
 // @desc Get all profile data
 // @access Private
 exports.getAllSitters = asyncHandler(async (req, res) => {
-  console.log(req.query.location)
-  const result=[];
-  const query={
-    isSitter: {
-      $eq: true,
+  const result = [];
+  const profiles = await Profile.find({ isSitter: true, price: { $ne: null } })
+  if (profiles) {
+    profiles.filter((profile) => {
+      const address = profile.address;
+      if (address.toLowerCase().search(req.query.location.toLowerCase()) > -1) {
+        result.push(profile);
+      }
+    })
+    if (result.length) {
+      res.status(200).json({
+        success: {
+          profiles: result
+        },
+      });
+    }
+    else {
+      res.status(204).json({});
+      throw new Error("No Profile found");
     }
   }
-  const profiles = await Profile.find({isSitter:true,price:{$gt:0}})   
-  if(profiles) 
-  {
-   profiles.filter((profile)=>{
-          if(profile.address.search(req.query.location)>-1)
-          {
-            result.push(profile);
-          }
-        })
-  res.status(200).json({
-    success: {
-      profiles: result
-    },
-  });
-}
-else {
-  res.status(204).json({});
-  throw new Error("No Profile found");
-}
+  else {
+    res.status(204).json({});
+    throw new Error("No Profile found");
+  }
 });
