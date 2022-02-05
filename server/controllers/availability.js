@@ -6,31 +6,35 @@ const Profile = require("../models/Profile");
 // @desc Create a schedule
 // @access Public
 exports.createSchedule = asyncHandler(async (req, res, next) => {
-  const profileId = req.profile.id;
+  const profile = await User.findById(req.user.id, "profile");
+
+  if (!profile) {
+    res.status(401);
+    throw new Error("Not authorized");
+  }
+  const profileId = await Profile.findOne({ userId: req.user.id });
+  const id = profileId._id;
   const { name, days } = req.body;
-  const schedule = await Availability.findOne({ name, petSitterId: req.profile.id });
+  const schedule = await Availability.findOne({ name, petSitterId: profileId._id });
   if (schedule) {
     res.status(400);
     throw new Error("Schedule name already exist");
   }
-  const newSchedule = new Availability.create({
-    profileId,
+  const newSchedule = Availability.create({
+    petSitterId: id,
     name,
     days,
   });
   if (newSchedule) {
-    if (!req.profile.activeSchedule) {
-      req.profile.set({ activeSchedule: newSchedule.id });
-      await req.profile.save();
+    if (!profileId.activeSchedule) {
+      profileId.set({ activeSchedule: newSchedule.id });
+      await profileId.save();
     }
     res.status(201).json({
       success: {
         newSchedule
       }
     });
-  } else {
-    res.status(500);
-    throw new Error("Invalid data");
   }
 });
 
@@ -44,7 +48,7 @@ exports.getScheduleId = asyncHandler(async (req, res, next) => {
     res.status(200);
     res.send(schedule);
   } else {
-    res.status(204).json({});
+    res.status(404).json({});
     throw new Error("No Schedule found");
   }
 });
@@ -53,14 +57,12 @@ exports.getScheduleId = asyncHandler(async (req, res, next) => {
 // @desc Get schedule
 // @access Private
 exports.getSchedule = asyncHandler(async (req, res, next) => {
-  const profileId = req.profile.id;
-  const schedule = await Availability.find({ petSitterId: profileId })
+  const profileId = await Profile.findOne({ userId: req.user.id });
+  const id = profileId._id;
+  const schedule = await Availability.find({ petSitterId: id })
   if (schedule) {
     res.status(200);
     res.send(schedule);
-  } else {
-    res.status(204).json({});
-    throw new Error("No Schedule found");
   }
 });
 
@@ -68,14 +70,11 @@ exports.getSchedule = asyncHandler(async (req, res, next) => {
 // @desc Get active schedule
 // @access Private
 exports.getActiveSchedule = asyncHandler(async (req, res, next) => {
-  const profileId = req.profile.id;
+  const profileId = await Profile.findOne({ userId: req.user.id });
   const active = await Availability.findOne({ _id: profileId.activeSchedule });
   if (active) {
     res.status(200);
     res.send(schedule);
-  } else {
-    res.status(404).json({});
-    throw new Error("No Schedule found");
   }
 });
 
@@ -83,6 +82,12 @@ exports.getActiveSchedule = asyncHandler(async (req, res, next) => {
 // @desc Set active schedule
 // @access Private
 exports.setActiveSchedule = asyncHandler(async (req, res, next) => {
+  const profile = await User.findById(req.user.id, "profile");
+
+  if (!profile) {
+    res.status(401);
+    throw new Error("Not authorized");
+  }
   const scheduleId = req.params.scheduleId;
   const activeSchedule = await Profile.findOne({ activeSchedule: scheduleId });
   if (!activeSchedule) {
