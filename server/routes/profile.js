@@ -5,9 +5,12 @@ const {
   editProfile,
   loadProfile,
 } = require('../controllers/profile');
+const notificationRouter = require('../routes/notification');
 
 router.route('/edit').put(protect, editProfile);
 
 router.route('/load').get(protect, loadProfile);
+
+router.route("/notification", notificationRouter);
 
 module.exports = router;

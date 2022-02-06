@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { useAuth } from '../../context/useAuthContext';
+import { useNotificationContext } from '../../context/useNotificationContext';
 import {
   Button,
   Divider,
@@ -103,6 +104,7 @@ const Navbar: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { loggedInUser, profile, logout } = useAuth();
   const open = Boolean(anchorEl);
+  const { notifications, pushNotification } = useNotificationContext();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

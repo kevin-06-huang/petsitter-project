@@ -3,4 +3,6 @@ export interface Notification {
     description: string;
     read: boolean;
     dateCreated: Date;
+    createdBy: string;
+    receivedBy: string;
 }
