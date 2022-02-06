@@ -44,27 +44,15 @@ exports.loadProfile = asyncHandler(async (req, res, next) => {
 exports.getAllSitters = asyncHandler(async (req, res) => {
   const result = [];
   const profiles = await Profile.find({ isSitter: true, price: { $ne: null } })
-  if (profiles) {
-    profiles.filter((profile) => {
-      const address = profile.address;
-      if (address.toLowerCase().search(req.query.location.toLowerCase()) > -1) {
-        result.push(profile);
-      }
-    })
-    if (result.length) {
-      res.status(200).json({
-        success: {
-          profiles: result
-        },
-      });
+  profiles.forEach((profile) => {
+    const address = profile.address;
+    if (address.toLowerCase().search(req.query.location.toLowerCase()) > -1) {
+      result.push(profile);
     }
-    else {
-      res.status(204).json({});
-      throw new Error("No Profile found");
-    }
-  }
-  else {
-    res.status(204).json({});
-    throw new Error("No Profile found");
-  }
+  })
+  res.status(200).json({
+    success: {
+      profiles: result
+    },
+  })
 });
