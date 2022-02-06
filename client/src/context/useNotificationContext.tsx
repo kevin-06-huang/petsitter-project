@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, FunctionComponent, SyntheticEvent, useCallback } from 'react'; 
+import { useState, useContext, createContext, FunctionComponent, SyntheticEvent, useCallback } from 'react';
 import { Notification } from '../interface/Notification';
 
 interface INotificationContext {
@@ -11,13 +11,12 @@ export const NotificationContext = createContext<INotificationContext>({
   pushNotification: () => null,
 });
 
-export const NotificationProvider: FunctionComponent = ({ children }): JSX.Element => {
+export const NotificationContextProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [notifications, setNotifications] = useState<[Notification] | undefined>(undefined);
-  const [open, setOpen] = useState<boolean>(false);
 
   const pushNotification = useCallback((notification: Notification) => {
-    notifications?.push(notification);
-  }, []);
+    notifications!.push(notification);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <NotificationContext.Provider value={{ notifications, pushNotification }}>{children}</NotificationContext.Provider>
