@@ -63,6 +63,9 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
       })
       .then(() => {
         setSubmitting(false);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 

@@ -7,12 +7,21 @@ const { uploadFile, getFileStream, deleteFile } = require("../utils/s3");
 // @access Private
 exports.uploadImage = asyncHandler(async (req, res) => {
   const file = req.file;
-  const result = await uploadFile(file);
-  res.status(200).json({
-    success: {
-      image: result.Key,
-    },
-  });
+  let fileMimetype = file.mimetype.split('/')[0]
+  if (fileMimetype !== 'image') {
+    res.status(415).json({
+      error: {
+        message: 'Incorrect file type!',
+      },
+    });
+  } else {
+    const result = await uploadFile(file);
+    res.status(200).json({
+      success: {
+        image: result.Key,
+      },
+    });
+  } 
 });
 
 exports.downloadImage = asyncHandler(async (req, res) => {
