@@ -6,6 +6,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Field } from 'formik';
+import { classicNameResolver } from 'typescript';
 
 const Time = () => {
   const output = [];
@@ -63,10 +64,11 @@ const createAvailbilityInterface = (day: string, values: any, setFieldValue: any
           onChange={(e: any) => {
             if (values.days[day].active) {
               const val = e.target.value;
-
-              if (val == '23') {
-                setFieldValue(`days[${day}].endTime`, '0');
-              } else if (val >= parseInt(values.days[day].endTime)) {
+              const startHour = val.split(':')[0];
+              const endHour = values.days[day].endTime.split(':')[0];
+              if (startHour == '23') {
+                setFieldValue(`days[${day}].endTime`, '0:00');
+              } else if (parseInt(startHour) >= parseInt(endHour)) {
                 setFieldValue(`days[${day}].endTime`);
               }
               setFieldValue(`days[${day}].startTime`, val);
@@ -109,9 +111,11 @@ const createAvailbilityInterface = (day: string, values: any, setFieldValue: any
           onChange={(e: any) => {
             if (values.days[day].active) {
               const val = e.target.value;
-              if (val == '0') {
-                setFieldValue(`days[${day}].startTime`, '23');
-              } else if (val <= parseInt(values.days[day].startTime)) {
+              const endHour = val.split(':')[0];
+              const startHour = values.days[day].startTime.split(':')[0];
+              if (val == '0:00') {
+                setFieldValue(`days[${day}].startTime`, '23:00');
+              } else if (parseInt(endHour) <= parseInt(startHour)) {
                 setFieldValue(`days[${day}].startTime`);
               }
               setFieldValue(`days[${day}].endTime`, val);

@@ -13,17 +13,20 @@ import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import GetSchedule from '../../helpers/APICalls/getSchedules';
 import getSchedulesById from '../../helpers/APICalls/getScheduleById';
+import { AvailabileValue } from '../../interface/AvailabilityApiData';
+import Record from './Records';
 const week = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 export default function Availability(): JSX.Element {
-  const [schedules, setSchedules] = useState([{ name: 'Select', id: 'Select' }]);
+  const [schedules, setSchedules] = useState([{ name: '', id: 'Select' }]);
   const [newSchedule, setNewSchedule] = useState(false);
   const [daysInfo, setDaysInfo] = useState<any>([]);
   const { updateLoginContext } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
-  const [selectedSchedule, setSelectedSchedule] = useState('select');
+  const [selectedSchedule, setSelectedSchedule] = useState('');
   const [check, setCheck] = useState(1);
   const [dropDownSelected, setDropDownSelected] = useState(false);
+  const [available, setAvailable] = useState<AvailabileValue>();
   const generateSchedules = (scheduleName: any, id: any) => {
     return (
       <MenuItem
@@ -41,15 +44,18 @@ export default function Availability(): JSX.Element {
   };
   const handleChange = (e: any) => {
     setSelectedSchedule(e.target.value);
+    setNewSchedule(false);
   };
-  const fillDataInfo = async (data: any) => {
+  const fillDataInfo = async (data: AvailabileValue) => {
+    // available.push(data);
+    setAvailable(data);
     setDaysInfo(data);
   };
   const getSelectedScheduleById = async (id: any) => {
     daysInfo.length = 0;
     await getSchedulesById(id).then(async (data) => {
       if (data) {
-        fillDataInfo(data.days);
+        await fillDataInfo(data as AvailabileValue);
       }
       if (data.error) {
         updateSnackBarMessage(data.error.message);
@@ -64,7 +70,7 @@ export default function Availability(): JSX.Element {
       GetSchedule().then((data) => {
         if (data) {
           data.forEach((element: any) => {
-            schedules.push({ name: element.name, id: element._id });
+            schedules.push({ name: element.name as any, id: element._id });
           });
         }
         if (data.error) {
@@ -161,6 +167,7 @@ export default function Availability(): JSX.Element {
     }>,
   ) => {
     CreateSchedule(values).then((data) => {
+      setDropDownSelected(false);
       if (data.error) {
         setSubmitting(false);
         updateSnackBarMessage(data.error.message);
@@ -195,6 +202,7 @@ export default function Availability(): JSX.Element {
         disableElevation
         onClick={() => {
           setNewSchedule(true);
+          setDropDownSelected(false);
         }}
       >
         + New Schedule
@@ -282,6 +290,8 @@ export default function Availability(): JSX.Element {
           )}
         </Formik>
       )}
+
+      {dropDownSelected && <Record available={available} />}
     </Box>
   );
 }
