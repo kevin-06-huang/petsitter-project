@@ -6,6 +6,7 @@ import { theme } from './themes/theme';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import Signup from './pages/SignUp/SignUp';
+import Home from './pages/Home/Home';
 import Dashboard from './pages/Dashboard/Dashboard';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
@@ -39,8 +40,8 @@ function App(): JSX.Element {
                 </Switch>
               </SocketProvider>
             </AuthProvider>
-          </SnackBarProvider>
-        </BrowserRouter>
+        </SnackBarProvider>
+      </BrowserRouter>
       </LocalizationProvider>
     </ThemeProvider>
   );
