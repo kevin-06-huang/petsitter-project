@@ -6,8 +6,8 @@ const {
 } = require('../controllers/notification');
 
 router.route('/create').post(protect, createNotification);
-router.route('/:key').put(protect, readNotification);
-router.route('/all').get(protect, getAll);
-router.route('/unread').get(protect, getUnread);
+router.route('/read/:id').put(protect, readNotification);
+router.route('/get-all/:id').get(protect, getAll);
+router.route('/get-unread/:id').get(protect, getUnread);
 
 module.exports = router;

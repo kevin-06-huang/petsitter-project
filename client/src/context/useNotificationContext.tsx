@@ -35,7 +35,7 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
           setNotifications(data.success.notifications);
           updateSnackBarMessage('You have new notifications!');
         } else {
-          updateSnackBarMessage(data.error!.message);
+          if (data.error) updateSnackBarMessage(data.error.message);
         }
       });
     };

@@ -11,6 +11,6 @@ router.route('/edit').put(protect, editProfile);
 
 router.route('/load').get(protect, loadProfile);
 
-router.route("/notification", notificationRouter);
+router.use("/notification", notificationRouter);
 
 module.exports = router;
