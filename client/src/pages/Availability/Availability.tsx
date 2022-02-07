@@ -198,7 +198,7 @@ export default function Availability(): JSX.Element {
       <Button
         variant="contained"
         color="primary"
-        sx={{ height: '6vh' }}
+        sx={{ height: '4em' }}
         disableElevation
         onClick={() => {
           setNewSchedule(true);

@@ -34,6 +34,7 @@ export default function Records(props: any): JSX.Element {
         display: 'flex',
         borderTop: '1px solid #dbdbdb',
         opacity: 1,
+        margin: '1em 0 1em 1em',
       }}
     >
       {props.available !== undefined ? (
@@ -49,7 +50,6 @@ export default function Records(props: any): JSX.Element {
                       height: '4.5rem',
                       display: 'flex',
                       borderTop: '1px solid #dbdbdb',
-                      //   opacity: values.days[day].active ? 1 : 0.4,
                     }}
                   >
                     {' '}
