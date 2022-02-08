@@ -1,9 +1,10 @@
 
 
-const User = require("../models/user");
+const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
 const Conversation = require("../models/conversation");
 const Message = require("../models/message");
+const Profile = require("../models/Profile");
 // @route Post /create
 // @desc create conversation
 // @access Public
@@ -20,7 +21,7 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
     return res.json({ message });
   }
 
-  let conversation = await Conversation.findOne({ senderId, recipientId });
+  let conversation = await Conversation.findOne({ $and: [{ userId1: senderId }, { userId2: recipientId }] });
   if (conversation) {
     const message = await Message.create({
       senderId,
@@ -36,7 +37,7 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
   }
   else {
     conversation = await Conversation.create({
-      senderId, recipientId
+      userId1: senderId, userId2: recipientId
     })
     const newMessage = await Message.create({
       senderId,
@@ -65,7 +66,7 @@ exports.sendMessage = asyncHandler(async (req, res, next) => {
   const senderId = req.user.id;
   const { text, conversationId } = req.body;
 
-  let conversation = await Conversation.findOne(conversationId);
+  let conversation = await Conversation.findOne({ _id: conversationId });
   if (conversation) {
     const message = await Message.create({
       senderId,
@@ -93,14 +94,22 @@ exports.getAllConversations = asyncHandler(async (req, res, next) => {
     throw new Error("Not authorized");
   }
   const senderId = req.user.id;
-  let conversation = await Conversation.find({ $or: [{ userId1: senderId }, { userId2: senderId }] }).populate({
-    path: "messages",
-    sort: { createdAt: "desc" };
-  })
+  let conversation = await Conversation.find({ $or: [{ userId1: senderId }, { userId2: senderId }] });
+  let newConversation = [];
+  for (let i = 0; i < conversation.length; i++) {
+    let profile = "";
+    if (conversation[i].userid1 === senderId) {
+      profile = await Profile.find({ userId: conversation[i].userId1 });
+    }
+    else {
+      profile = await Profile.find({ userId: conversation[i].userId2 });
+    }
+    let messages = await Message.find({ conversationId: conversation[i]._id });
+    newConversation[i] = ([messages, profile]);
+  }
   res.status(200).json({
     success: {
-      message: message,
-      conversation: conversation._id
+      newConversation: newConversation
     },
   });
 });
@@ -110,7 +119,7 @@ exports.getAllConversations = asyncHandler(async (req, res, next) => {
 // @access Public
 exports.getAllMessages = asyncHandler(async (req, res, next) => {
   const conversationId = req.params.conversationId;
-  let messages = await Message.find(conversationId).sort(createdAt, 'asc');
+  let messages = await Message.find({ conversationId });
   res.status(200).json({
     success: {
       message: messages

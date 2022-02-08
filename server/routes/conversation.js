@@ -8,12 +8,12 @@ const {
   getAllMessages,
 } = require("../controllers/conversation");
 
-router.route("/create-conversation").post(protect, createConversation);
+router.route("/create").post(protect,createConversation);
 
-router.route("/send").post(protect, sendMessage);
+router.route("/send").post(protect,sendMessage);
 
 router.route("/all").get(getAllConversations);
 
-router.route("/all/:conversationId").post(getAllMessages);
+router.route("/messages/:conversationId").get(getAllMessages);
 
 module.exports = router;
