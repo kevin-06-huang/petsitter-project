@@ -2,6 +2,7 @@ import { useState, useContext, createContext, FunctionComponent, SyntheticEvent,
 import { Notification } from '../interface/Notification';
 import { useAuth } from './useAuthContext';
 import getNotifications from '../helpers/APICalls/getNofitications';
+import postNotification from '../helpers/APICalls/postNotification';
 import { NotificationApiData } from '../interface/NotificationApiData';
 import { useSnackBar } from './useSnackbarContext';
 
@@ -23,7 +24,7 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
   const pushNotification = useCallback(
     (notification: Notification) => {
       notifications!.push(notification);
-      //api call to database update
+      postNotification(notification);
     },
     [notifications],
   );
