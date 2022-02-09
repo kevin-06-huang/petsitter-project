@@ -10,7 +10,7 @@ export async function createCustomer(req, res) {
     });
     res.status(200).json({
         success: {
-            customer: customer,
+            customer
         },
     });
 }
@@ -24,7 +24,7 @@ export async function getCustomer(req, res) {
     );
     res.status(200).json({
         success: {
-            customer: customer,
+            customer
         },
     });
 }
@@ -39,7 +39,7 @@ export async function updateCustomer(req, res) {
     );
     res.status(200).json({
         success: {
-            customer: customer,
+            customer
         },
     });
 }
@@ -53,7 +53,7 @@ export async function deleteCustomer(req, res) {
     );
     res.status(200).json({
         success: {
-            customer: customer,
+            customer
         },
     });
 }
@@ -62,12 +62,12 @@ export async function deleteCustomer(req, res) {
 // @desc delete a customer
 // @access Public
 export async function getAllCustomer(req, res) {
-    const customers = await stripe.customers.list({
+    const customer = await stripe.customers.list({
         limit: 3,
     });
     res.status(200).json({
         success: {
-            customer: customer,
+            customer
         },
     });
 }
