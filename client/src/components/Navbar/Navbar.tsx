@@ -95,7 +95,7 @@ const Navbar: React.FC = () => {
   const location = useLocation();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { loggedInUser, logout } = useAuth();
+  const { loggedInUser, profile, logout } = useAuth();
   const open = Boolean(anchorEl);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -113,13 +113,17 @@ const Navbar: React.FC = () => {
 
   const renderMenuItems = () => {
     // TODO: conditionally render based on profile type
-    return menuItems.map((menu) => {
-      if (menu.authenticated) {
-        return loggedInUser && <MenuItem key={menu.resource} {...menu} />;
-      } else {
-        return !loggedInUser && <MenuItem key={menu.resource} {...menu} />;
-      }
-    });
+    return menuItems
+      .filter((menu) => {
+        return menu.canView?.includes(profile?.accountType);
+      })
+      .map((menu) => {
+        if (menu.authenticated) {
+          return loggedInUser && <MenuItem key={menu.resource} {...menu} />;
+        } else {
+          return !loggedInUser && <MenuItem key={menu.resource} {...menu} />;
+        }
+      });
   };
 
   return (
