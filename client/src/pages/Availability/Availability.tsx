@@ -4,20 +4,22 @@ import SettingHeader from '../../components/SettingsHeader/SettingsHeader';
 import { Typography } from '@mui/material';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import CreateAvailInterface from './AvailInterface';
+import createAvailbilityRow from './AvailInterface';
 import { Formik, FormikHelpers } from 'formik';
 import React, { useState, useEffect } from 'react';
 import FormInput from '../../components/FormInput/FormInput';
-import CreateSchedule from '../../helpers/APICalls/createSchedule';
+import createSchedule from '../../helpers/APICalls/createSchedule';
 import { useAuth } from '../../context/useAuthContext';
 import { useSnackBar } from '../../context/useSnackbarContext';
-import GetSchedule from '../../helpers/APICalls/getSchedules';
+import getSchedule from '../../helpers/APICalls/getSchedules';
 import getSchedulesById from '../../helpers/APICalls/getScheduleById';
 import { AvailabileValue } from '../../interface/AvailabilityApiData';
 import Record from './Records';
+import useStyles from './useStyle';
 const week = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 export default function Availability(): JSX.Element {
+  const classes = useStyles();
   const [schedules, setSchedules] = useState([{ name: '', id: 'Select' }]);
   const [newSchedule, setNewSchedule] = useState(false);
   const [daysInfo, setDaysInfo] = useState<any>([]);
@@ -27,6 +29,13 @@ export default function Availability(): JSX.Element {
   const [check, setCheck] = useState(1);
   const [dropDownSelected, setDropDownSelected] = useState(false);
   const [available, setAvailable] = useState<AvailabileValue>();
+  const [checkExistSchedule, setCheckExistSchedule] = useState(false);
+
+  const initialData = {
+    active: false,
+    startTime: '9:00',
+    endTime: '5:00',
+  };
   const generateSchedules = (scheduleName: any, id: any) => {
     return (
       <MenuItem
@@ -47,7 +56,6 @@ export default function Availability(): JSX.Element {
     setNewSchedule(false);
   };
   const fillDataInfo = async (data: AvailabileValue) => {
-    // available.push(data);
     setAvailable(data);
     setDaysInfo(data);
   };
@@ -64,14 +72,17 @@ export default function Availability(): JSX.Element {
       }
     });
   };
+
   useEffect(() => {
     setDropDownSelected(false);
-    if (check === 1) {
-      GetSchedule().then((data) => {
+    const getData = async () => {
+      await getSchedule().then((data) => {
         if (data) {
           data.forEach((element: any) => {
             schedules.push({ name: element.name as any, id: element._id });
           });
+          setSchedules([]);
+          setSchedules(schedules);
         }
         if (data.error) {
           updateSnackBarMessage(data.error.message);
@@ -79,126 +90,52 @@ export default function Availability(): JSX.Element {
           updateLoginContext(data.success);
         }
       });
+    };
+    if (check === 1) {
+      getData();
       setCheck(0);
     }
-  }, [schedules, updateLoginContext, updateSnackBarMessage, check]);
-  const handleSubmit = (
-    values: {
-      name: string;
-      days: {
-        monday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        tuesday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        wednesday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        thursday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        friday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        saturday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        sunday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-      };
-    },
-    {
-      setSubmitting,
-    }: FormikHelpers<{
-      name: string;
-      days: {
-        monday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        tuesday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        wednesday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        thursday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        friday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        saturday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-        sunday: {
-          active: boolean;
-          startTime: string;
-          endTime: string;
-        };
-      };
-    }>,
-  ) => {
-    CreateSchedule(values).then((data) => {
-      setDropDownSelected(false);
-      if (data.error) {
-        setSubmitting(false);
-        updateSnackBarMessage(data.error.message);
-      } else if (data.success) {
-        updateLoginContext(data.success);
-      } else {
-        console.error({ data });
-        setSubmitting(false);
-        updateSnackBarMessage('An unexpected error occurred. Please try again');
-      }
+  }, [updateSnackBarMessage, updateLoginContext, schedules, check]);
+  const handleSubmit = async (values: AvailabileValue, { setSubmitting }: FormikHelpers<AvailabileValue>) => {
+    schedules.forEach((element) => {
+      if (element.name === values.name) {
+        updateSnackBarMessage('Schedule already exist');
+        setCheckExistSchedule(true);
+      } else setCheckExistSchedule(false);
     });
+    if (checkExistSchedule == false) {
+      await createSchedule(values).then((data) => {
+        setDropDownSelected(false);
+        if (data.error) {
+          setSubmitting(false);
+          updateSnackBarMessage(data.error.message);
+        } else if (data.success) {
+          updateLoginContext(data.success);
+          setSelectedSchedule('');
+          setNewSchedule(false);
+          setCheck(1);
+        } else {
+          console.error({ data });
+          setSubmitting(false);
+          updateSnackBarMessage('An unexpected error occurred. Please try again');
+        }
+      });
+    }
   };
   return (
-    <Box>
+    <Box className={classes.root}>
       <SettingHeader header="Your Availability" />
-      <FormControl sx={{ width: '20%', height: '10%' }}>
+      <FormControl className={classes.dropDown}>
         <InputLabel id="scheduleName">Select</InputLabel>
-        <Select
-          id="scheduleName"
-          sx={{ marginRight: '1rem', fontWeight: 700 }}
-          name="schedule"
-          value={selectedSchedule}
-          onChange={(e) => handleChange(e)}
-        >
+        <Select id="scheduleName" name="schedule" value={selectedSchedule} onChange={(e) => handleChange(e)}>
           {schedules.map((schedule) => generateSchedules(schedule.name, schedule.id))}
         </Select>
       </FormControl>
       <Button
         variant="contained"
         color="primary"
-        sx={{ height: '4em' }}
+        className={classes.newButton}
+        sx={{ marginLeft: 2 }}
         disableElevation
         onClick={() => {
           setNewSchedule(true);
@@ -213,76 +150,64 @@ export default function Availability(): JSX.Element {
             name: '',
             days: {
               monday: {
-                active: false,
-                startTime: '10:00',
-                endTime: '22:00',
+                active: initialData.active,
+                startTime: initialData.startTime,
+                endTime: initialData.endTime,
               },
               tuesday: {
-                active: false,
-                startTime: '10:00',
-                endTime: '22:00',
+                active: initialData.active,
+                startTime: initialData.startTime,
+                endTime: initialData.endTime,
               },
               wednesday: {
-                active: false,
-                startTime: '10:00',
-                endTime: '22:00',
+                active: initialData.active,
+                startTime: initialData.startTime,
+                endTime: initialData.endTime,
               },
               thursday: {
-                active: false,
-                startTime: '10:00',
-                endTime: '22:00',
+                active: initialData.active,
+                startTime: initialData.startTime,
+                endTime: initialData.endTime,
               },
               friday: {
-                active: false,
-                startTime: '10:00',
-                endTime: '22:00',
+                active: initialData.active,
+                startTime: initialData.startTime,
+                endTime: initialData.endTime,
               },
               saturday: {
-                active: false,
-                startTime: '10:00',
-                endTime: '22:00',
+                active: initialData.active,
+                startTime: initialData.startTime,
+                endTime: initialData.endTime,
               },
               sunday: {
-                active: false,
-                startTime: '10:00',
-                endTime: '22:00',
+                active: initialData.active,
+                startTime: initialData.startTime,
+                endTime: initialData.endTime,
               },
             },
           }}
           onSubmit={handleSubmit}
         >
           {({ values, setFieldValue, handleChange, handleSubmit, isSubmitting }) => (
-            <form onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
+            <form onSubmit={handleSubmit} className={classes.newSchedule}>
               <FormInput
                 id="scheduleSelect"
                 label="New Schedule"
                 margin="dense"
                 name="name"
-                sx={{ width: '20%' }}
+                className={classes.scheduleName}
                 placeholder="Schedule name"
                 autoComplete="name"
                 autoFocus
                 value={values.name}
                 onChange={handleChange}
               />
-              <Typography variant="h3" sx={{ fontWeight: 500, fontSize: '2.4em', marginTop: 4, marginBottom: 2 }}>
+              <Typography variant="h3" className={classes.label} sx={{ marginTop: 4, marginBottom: 2 }}>
                 Set your weekly hours
               </Typography>
-              <Box sx={{ border: '1px solid #dbdbdb', borderWidth: '1px 1px 0px 1px' }}>
-                {week.map((day) => CreateAvailInterface(day, values, setFieldValue))}
-              </Box>
+              <Box className={classes.week}>{week.map((day) => createAvailbilityRow(day, values, setFieldValue))}</Box>
               <Box textAlign="center" marginTop={5}>
-                <Button
-                  type="submit"
-                  onClick={() => {
-                    setCheck(1);
-                    window.location.reload();
-                  }}
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                >
+                <Button type="submit" size="large" variant="contained" color="primary" disableElevation>
                   Submit
                 </Button>
               </Box>

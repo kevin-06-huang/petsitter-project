@@ -33,10 +33,6 @@ const profileSchema = new mongoose.Schema({
   photo: {
     type: String,
     default: "",
-  },
-  activeSchedule:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Availability",
   }
 });
 

@@ -6,7 +6,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Field } from 'formik';
-
+import makeStyle from './useStyle';
 interface Props {
   name: string;
   days: {
@@ -26,64 +26,60 @@ interface DayInformation {
   endTime: string;
 }
 export default function Records(props: any): JSX.Element {
+  const classes = makeStyle();
   return (
-    <Grid
-      container
-      sx={{
-        height: '4.5rem',
-        display: 'flex',
-        borderTop: '1px solid #dbdbdb',
-        opacity: 1,
-        margin: '1em 0 1em 1em',
-      }}
-    >
-      {props.available !== undefined ? (
+    <Grid container className={classes.new} sx={{ marginTop: 4 }}>
+      {props.available !== undefined && (
         <>
           {Object.entries(props.available.days).map(([key, value]) => (
             <>
               {Object.entries(value as any).map(([keys, value]) => (
                 <>
-                  <Grid
-                    item
-                    sm={4}
-                    sx={{
-                      height: '4.5rem',
-                      display: 'flex',
-                      borderTop: '1px solid #dbdbdb',
-                    }}
-                  >
-                    {' '}
+                  <Grid key={key} item sm={4} className={classes.selectedSchedule}>
                     {keys == 'active' && (
                       <FormControlLabel
-                        control={<Checkbox checked={value as boolean} />}
+                        control={<Checkbox key={`${key}.${keys}`} checked={value as boolean} />}
                         label={
-                          <Typography sx={{ fontSize: '15', fontWeight: 500, textTransform: 'capitalize' }}>
+                          <Typography
+                            className={classes.checkBoxName}
+                            sx={{
+                              fontWeight: 700,
+                            }}
+                          >
                             {key as string}
                           </Typography>
                         }
-                        sx={{ fontSize: '25', fontWeight: 700 }}
+                        sx={{ marginLeft: 3 }}
                       />
                     )}
                     {keys == 'startTime' && (
                       <>
-                        <Typography
-                          sx={{ fontSize: '15', fontWeight: 500, textTransform: 'capitalize', marginTop: '3vh' }}
-                        >
+                        <Typography className={classes.dropDownLabel} sx={{ fontWeight: 700, marginTop: '3vh' }}>
                           From:
                         </Typography>
-                        <FormLabel sx={{ fontSize: '25', fontWeight: 700, marginTop: '3vh', marginLeft: '1vw' }}>
+                        <FormLabel
+                          key={`${key}.${keys}`}
+                          className={classes.dropDownSchedule}
+                          sx={{
+                            fontWeight: 700,
+                          }}
+                        >
                           {value as any}
                         </FormLabel>
                       </>
                     )}
                     {keys == 'endTime' && (
                       <>
-                        <Typography
-                          sx={{ fontSize: '15', fontWeight: 500, textTransform: 'capitalize', marginTop: '3vh' }}
-                        >
+                        <Typography className={classes.dropDownLabel} sx={{ fontWeight: 700, marginTop: '3vh' }}>
                           To:
                         </Typography>
-                        <FormLabel sx={{ fontSize: '25', fontWeight: 700, marginTop: '3vh', marginLeft: '1vw' }}>
+                        <FormLabel
+                          key={`${key}.${keys}`}
+                          className={classes.dropDownSchedule}
+                          sx={{
+                            fontWeight: 700,
+                          }}
+                        >
                           {value as any}
                         </FormLabel>
                       </>
@@ -94,8 +90,6 @@ export default function Records(props: any): JSX.Element {
             </>
           ))}
         </>
-      ) : (
-        <FormLabel sx={{ marginTop: 'auto', marginBottom: 'auto', width: '25%' }}>je</FormLabel>
       )}
     </Grid>
   );

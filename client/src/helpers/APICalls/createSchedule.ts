@@ -1,46 +1,7 @@
 import { AuthApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
-
-const createSchedule = async (data: {
-  name: string;
-  days: {
-    monday: {
-      active: boolean;
-      startTime: string;
-      endTime: string;
-    };
-    tuesday: {
-      active: boolean;
-      startTime: string;
-      endTime: string;
-    };
-    wednesday: {
-      active: boolean;
-      startTime: string;
-      endTime: string;
-    };
-    thursday: {
-      active: boolean;
-      startTime: string;
-      endTime: string;
-    };
-    friday: {
-      active: boolean;
-      startTime: string;
-      endTime: string;
-    };
-    saturday: {
-      active: boolean;
-      startTime: string;
-      endTime: string;
-    };
-    sunday: {
-      active: boolean;
-      startTime: string;
-      endTime: string;
-    };
-  };
-}): Promise<AuthApiData> => {
+import { AvailabileValue } from '../../interface/AvailabilityApiData';
+const createSchedule = async (data: AvailabileValue): Promise<AuthApiData> => {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
