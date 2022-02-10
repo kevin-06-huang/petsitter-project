@@ -51,13 +51,9 @@ app.use((req, res, next) => {
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profile", profileRouter);
-<<<<<<< HEAD
-app.use('/stripe', stripeRouter);
-=======
 app.use('/stripe',stripeRouter);
 app.use("/image", imageRouter);
 
->>>>>>> 4d697bc7232c3803f506e6ae2286e1cd28974508
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));
 
