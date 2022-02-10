@@ -18,4 +18,22 @@ const protect = (req, res, next) => {
   }
 };
 
+const protectSocket = (socket, next) => {
+  const { cookie } = socket.handshake.headers;
+  const token = cookie.split('token=')[1];
+
+  if (!token) {
+    next(new Error('No token, authorization denied'));
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    socket.decoded = decoded;
+    next();
+  } catch (err) {
+    next(new Error('Token is not valid'));
+  }
+};
+
 module.exports = protect;
+module.exports = protectSocket;
