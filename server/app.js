@@ -13,6 +13,7 @@ const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const profileRouter = require('./routes/profile');
 const conversationRouter=require('./routes/conversation');
+const imageRouter = require('./routes/image');
 const { json, urlencoded } = express;
 
 connectDB();
@@ -46,6 +47,7 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profile", profileRouter);
 app.use("/conversation",conversationRouter);
+app.use("/image", imageRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));

@@ -6,6 +6,7 @@ import PageContainer from '../../components/PageContainer/PageContainer';
 import { makeStyles } from '@mui/styles';
 import SettingsWrapper from '../../components/SettingsWrapper/SettingsWrapper';
 import EditProfile from './EditProfile/EditProfile';
+import ProfilePhoto from './ProfilePhoto/ProfilePhoto';
 import SettingHeader from '../../components/SettingsHeader/SettingsHeader';
 
 const settingsMenu = [
@@ -17,7 +18,7 @@ const settingsMenu = [
   {
     name: 'Profile photo',
     to: '/profile/settings/profile-photo',
-    component: <SettingHeader header="Profile Photo" />,
+    component: <ProfilePhoto header="Profile Photo" />,
   },
   {
     name: 'Availability',
