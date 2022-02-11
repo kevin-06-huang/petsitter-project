@@ -10,8 +10,8 @@ const Profile = require( "../models/Profile" );
 // @desc create conversation
 // @access Public
 exports.createConversation = asyncHandler( async ( req, res, next ) => {
-  const userId = await User.findById( req.user.id );
-  if ( !userId )
+  const user = await User.findById( req.user.id );
+  if ( !user )
   {
     res.status( 401 );
     throw new Error( "Not authorized" );
@@ -79,8 +79,8 @@ exports.createConversation = asyncHandler( async ( req, res, next ) => {
 // @desc send message
 // @access Public
 exports.sendMessage = asyncHandler( async ( req, res, next ) => {
-  const userId = await User.findById( req.user.id );
-  if ( !userId )
+  const user = await User.findById( req.user.id );
+  if ( !user )
   {
     res.status( 401 );
     throw new Error( "Not authorized" );
@@ -112,19 +112,14 @@ exports.sendMessage = asyncHandler( async ( req, res, next ) => {
 // @desc send message
 // @access Public
 exports.getAllConversations = asyncHandler( async ( req, res, next ) => {
-  const userId = await User.findById( req.user.id );
-  if ( !userId )
+  const user = await User.findById( req.user.id );
+  if ( !user )
   {
     res.status( 401 );
     throw new Error( "Not authorized" );
   }
   const senderId = req.user.id;
   let conversation = await Conversation.find( { $or: [ { userId1: senderId }, { userId2: senderId } ] } );
-  if ( !conversation )
-  {
-    res.status( 404 );
-    throw new Error( "No conversation found" );
-  }
   let newConversation = [];
   for ( let i = 0; i < conversation.length; i++ )
   {
@@ -153,11 +148,6 @@ exports.getAllConversations = asyncHandler( async ( req, res, next ) => {
 exports.getAllMessages = asyncHandler( async ( req, res, next ) => {
   const conversationId = req.params.conversationId;
   let messages = await Message.find( { conversationId } );
-  if ( !messages )
-  {
-    res.status( 404 );
-    throw new Error( "No conversation found" );
-  }
   res.status( 200 ).json( {
     success: {
       message: messages
