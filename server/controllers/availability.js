@@ -52,7 +52,7 @@ exports.getScheduleId = asyncHandler( async ( req, res, next ) => {
   }
   const scheduleId = req.params.scheduleId;
   const schedule = await Availability.findOne( { _id: scheduleId } )
-  if ( schedule )
+  if ( schedule && schedule.petSitterId === profile._id )
   {
     res.status( 200 );
     res.send( schedule );
@@ -89,11 +89,11 @@ exports.getActiveSchedule = asyncHandler( async ( req, res, next ) => {
     res.status( 401 );
     throw new Error( "Not authorized" );
   }
-  const active = await Availability.findOne( { _id: profile.activeSchedule } );
+  const activeSchedule = await Availability.findOne( { _id: profile.activeSchedule } );
   if ( active )
   {
     res.status( 200 );
-    res.send( schedule );
+    res.send( activeSchedule );
   }
 } );
 
@@ -108,14 +108,8 @@ exports.setActiveSchedule = asyncHandler( async ( req, res, next ) => {
     throw new Error( "Not authorized" );
   }
   const scheduleId = req.params.scheduleId;
-  const activeSchedule = await Profile.findOne( { activeSchedule: scheduleId } );
-  if ( !activeSchedule )
-  {
-    res.status( 404 );
-    throw new Error( "Profile doesn't exist" );
-  }
-  activeSchedule.set( req.body );
-  const updatedProfile = await activeSchedule.save();
+  profile.set( { activeSchedule: scheduleId } );
+  const updatedProfile = await profile.save();
   res.status( 200 ).json( {
     success: {
       profile: updatedProfile,
