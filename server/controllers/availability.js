@@ -6,14 +6,12 @@ const Profile = require( "../models/Profile" );
 // @desc Create a schedule
 // @access Public
 exports.createSchedule = asyncHandler( async ( req, res, next ) => {
-  const profile = await Profile.findById( req.user.id );
-
+  const profile = await Profile.findOne( { userId: req.user.id } );
   if ( !profile )
   {
     res.status( 401 );
     throw new Error( "Not authorized" );
   }
-  const profile = await Profile.findOne( { userId: req.user.id } );
   const profileId = profile._id;
   const { name, days } = req.body;
   const schedule = await Availability.findOne( { name, petSitterId: profileId } );
@@ -103,8 +101,7 @@ exports.getActiveSchedule = asyncHandler( async ( req, res, next ) => {
 // @desc Set active schedule
 // @access Private
 exports.setActiveSchedule = asyncHandler( async ( req, res, next ) => {
-  const profile = await Profile.findById( req.user.id );
-
+  const profile = await Profile.findOne( { userId: req.user.id } );
   if ( !profile )
   {
     res.status( 401 );
