@@ -1,19 +1,19 @@
-const express = require("express");
+const express = require( "express" );
 const router = express.Router();
-const protect = require("../middleware/auth");
+const protect = require( "../middleware/auth" );
 const {
   createConversation,
   sendMessage,
   getAllConversations,
   getAllMessages,
-} = require("../controllers/conversation");
+} = require( "../controllers/conversation" );
 
-router.route("/").post(protect,createConversation);
+router.route( "/" ).post( protect, createConversation );
 
-router.route("/message").post(protect,sendMessage);
+router.route( "/message" ).post( protect, sendMessage );
 
-router.route("/").get(protect,getAllConversations);
+router.route( "/" ).get( protect, getAllConversations );
 
-router.route("/messages/:conversationId").get(protect,getAllMessages);
+router.route( "/messages/:conversationId" ).get( protect, getAllMessages );
 
 module.exports = router;

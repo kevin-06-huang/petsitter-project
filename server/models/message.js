@@ -7,7 +7,7 @@ const messageSchema = new mongoose.Schema( {
     },
     senderId: {
         type: mongoose.Types.ObjectId,
-        ref: 'User',
+        ref: 'Profile',
         required: true
     },
     conversationId: {
@@ -15,9 +15,9 @@ const messageSchema = new mongoose.Schema( {
         ref: 'Conversation',
         required: true
     },
-    read:{
-        type:Boolean,
-        required:true
+    read: {
+        type: Boolean,
+        required: true
     }
 
 },
