@@ -6,7 +6,6 @@ import moment from 'moment';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import React, { useState } from 'react';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-
 function SearchBar(props: any): JSX.Element {
   const { location, getAllProfiles, changeLocation } = props;
   const classes = useStyle();
