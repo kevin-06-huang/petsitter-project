@@ -1,27 +1,24 @@
-
-
-const User = require( "../models/User" );
 const asyncHandler = require( "express-async-handler" );
 const Conversation = require( "../models/conversation" );
 const Message = require( "../models/message" );
 const Profile = require( "../models/Profile" );
 
-// @route Post /create
+// @route Post /
 // @desc create conversation
-// @access Public
+// @access Private
 exports.createConversation = asyncHandler( async ( req, res, next ) => {
-  const user = await User.findById( req.user.id );
-  if ( !user )
+  const profile = await Profile.findOne( { userId: req.user.id } );
+  if ( !profile )
   {
     res.status( 401 );
     throw new Error( "Not authorized" );
   }
-  const senderId = req.user.id;
-  const { recipientId, text, conversationId } = req.body;
-  if ( conversationId )
+  const senderId = profile._id;
+  const { recipientId, text } = req.body;
+  if ( recipientId === "" || text === "" )
   {
-    const message = await Message.create( { senderId, text, conversationId } );
-    return res.json( { message } );
+    res.status( 400 );
+    throw new Error( "Insufficient data" );
   }
 
   let conversation = await Conversation.findOne( { $and: [ { userId1: senderId }, { userId2: recipientId } ] } );
@@ -37,14 +34,9 @@ exports.createConversation = asyncHandler( async ( req, res, next ) => {
       res.status( 200 ).json( {
         success: {
           message: message,
-          conversation: conversation._id
+          conversation: conversation
         },
       } );
-    }
-    else
-    {
-      res.status( 500 );
-      throw new Error( "Invalid data" )
     }
   }
   else
@@ -62,32 +54,31 @@ exports.createConversation = asyncHandler( async ( req, res, next ) => {
       res.status( 200 ).json( {
         success: {
           message: newMessage,
-          conversation: conversation._id
+          conversation: conversation
         },
       } );
-    }
-    else
-    {
-      res.status( 500 );
-      throw new Error( "Invalid data" )
     }
   }
 } );
 
 
-// @route Post /send
+// @route Post /message
 // @desc send message
-// @access Public
+// @access Private
 exports.sendMessage = asyncHandler( async ( req, res, next ) => {
-  const user = await User.findById( req.user.id );
-  if ( !user )
+  const profile = await Profile.findOne( { userId: req.user.id } );
+  if ( !profile )
   {
     res.status( 401 );
     throw new Error( "Not authorized" );
   }
-  const senderId = req.user.id;
+  const senderId = profile._id;
   const { text, conversationId } = req.body;
-
+  if ( conversationId === "" || text === "" )
+  {
+    res.status( 400 );
+    throw new Error( "Insufficient data" );
+  }
   let conversation = await Conversation.findOne( { _id: conversationId } );
   if ( !conversation )
   {
@@ -102,38 +93,38 @@ exports.sendMessage = asyncHandler( async ( req, res, next ) => {
   res.status( 200 ).json( {
     success: {
       message: message,
-      conversation: conversation._id
+      conversation: conversation
     },
   } );
 } );
 
 
-// @route GET /all
+// @route GET /
 // @desc send message
-// @access Public
+// @access Private
 exports.getAllConversations = asyncHandler( async ( req, res, next ) => {
-  const user = await User.findById( req.user.id );
-  if ( !user )
+  const profile = await Profile.findOne( { userId: req.user.id } );
+  if ( !profile )
   {
     res.status( 401 );
     throw new Error( "Not authorized" );
   }
-  const senderId = req.user.id;
+  const senderId = profile._id;
   let conversation = await Conversation.find( { $or: [ { userId1: senderId }, { userId2: senderId } ] } );
   let newConversation = [];
   for ( let i = 0; i < conversation.length; i++ )
   {
-    let profile = "";
+    let profileInfo = "";
     if ( conversation[ i ].userid1 === senderId )
     {
-      profile = await Profile.find( { userId: conversation[ i ].userId1 } );
+      profileInfo = await Profile.find( { _id: conversation[ i ].userId1 } );
     }
     else
     {
-      profile = await Profile.find( { userId: conversation[ i ].userId2 } );
+      profileInfo = await Profile.find( { _id: conversation[ i ].userId2 } );
     }
     let messages = await Message.find( { conversationId: conversation[ i ]._id } );
-    newConversation[ i ] = ( [ messages, profile ] );
+    newConversation[ i ] = ( [ messages, profileInfo ] );
   }
   res.status( 200 ).json( {
     success: {
@@ -146,7 +137,18 @@ exports.getAllConversations = asyncHandler( async ( req, res, next ) => {
 // @desc get all messages
 // @access Public
 exports.getAllMessages = asyncHandler( async ( req, res, next ) => {
+  const profile = await Profile.findOne( { userId: req.user.id } );
+  if ( !profile )
+  {
+    res.status( 401 );
+    throw new Error( "Not authorized" );
+  }
   const conversationId = req.params.conversationId;
+  if ( conversationId === "" )
+  {
+    res.status( 400 );
+    throw new Error( "Insufficient data" );
+  }
   let messages = await Message.find( { conversationId } );
   res.status( 200 ).json( {
     success: {

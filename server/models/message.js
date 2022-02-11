@@ -15,10 +15,14 @@ const messageSchema = new mongoose.Schema( {
         ref: 'Conversation',
         required: true
     },
+    read:{
+        type:Boolean,
+        required:true
+    }
 
 },
     {
         timestamps: true
     } );
 
-module.exports = Message = mongoose.model( 'message', messageSchema );
+module.exports = Message = mongoose.model( 'Message', messageSchema );
