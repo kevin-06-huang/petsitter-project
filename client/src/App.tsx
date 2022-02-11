@@ -6,6 +6,7 @@ import { theme } from './themes/theme';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import Signup from './pages/SignUp/SignUp';
+import Home from './pages/Home/Home';
 import Dashboard from './pages/Dashboard/Dashboard';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
@@ -14,9 +15,13 @@ import { Navbar } from './components/Navbar/Navbar';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
 import Availability from './pages/Availability/Availability';
+import ProfileLists from './pages/ProfileList/profileList';
+import { LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
+     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <BrowserRouter>
         <SnackBarProvider>
           <AuthProvider>
@@ -24,10 +29,12 @@ function App(): JSX.Element {
               <CssBaseline />
               <Navbar />
               <Switch>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/signup" component={Signup} />
-                <Route exact path="/dashboard" component={Dashboard} />
-                <Route path="/profile/settings" component={Settings} />
+               <Route exact path="/" component={Home} />
+                 <Route exact path="/login" component={Login} />
+                 <Route exact path="/signup" component={Signup} />
+                 <Route exact path="/dashboard" component={Dashboard} />
+                 <Route path="/profile/settings" component={Settings} />
+                 <Route path="/profile-Listings" component={ProfileLists} />
                 <Route path="/availability" component={Availability} />
                 <Route path="*">
                   <NotFound />
@@ -37,6 +44,7 @@ function App(): JSX.Element {
           </AuthProvider>
         </SnackBarProvider>
       </BrowserRouter>
+     </LocalizationProvider>
     </ThemeProvider>
   );
 }
