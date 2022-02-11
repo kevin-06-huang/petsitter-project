@@ -15,7 +15,6 @@ const profileRouter = require('./routes/profile');
 const imageRouter = require('./routes/image');
 
 const { json, urlencoded } = express;
-const parseJwt = require("./utils/jwt");
 const jwt = require("jsonwebtoken");
 const protectSocket = require("./middleware/auth");
 
