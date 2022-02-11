@@ -78,5 +78,4 @@ function endTimeValidator(value) {
     }
 
 }
-
 module.exports = Availability = mongoose.model("Availability", availabilitySchema);
