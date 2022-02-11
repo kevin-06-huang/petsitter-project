@@ -65,7 +65,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
         setSubmitting(false);
       })
       .catch((error) => {
-        console.log(error);
+        updateSnackBarMessage(error.message);
       });
   };
 
