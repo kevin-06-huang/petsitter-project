@@ -6,6 +6,7 @@ const notificationSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ['account', 'appointment', 'message', 'payment'],
+    lowercase: true,
   },
   description: {
     type: String,
@@ -15,18 +16,16 @@ const notificationSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  dateCreated: {
-    type: Date,
-    default: Date.now,
-  },
   createdBy: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: "Profile",
   },
   receivedBy: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: "Profile",
   },
-});
+}, { timestamps: true });
 
 module.exports = Notification = mongoose.model("Notification", notificationSchema);

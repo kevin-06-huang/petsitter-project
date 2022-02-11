@@ -6,12 +6,12 @@ import postNotification from '../helpers/APICalls/postNotification';
 import { NotificationApiData } from '../interface/NotificationApiData';
 import { useSnackBar } from './useSnackbarContext';
 
-interface INotificationContext {
+interface NotificationContext {
   notifications: [Notification] | undefined;
-  pushNotification: (notification: Notification) => void;
+  pushNotification: (data: { notification: Notification }) => void;
 }
 
-export const NotificationContext = createContext<INotificationContext>({
+export const NotificationContext = createContext<NotificationContext>({
   notifications: undefined,
   pushNotification: () => null,
 });
@@ -22,9 +22,9 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
   const { updateSnackBarMessage } = useSnackBar();
 
   const pushNotification = useCallback(
-    (notification: Notification) => {
-      notifications!.push(notification);
-      postNotification(notification);
+    (data: { notification: Notification }) => {
+      notifications!.push(data.notification);
+      postNotification(data);
     },
     [notifications],
   );
@@ -48,6 +48,6 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
   );
 };
 
-export function useNotificationContext(): INotificationContext {
+export function useNotificationContext(): NotificationContext {
   return useContext(NotificationContext);
 }
