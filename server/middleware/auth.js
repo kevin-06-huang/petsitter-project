@@ -23,7 +23,7 @@ const protectSocket = (socket, next) => {
   const token = cookie.split('token=')[1];
 
   if (!token) {
-    next(new Error('No token, authorization denied'));
+    throw(new Error('No token, authorization denied'));
   }
 
   try {
@@ -31,7 +31,7 @@ const protectSocket = (socket, next) => {
     socket.decoded = decoded;
     next();
   } catch (err) {
-    next(new Error('Token is not valid'));
+    throw(new Error('Token is not valid'));
   }
 };
 
