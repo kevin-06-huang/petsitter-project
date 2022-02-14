@@ -12,6 +12,7 @@ import {
   Menu,
   MenuItem as DropdownMenuItem,
   styled,
+  Badge,
 } from '@mui/material';
 import { AccountType } from '../../types/AccountType';
 
@@ -19,10 +20,20 @@ import lovingSitterLogo from '../../images/logo.svg';
 import { useStyles } from './useStyles';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Settings, Logout, Person } from '@mui/icons-material';
+import { Notification } from '../../interface/Notification';
+import { JsxEmit } from 'typescript';
 
 const NavbarButton = styled(Button)({
   padding: '15px 0',
 });
+
+const notificationsMenuItem = (notifications?: [Notification]) => {
+  return (
+    <Badge badgeContent={notifications ? notifications.length : 0} color="primary">
+      Notifications
+    </Badge>
+  );
+};
 
 const menuItems = [
   {
@@ -38,7 +49,7 @@ const menuItems = [
     authenticated: false,
   },
   {
-    item: 'Notifications',
+    item: notificationsMenuItem,
     resource: '/notifications',
     canView: [AccountType.PET_SITTER, AccountType.PET_OWNER],
     authenticated: true,
@@ -85,14 +96,15 @@ const menuItems = [
 
 const MenuItem: React.FC<{
   resource: string;
-  item: string | JSX.Element;
-}> = ({ resource, item }) => {
+  item: string | JSX.Element | { (notifications: [Notification]): JSX.Element };
+  notifications?: [Notification];
+}> = ({ resource, item, notifications }) => {
   const classes = useStyles();
 
   return (
     <Grid key={resource} sx={{ textAlign: 'center' }} xs={2} justifySelf="flex-end" item>
       <NavLink className={classes.navbarItem} to={resource}>
-        {item}
+        {item instanceof Function ? item(notifications as any) : item}
       </NavLink>
     </Grid>
   );
@@ -119,7 +131,7 @@ const Navbar: React.FC = () => {
     logout();
   };
 
-  const renderMenuItems = () => {
+  const renderMenuItems = (notifications?: [Notification]) => {
     // TODO: conditionally render based on profile type
     return menuItems
       .filter((menu) => {
@@ -127,7 +139,11 @@ const Navbar: React.FC = () => {
       })
       .map((menu) => {
         if (menu.authenticated) {
-          return loggedInUser && <MenuItem key={menu.resource} {...menu} />;
+          if (menu.resource == '/notifications') {
+            return loggedInUser && <MenuItem key={menu.resource} notifications={notifications} {...menu} />;
+          } else {
+            return loggedInUser && <MenuItem key={menu.resource} {...menu} />;
+          }
         } else {
           return !loggedInUser && <MenuItem key={menu.resource} {...menu} />;
         }
@@ -146,7 +162,7 @@ const Navbar: React.FC = () => {
       </Grid>
       <Grid xs={8} md={6} item>
         <Grid container alignItems="center" gap={2} justifyContent="flex-end">
-          {renderMenuItems()}
+          {renderMenuItems(notifications)}
           {loggedInUser && (
             <Grid xs={2} item>
               <>
