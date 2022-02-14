@@ -7,7 +7,7 @@ const getNotifications = async (userId: string): Promise<NotificationApiData> =>
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   };
-  return await fetch(`/profile/notification/`, fetchOptions)
+  return await fetch(`/profile/notifications`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
