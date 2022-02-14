@@ -21,7 +21,6 @@ import { useStyles } from './useStyles';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Settings, Logout, Person } from '@mui/icons-material';
 import { Notification } from '../../interface/Notification';
-import { JsxEmit } from 'typescript';
 
 const NavbarButton = styled(Button)({
   padding: '15px 0',
