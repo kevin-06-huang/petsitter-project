@@ -26,11 +26,39 @@ const NavbarButton = styled(Button)({
   padding: '15px 0',
 });
 
-const notificationsMenuItem = (notifications?: [Notification]) => {
+const NotificationsMenuItem = (notifications?: [Notification]) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
-    <Badge badgeContent={notifications ? notifications.length : 0} color="primary">
-      Notifications
-    </Badge>
+    <>
+      <span onClick={handleMenuOpen}>
+        <Badge badgeContent={notifications ? notifications.length : 0} color="primary">
+          Notifications
+        </Badge>
+      </span>
+      <Menu
+        id="menu-appbar"
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={open}
+        onClose={handleClose}
+      >
+      </Menu>
+    </>
   );
 };
 
@@ -48,7 +76,7 @@ const menuItems = [
     authenticated: false,
   },
   {
-    item: notificationsMenuItem,
+    item: NotificationsMenuItem,
     resource: '/notifications',
     canView: [AccountType.PET_SITTER, AccountType.PET_OWNER],
     authenticated: true,
@@ -138,11 +166,7 @@ const Navbar: React.FC = () => {
       })
       .map((menu) => {
         if (menu.authenticated) {
-          if (menu.resource == '/notifications') {
-            return loggedInUser && <MenuItem key={menu.resource} notifications={notifications} {...menu} />;
-          } else {
-            return loggedInUser && <MenuItem key={menu.resource} {...menu} />;
-          }
+          return loggedInUser && <MenuItem key={menu.resource} notifications={notifications} {...menu} />;
         } else {
           return !loggedInUser && <MenuItem key={menu.resource} {...menu} />;
         }
