@@ -3,4 +3,4 @@ export const NotificationType = {
   APPOINTMENT: 'appointment',
   MESSAGE: 'message',
   PAYMENT: 'payment',
-}
+};

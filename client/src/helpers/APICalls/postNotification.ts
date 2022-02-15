@@ -9,7 +9,7 @@ const postNotification = async (data: { notification: Notification }): Promise<N
     body: JSON.stringify(data),
     credentials: 'include',
   };
-  return await fetch(`/profile/notification/`, fetchOptions)
+  return await fetch(`/profile/notifications`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },

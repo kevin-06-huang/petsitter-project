@@ -23,7 +23,7 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
 
   const pushNotification = useCallback(
     (data: { notification: Notification }) => {
-      notifications!.push(data.notification);
+      if (notifications) notifications.push(data.notification);
       postNotification(data);
     },
     [notifications],
