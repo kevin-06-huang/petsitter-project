@@ -19,14 +19,14 @@ import { AccountType } from '../../types/AccountType';
 import lovingSitterLogo from '../../images/logo.svg';
 import { useStyles } from './useStyles';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Settings, Logout, Person } from '@mui/icons-material';
+import { Settings, Logout, Person, NotificationsActiveOutlined } from '@mui/icons-material';
 import { Notification } from '../../interface/Notification';
 
 const NavbarButton = styled(Button)({
   padding: '15px 0',
 });
 
-const NotificationsMenuItem = (notifications?: [Notification]) => {
+const NotificationsMenuItem = (notifications: [Notification]) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -34,6 +34,20 @@ const NotificationsMenuItem = (notifications?: [Notification]) => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const renderNotifications = () => {
+    return notifications.map((notification) => {
+      return (
+        <>
+          <DropdownMenuItem onClick={handleClose}>
+            <ListItemText>
+              {notification.type + ' ' + notification.description + ' ' + notification.createdBy}
+            </ListItemText>
+          </DropdownMenuItem>
+          <Divider />
+        </>
+      );
+    });
   };
   return (
     <>
@@ -57,6 +71,7 @@ const NotificationsMenuItem = (notifications?: [Notification]) => {
         open={open}
         onClose={handleClose}
       >
+        {notifications && renderNotifications()}
       </Menu>
     </>
   );
