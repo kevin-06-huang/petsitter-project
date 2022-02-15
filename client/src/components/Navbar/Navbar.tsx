@@ -51,11 +51,11 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
   };
   return (
     <>
-      <span onClick={handleMenuOpen}>
+      <div onClick={handleMenuOpen}>
         <Badge badgeContent={notifications ? notifications.length : 0} color="primary">
           Notifications
         </Badge>
-      </span>
+      </div>
       <Menu
         id="menu-appbar"
         anchorEl={anchorEl}
