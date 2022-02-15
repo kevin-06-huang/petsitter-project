@@ -36,18 +36,20 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
     setAnchorEl(null);
   };
   const renderNotifications = () => {
-    return notifications.map((notification) => {
-      return (
-        <>
-          <DropdownMenuItem onClick={handleClose}>
-            <ListItemText>
-              {notification.type + ' ' + notification.description + ' ' + notification.createdBy}
-            </ListItemText>
-          </DropdownMenuItem>
-          <Divider />
-        </>
-      );
-    });
+    return [
+      notifications.map((notification) => {
+        return (
+          <>
+            <DropdownMenuItem onClick={handleClose}>
+              <ListItemText>
+                {notification.type + ' ' + notification.description + ' ' + notification.createdBy}
+              </ListItemText>
+            </DropdownMenuItem>
+            <Divider />
+          </>
+        );
+      }),
+    ];
   };
   return (
     <>
