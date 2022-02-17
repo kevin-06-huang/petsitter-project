@@ -12,8 +12,10 @@ import {
   styled,
   Badge,
 } from '@mui/material';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Notification } from '../../interface/Notification';
 import Avatar from '@mui/material/Avatar';
+import { useStyles } from './useStyles';
 import { NotificationImportant } from '@mui/icons-material';
 
 const StyledInput = styled(InputBase)(({ theme }) => ({
@@ -32,6 +34,8 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
 const NotificationsMenuItem = (notifications: [Notification]) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const classes = useStyles();
+  let key = 0;
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -42,7 +46,7 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
     return [
       notifications.map((notification) => {
         return (
-          <>
+          <NavLink key={`notification-${key++}`} className={classes.navbarItem} to={'/'}>
             <DropdownMenuItem onClick={handleClose}>
               {notification.creatorPhotoKey == '' ? (
                 <Avatar
@@ -60,7 +64,7 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
               </ListItemText>
             </DropdownMenuItem>
             <Divider />
-          </>
+          </NavLink>
         );
       }),
     ];
