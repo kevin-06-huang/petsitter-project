@@ -14,6 +14,7 @@ const userRouter = require("./routes/user");
 const profileRouter = require('./routes/profile');
 const conversationRouter=require('./routes/conversation');
 const imageRouter = require('./routes/image');
+const stripeRouter =require('./routes/stripe');
 const { json, urlencoded } = express;
 
 connectDB();
@@ -47,6 +48,7 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profile", profileRouter);
 app.use("/conversations",conversationRouter);
+app.use('/stripe',stripeRouter);
 app.use("/image", imageRouter);
 
 if (process.env.NODE_ENV === "production") {
