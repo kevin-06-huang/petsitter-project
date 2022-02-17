@@ -115,7 +115,7 @@ const Navbar: React.FC = () => {
     // TODO: conditionally render based on profile type
     return menuItems
       .filter((menu) => {
-        return menu.canView?.includes(profile?.accountType);
+        return !menu.canView ? true : menu.canView?.includes(profile?.accountType);
       })
       .map((menu) => {
         if (menu.authenticated) {
