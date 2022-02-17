@@ -15,6 +15,7 @@ const profileRouter = require( './routes/profile' );
 const availabilityRouter = require( './routes/availability' );
 const stripeRouter = require( './routes/stripe' );
 const imageRouter = require( './routes/image' );
+
 const { json, urlencoded } = express;
 
 connectDB();
