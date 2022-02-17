@@ -21,63 +21,11 @@ import { useStyles } from './useStyles';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Settings, Logout, Person, NotificationsActiveOutlined } from '@mui/icons-material';
 import { Notification } from '../../interface/Notification';
+import NotificationsMenuItem from '../Notification/NotificationsMenuItem';
 
 const NavbarButton = styled(Button)({
   padding: '15px 0',
 });
-
-const NotificationsMenuItem = (notifications: [Notification]) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const renderNotifications = () => {
-    return [
-      notifications.map((notification) => {
-        return (
-          <>
-            <DropdownMenuItem onClick={handleClose}>
-              <ListItemText>
-                {notification.type + ' ' + notification.description + ' ' + notification.createdBy}
-              </ListItemText>
-            </DropdownMenuItem>
-            <Divider />
-          </>
-        );
-      }),
-    ];
-  };
-  return (
-    <>
-      <div onClick={handleMenuOpen}>
-        <Badge badgeContent={notifications ? notifications.length : 0} color="primary">
-          Notifications
-        </Badge>
-      </div>
-      <Menu
-        id="menu-appbar"
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        open={open}
-        onClose={handleClose}
-      >
-        {notifications && renderNotifications()}
-      </Menu>
-    </>
-  );
-};
 
 const menuItems = [
   {
@@ -179,7 +127,7 @@ const Navbar: React.FC = () => {
     // TODO: conditionally render based on profile type
     return menuItems
       .filter((menu) => {
-        return !menu.canView ? true : menu.canView?.includes(profile?.accountType);
+        return menu.canView?.includes(profile?.accountType);
       })
       .map((menu) => {
         if (menu.authenticated) {
