@@ -3,5 +3,7 @@ export interface Notification {
     description: string;
     read: boolean;
     createdBy: string;
+    creatorPhotoKey: string;
     receivedBy: string;
+    updatedAt: Date;
 }

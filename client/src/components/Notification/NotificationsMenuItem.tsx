@@ -13,6 +13,8 @@ import {
   Badge,
 } from '@mui/material';
 import { Notification } from '../../interface/Notification';
+import Avatar from '@mui/material/Avatar';
+import { NotificationImportant } from '@mui/icons-material';
 
 const StyledInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -42,8 +44,19 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
         return (
           <>
             <DropdownMenuItem onClick={handleClose}>
+              {notification.creatorPhotoKey == '' ? (
+                <Avatar
+                  src={`https://robohash.org/${'currentUser!.email'}.png`}
+                  sx={{ width: 125, height: 125, margin: 'auto' }}
+                />
+              ) : (
+                <Avatar
+                  src={`/image/${notification.creatorPhotoKey}`}
+                  sx={{ width: 125, height: 125, margin: 'auto' }}
+                />
+              )}
               <ListItemText>
-                {notification.type + ' ' + notification.description + ' ' + notification.createdBy}
+                {' ' + notification.description + ' ' + notification.createdBy + ' ' + notification.updatedAt}
               </ListItemText>
             </DropdownMenuItem>
             <Divider />

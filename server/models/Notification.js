@@ -21,6 +21,10 @@ const notificationSchema = new mongoose.Schema({
     required: true,
     ref: "Profile",
   },
+  creatorPhotoKey: {
+    type: String,
+    default: "",
+  },
   receivedBy: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
