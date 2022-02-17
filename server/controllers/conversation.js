@@ -13,9 +13,9 @@ exports.createConversation = asyncHandler( async ( req, res, next ) => {
     res.status( 401 );
     throw new Error( "Not authorized" );
   }
-  const senderId = profile._id;
-  const { recipientId, text } = req.body;
-  if ( recipientId === "" || text === "" )
+  const recipientId = profile._id;
+  const { senderId, text } = req.body;
+  if ( senderId === "" || text === "" )
   {
     res.status( 400 );
     throw new Error( "Insufficient data" );
@@ -100,7 +100,7 @@ exports.sendMessage = asyncHandler( async ( req, res, next ) => {
 
 
 // @route GET /
-// @desc send message
+// @desc get all conversation
 // @access Private
 exports.getAllConversations = asyncHandler( async ( req, res, next ) => {
   const profile = await Profile.findOne( { userId: req.user.id } );
@@ -112,23 +112,35 @@ exports.getAllConversations = asyncHandler( async ( req, res, next ) => {
   const senderId = profile._id;
   let conversation = await Conversation.find( { $or: [ { userId1: senderId }, { userId2: senderId } ] } );
   let newConversation = [];
+  let conversationInfo = [];
   for ( let i = 0; i < conversation.length; i++ )
   {
-    let profileInfo = "";
-    if ( conversation[ i ].userid1 === senderId )
+    let profile = "";
+    newConversation.length = 0;
+    newConversation.conversationId = conversation[ i ]._id;
+    if ( String( conversation[ i ].userId1 ) === String( senderId ) )
     {
-      profileInfo = await Profile.find( { _id: conversation[ i ].userId1 } );
+      profile = await Profile.findById( conversation[ i ].userId2 );
+      newConversation.otherUser = conversation[ i ].userId2;
+      newConversation.name = profile.name;
+      newConversation.photo = profile.photo;
     }
     else
     {
-      profileInfo = await Profile.find( { _id: conversation[ i ].userId2 } );
+      profile = await Profile.findById( conversation[ i ].userId1 );
+      newConversation.otherUser = conversation[ i ].userId1;
+      newConversation.name = profile.name;
+      newConversation.photo = profile.photo;
     }
     let messages = await Message.find( { conversationId: conversation[ i ]._id } );
-    newConversation[ i ] = ( [ messages, profileInfo ] );
+    newConversation.latestMessage = messages[ messages.length - 1 ].text;
+    newConversation.createAt = messages[ messages.length - 1 ].createdAt;
+    conversationInfo[ i ] = { ...newConversation };
+
   }
   res.status( 200 ).json( {
     success: {
-      newConversation: newConversation
+      newConversation: conversationInfo
     },
   } );
 } );
