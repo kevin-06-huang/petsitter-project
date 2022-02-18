@@ -36,6 +36,13 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const unreadNotifications = (notifications: [Notification]) => {
+    return notifications
+      ? notifications.filter((notification) => {
+          return !notification.read;
+        })
+      : [];
+  };
   const renderNotifications = () => {
     return notifications.length >= 1 ? (
       [
@@ -76,7 +83,7 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
   return (
     <>
       <div onClick={handleMenuOpen}>
-        <Badge badgeContent={notifications ? notifications.length : 0} color="primary">
+        <Badge color="success" variant="dot" invisible={unreadNotifications(notifications).length == 0}>
           Notifications
         </Badge>
       </div>
