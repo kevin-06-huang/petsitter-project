@@ -28,19 +28,21 @@ function App(): JSX.Element {
           <SnackBarProvider>
             <AuthProvider>
               <SocketProvider>
-                <CssBaseline />
-                <Navbar />
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/signup" component={Signup} />
-                  <AuthRoute exact path="/dashboard" component={Dashboard} />
-                  <AuthRoute path="/profile/settings" component={Settings} />
-                  <AuthRoute path="/profile-Listings" component={ProfileLists} />
-                  <Route path="*">
-                    <NotFound />
-                  </Route>
-                </Switch>
+                <NotificationContextProvider>
+                  <CssBaseline />
+                  <Navbar />
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/signup" component={Signup} />
+                    <AuthRoute exact path="/dashboard" component={Dashboard} />
+                    <AuthRoute path="/profile/settings" component={Settings} />
+                    <AuthRoute path="/profile-Listings" component={ProfileLists} />
+                    <Route path="*">
+                      <NotFound />
+                    </Route>
+                  </Switch>
+                </NotificationContextProvider>
               </SocketProvider>
             </AuthProvider>
           </SnackBarProvider>
