@@ -18,12 +18,13 @@ import Avatar from '@mui/material/Avatar';
 import { useStyles } from './useStyles';
 import { getWindowDimensions, getResource, unreadNotifications } from '../../helpers/NoficationsMenuItemHelper';
 
-const NotificationsMenuItem = (notifications: [Notification]) => {
+const NotificationsMenuItem = (notifications: [Notification], readNotifications: () => void) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const classes = useStyles();
   let key = 0;
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    readNotifications();
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (notification?: Notification) => {

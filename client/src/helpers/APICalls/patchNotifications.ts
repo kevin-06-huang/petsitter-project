@@ -1,9 +1,10 @@
 import { NotificationApiData } from '../../interface/NotificationApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
+import { Notification } from '../../interface/Notification';
 
-const getNotifications = async (): Promise<NotificationApiData> => {
+const patchNotifications = async (): Promise<void> => {
   const fetchOptions: FetchOptions = {
-    method: 'GET',
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   };
@@ -14,4 +15,4 @@ const getNotifications = async (): Promise<NotificationApiData> => {
     }));
 };
 
-export default getNotifications;
+export default patchNotifications;

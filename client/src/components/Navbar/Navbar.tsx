@@ -88,15 +88,16 @@ const menuItems = [
 
 const MenuItem: React.FC<{
   resource: string;
-  item: string | JSX.Element | { (notifications: [Notification]): JSX.Element };
+  item: string | JSX.Element | { (notifications: [Notification], readNotifications: () => void): JSX.Element };
   notifications?: [Notification];
-}> = ({ resource, item, notifications }) => {
+  readNotifications?: () => void;
+}> = ({ resource, item, notifications, readNotifications }) => {
   const classes = useStyles();
 
   return (
     <Grid key={resource} sx={{ textAlign: 'center' }} xs={2} justifySelf="flex-end" item>
       <NavLink className={classes.navbarItem} to={resource}>
-        {item instanceof Function ? item(notifications as any) : item}
+        {item instanceof Function ? item(notifications as any, readNotifications as any) : item}
       </NavLink>
     </Grid>
   );
@@ -108,7 +109,7 @@ const Navbar: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { loggedInUser, profile, logout } = useAuth();
   const open = Boolean(anchorEl);
-  const { notifications, pushNotification } = useNotificationContext();
+  const { notifications, pushNotification, readNotifications } = useNotificationContext();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -131,7 +132,16 @@ const Navbar: React.FC = () => {
       })
       .map((menu) => {
         if (menu.authenticated) {
-          return loggedInUser && <MenuItem key={menu.resource} notifications={notifications} {...menu} />;
+          return (
+            loggedInUser && (
+              <MenuItem
+                key={menu.resource}
+                notifications={notifications}
+                readNotifications={readNotifications}
+                {...menu}
+              />
+            )
+          );
         } else {
           return !loggedInUser && <MenuItem key={menu.resource} {...menu} />;
         }
