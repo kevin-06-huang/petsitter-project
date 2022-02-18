@@ -42,7 +42,7 @@ const menuItems = [
   },
   {
     item: NotificationsMenuItem,
-    resource: '/notifications',
+    resource: '#',
     canView: [AccountType.PET_SITTER, AccountType.PET_OWNER],
     authenticated: true,
   },

@@ -5,7 +5,7 @@ const notificationSchema = new mongoose.Schema({
   // activity, notifications for appointment activity and notifications for account activity (login/logout)
   type: {
     type: String,
-    enum: ['account', 'appointment', 'message', 'payment'],
+    enum: ['Acconut Info', 'Dog Sitting', 'New Message', 'Payment Activity'],
     lowercase: true,
   },
   description: {

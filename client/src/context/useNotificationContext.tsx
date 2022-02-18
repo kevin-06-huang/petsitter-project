@@ -34,7 +34,7 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
       await getNotifications(userId).then((data: NotificationApiData) => {
         if (data.success) {
           setNotifications(data.success.notifications);
-          updateSnackBarMessage('You have new notifications!');
+          updateSnackBarMessage('Notifications loaded!');
         } else {
           if (data.error) updateSnackBarMessage(data.error.message);
         }

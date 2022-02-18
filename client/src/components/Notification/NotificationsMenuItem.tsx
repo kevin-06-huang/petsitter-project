@@ -37,32 +37,41 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
     setAnchorEl(null);
   };
   const renderNotifications = () => {
-    return [
-      notifications.map((notification) => {
-        return (
-          <NavLink key={`notification-${key++}`} className={classes.navbarItem} to={'/'}>
-            <DropdownMenuItem onClick={handleClose}>
-              {notification.creatorPhotoKey == '' ? (
-                <Avatar
-                  src={`https://robohash.org/${notification.createdBy}.png`}
-                  sx={{ width: 50, height: 50, margin: 'auto' }}
-                />
-              ) : (
-                <Avatar src={`/image/${notification.creatorPhotoKey}`} sx={{ width: 50, height: 50, margin: 'auto' }} />
-              )}
-              <ListItemText>
-                {' ' + notification.description}
-                {<br />}
-                {' ' + notification.createdBy}
-                {<br />}
-                {' ' + notification.updatedAt}
-              </ListItemText>
-            </DropdownMenuItem>
-            <Divider />
-          </NavLink>
-        );
-      }),
-    ];
+    return notifications.length >= 1 ? (
+      [
+        notifications.map((notification) => {
+          return (
+            <NavLink key={`notification-${key++}`} className={classes.navbarItem} to={'/'}>
+              <DropdownMenuItem onClick={handleClose}>
+                {notification.creatorPhotoKey == '' ? (
+                  <Avatar
+                    src={`https://robohash.org/${notification.createdBy}.png`}
+                    sx={{ width: 50, height: 50, margin: 'auto' }}
+                  />
+                ) : (
+                  <Avatar
+                    src={`/image/${notification.creatorPhotoKey}`}
+                    sx={{ width: 50, height: 50, margin: 'auto' }}
+                  />
+                )}
+                <ListItemText>
+                  {' ' + notification.description}
+                  {<br />}
+                  {' ' + notification.type}
+                  {<br />}
+                  {' ' + notification.updatedAt}
+                </ListItemText>
+              </DropdownMenuItem>
+              <Divider />
+            </NavLink>
+          );
+        }),
+      ]
+    ) : (
+      <DropdownMenuItem onClick={handleClose}>
+        <ListItemText>You have no new notifications.</ListItemText>
+      </DropdownMenuItem>
+    );
   };
   return (
     <>
