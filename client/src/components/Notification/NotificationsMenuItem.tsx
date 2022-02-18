@@ -16,6 +16,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { Notification } from '../../interface/Notification';
 import Avatar from '@mui/material/Avatar';
 import { useStyles } from './useStyles';
+import { NotificationResourceType } from '../../types/NotificationType';
 
 const getWindowDimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
@@ -23,6 +24,25 @@ const getWindowDimensions = () => {
     width,
     height,
   };
+};
+const getResource = (notification: Notification) => {
+  switch (notification.type) {
+    case 'account': {
+      return NotificationResourceType.account;
+    }
+    case 'appointment': {
+      return NotificationResourceType.appointment;
+    }
+    case 'message': {
+      return NotificationResourceType.message;
+    }
+    case 'payment': {
+      return NotificationResourceType.payment;
+    }
+    default: {
+      return '#';
+    }
+  }
 };
 
 const NotificationsMenuItem = (notifications: [Notification]) => {
@@ -48,7 +68,7 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
       [
         notifications.map((notification) => {
           return (
-            <NavLink key={`notification-${key++}`} className={classes.navbarItem} to={'/'}>
+            <NavLink key={`notification-${key++}`} className={classes.navbarItem} to={getResource(notification)}>
               <DropdownMenuItem onClick={handleClose}>
                 {notification.creatorPhotoKey == '' ? (
                   <Avatar

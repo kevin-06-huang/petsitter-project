@@ -1,6 +1,13 @@
 export const NotificationType = {
-  ACCOUNT: 'account',
-  APPOINTMENT: 'appointment',
-  MESSAGE: 'message',
-  PAYMENT: 'payment',
+  account: '',
+  appointment: 'Dog Walking',
+  message: '',
+  payment: '',
+};
+
+export const NotificationResourceType = {
+  account: '#',
+  appointment: '/my-jobs',
+  message: '#',
+  payment: '#',
 };
