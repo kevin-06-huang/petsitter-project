@@ -16,20 +16,14 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { Notification } from '../../interface/Notification';
 import Avatar from '@mui/material/Avatar';
 import { useStyles } from './useStyles';
-import { NotificationImportant } from '@mui/icons-material';
 
-const StyledInput = styled(InputBase)(({ theme }) => ({
-  'label + &': {
-    marginTop: theme.spacing(3),
-  },
-  '& .MuiInputBase-input': {
-    borderRadius: 8,
-    border: '1px solid #dbdbdb',
-    fontSize: 16,
-    width: '100%',
-    padding: '15px',
-  },
-}));
+const getWindowDimensions = () => {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+};
 
 const NotificationsMenuItem = (notifications: [Notification]) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -50,17 +44,18 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
             <DropdownMenuItem onClick={handleClose}>
               {notification.creatorPhotoKey == '' ? (
                 <Avatar
-                  src={`https://robohash.org/${'currentUser!.email'}.png`}
-                  sx={{ width: 125, height: 125, margin: 'auto' }}
+                  src={`https://robohash.org/${notification.createdBy}.png`}
+                  sx={{ width: 50, height: 50, margin: 'auto' }}
                 />
               ) : (
-                <Avatar
-                  src={`/image/${notification.creatorPhotoKey}`}
-                  sx={{ width: 125, height: 125, margin: 'auto' }}
-                />
+                <Avatar src={`/image/${notification.creatorPhotoKey}`} sx={{ width: 50, height: 50, margin: 'auto' }} />
               )}
               <ListItemText>
-                {' ' + notification.description + ' ' + notification.createdBy + ' ' + notification.updatedAt}
+                {' ' + notification.description}
+                {<br />}
+                {' ' + notification.createdBy}
+                {<br />}
+                {' ' + notification.updatedAt}
               </ListItemText>
             </DropdownMenuItem>
             <Divider />
@@ -81,12 +76,17 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'center',
         }}
         keepMounted
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'center',
+        }}
+        sx={{
+          marginTop: '20px',
+          maxHeight: getWindowDimensions().height * 0.7,
+          width: getWindowDimensions().width * 0.7,
         }}
         open={open}
         onClose={handleClose}

@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   navbarItem: {
     color: theme.palette.grey[900],
-    fontWeight: 700,
+    fontWeight: 100,
     textDecoration: 'none',
     transition: 'color 120ms ease-in-out',
     '&:hover': {
