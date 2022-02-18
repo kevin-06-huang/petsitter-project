@@ -69,7 +69,7 @@ const NotificationsMenuItem = (notifications: [Notification]) => {
       ]
     ) : (
       <DropdownMenuItem onClick={handleClose}>
-        <ListItemText>You have no new notifications.</ListItemText>
+        <ListItemText>You have no notifications.</ListItemText>
       </DropdownMenuItem>
     );
   };
