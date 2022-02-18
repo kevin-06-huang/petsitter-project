@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound/NotFound';
 import ProfileLists from './pages/ProfileList/profileList';
 import { LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { AuthRoute, RedirectRoute } from './components/CustomRoute/CustomRoute';
 
 function App(): JSX.Element {
   return (
@@ -29,12 +30,12 @@ function App(): JSX.Element {
                 <CssBaseline />
                 <Navbar />
                 <Switch>
-                  <Route exact path="/" component={Home} />
+                  <RedirectRoute exact path="/" component={Home} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
-                  <Route exact path="/dashboard" component={Dashboard} />
-                  <Route path="/profile/settings" component={Settings} />
-                  <Route path="/profile-Listings" component={ProfileLists} />
+                  <AuthRoute exact path="/dashboard" component={Dashboard} />
+                  <AuthRoute path="/profile/settings" component={Settings} />
+                  <AuthRoute path="/profile-Listings" component={ProfileLists} />
                   <Route path="*">
                     <NotFound />
                   </Route>
