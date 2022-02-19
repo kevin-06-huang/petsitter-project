@@ -124,7 +124,7 @@ const Navbar: React.FC = () => {
     logout();
   };
 
-  const renderMenuItems = (notifications?: [Notification]) => {
+  const renderMenuItems = () => {
     // TODO: conditionally render based on profile type
     return menuItems
       .filter((menu) => {
@@ -160,7 +160,7 @@ const Navbar: React.FC = () => {
       </Grid>
       <Grid xs={8} md={6} item>
         <Grid container alignItems="center" gap={2} justifyContent="flex-end">
-          {renderMenuItems(notifications)}
+          {renderMenuItems()}
           {loggedInUser && (
             <Grid xs={2} item>
               <>
