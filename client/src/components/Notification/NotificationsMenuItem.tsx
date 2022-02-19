@@ -1,18 +1,6 @@
-import { FormControl, InputBase, InputLabel, MenuItem, Select } from '@mui/material';
 import React, { useState } from 'react';
-import {
-  Button,
-  Divider,
-  Grid,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem as DropdownMenuItem,
-  styled,
-  Badge,
-} from '@mui/material';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Divider, ListItemText, Menu, MenuItem as DropdownMenuItem, Badge } from '@mui/material';
+import { NavLink } from 'react-router-dom';
 import { Notification } from '../../interface/Notification';
 import Avatar from '@mui/material/Avatar';
 import { useStyles } from './useStyles';
@@ -59,11 +47,13 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
                   />
                 )}
                 <ListItemText>
-                  {notification.creatorName + ' ' + notification.description}
+                  <div className={classes.navbarItemDescription}>
+                    {notification.creatorName + ' ' + notification.description}
+                  </div>
                   {<br />}
-                  {getDescriptiveType(notification.type)}
+                  <div className={classes.navbarItemType}>{getDescriptiveType(notification.type)}</div>
                   {<br />}
-                  {formatMMDDYYYY(new Date(notification.updatedAt))}
+                  <div className={classes.navbarItemDate}>{formatMMDDYYYY(new Date(notification.updatedAt))}</div>
                 </ListItemText>
               </DropdownMenuItem>
               {notifications.length - key > 1 && <Divider />}
@@ -77,7 +67,7 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
           handleClose();
         }}
       >
-        <ListItemText>You have no notifications.</ListItemText>
+        <ListItemText className={classes.navbarItemDescription}>You have no notifications.</ListItemText>
       </DropdownMenuItem>
     );
   };
