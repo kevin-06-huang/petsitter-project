@@ -11,3 +11,10 @@ export const NotificationResourceType = {
   message: '#',
   payment: '#',
 };
+
+export const NotificationDescriptiveType = {
+  account: 'Account Info',
+  appointment: 'Dog Sitting',
+  message: 'New Message',
+  payment: 'Payment Activity',
+};

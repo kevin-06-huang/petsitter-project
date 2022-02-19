@@ -16,7 +16,13 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { Notification } from '../../interface/Notification';
 import Avatar from '@mui/material/Avatar';
 import { useStyles } from './useStyles';
-import { getWindowDimensions, getResource, unreadNotifications } from '../../helpers/NoficationsMenuItemHelper';
+import {
+  getWindowDimensions,
+  getResource,
+  unreadNotifications,
+  formatMMDDYYYY,
+  getDescriptiveType,
+} from '../../helpers/NoficationsMenuItemHelper';
 
 const NotificationsMenuItem = (notifications: [Notification], readNotifications: () => void) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -53,14 +59,14 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
                   />
                 )}
                 <ListItemText>
-                  {' ' + notification.description}
+                  {notification.creatorName + ' ' + notification.description}
                   {<br />}
-                  {' ' + notification.type}
+                  {getDescriptiveType(notification.type)}
                   {<br />}
-                  {' ' + notification.updatedAt}
+                  {formatMMDDYYYY(new Date(notification.updatedAt))}
                 </ListItemText>
               </DropdownMenuItem>
-              <Divider />
+              {notifications.length - key > 0 && <Divider />}
             </NavLink>
           );
         }),
