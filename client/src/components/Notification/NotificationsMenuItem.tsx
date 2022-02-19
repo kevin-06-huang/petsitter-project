@@ -66,7 +66,6 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
                   {formatMMDDYYYY(new Date(notification.updatedAt))}
                 </ListItemText>
               </DropdownMenuItem>
-              {console.log(key + ' ' + notifications.length)}
               {notifications.length - key > 1 && <Divider />}
             </NavLink>
           );
