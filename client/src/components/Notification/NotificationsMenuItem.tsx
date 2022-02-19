@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Divider, ListItemText, Menu, MenuItem as DropdownMenuItem, Badge } from '@mui/material';
+import { Box, Divider, ListItemText, Menu, MenuItem as DropdownMenuItem, Badge } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { Notification } from '../../interface/Notification';
 import Avatar from '@mui/material/Avatar';
@@ -47,13 +47,13 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
                   />
                 )}
                 <ListItemText>
-                  <div className={classes.navbarItemDescription}>
+                  <Box className={classes.navbarItemDescription}>
                     {notification.creatorName + ' ' + notification.description}
-                  </div>
+                  </Box>
                   {<br />}
-                  <div className={classes.navbarItemType}>{getDescriptiveType(notification.type)}</div>
+                  <Box className={classes.navbarItemType}>{getDescriptiveType(notification.type)}</Box>
                   {<br />}
-                  <div className={classes.navbarItemDate}>{formatMMDDYYYY(new Date(notification.updatedAt))}</div>
+                  <Box className={classes.navbarItemDate}>{formatMMDDYYYY(new Date(notification.updatedAt))}</Box>
                 </ListItemText>
               </DropdownMenuItem>
               {notifications.length - key > 1 && <Divider />}
@@ -73,11 +73,11 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
   };
   return (
     <>
-      <div onClick={handleMenuOpen}>
+      <Box onClick={handleMenuOpen}>
         <Badge color="success" variant="dot" invisible={unreadNotifications(notifications).length == 0}>
           Notifications
         </Badge>
-      </div>
+      </Box>
       <Menu
         id="menu-appbar"
         anchorEl={anchorEl}

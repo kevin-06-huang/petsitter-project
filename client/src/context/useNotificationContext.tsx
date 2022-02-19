@@ -4,12 +4,17 @@ import { useAuth } from './useAuthContext';
 import getNotifications from '../helpers/APICalls/getNofitications';
 import postNotification from '../helpers/APICalls/postNotification';
 import patchNotifications from '../helpers/APICalls/patchNotifications';
-import { NotificationApiData } from '../interface/NotificationApiData';
+import {
+  NotificationApiData,
+  NotificationApiDataGet,
+  NotificationApiDataGetAll,
+  NotificationApiDataPost,
+} from '../interface/NotificationApiData';
 import { useSnackBar } from './useSnackbarContext';
 
 interface NotificationContext {
   notifications: [Notification] | undefined;
-  pushNotification: (data: { notification: Notification }) => void;
+  pushNotification: (data: NotificationApiDataPost) => void;
   readNotifications: () => void;
 }
 
@@ -25,11 +30,29 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
   const { updateSnackBarMessage } = useSnackBar();
 
   const pushNotification = useCallback(
-    (data: { notification: Notification }) => {
-      if (notifications) notifications.push(data.notification);
-      postNotification(data);
+    async (data: NotificationApiDataPost) => {
+      await postNotification({
+        type: data.type,
+        description: data.description,
+        read: data.read,
+        createdBy: data.createdBy,
+        creatorName: data.creatorName,
+        creatorPhotoKey: data.creatorPhotoKey,
+        receivedBy: data.receivedBy,
+      }).then((data: NotificationApiData) => {
+        if (data.success) {
+          const { notification } = data.success as NotificationApiDataGet;
+          if (notifications) {
+            notifications.push(notification);
+          } else {
+            setNotifications([notification]);
+          }
+        } else {
+          if (data.error) updateSnackBarMessage(data.error.message);
+        }
+      });
     },
-    [notifications],
+    [notifications, updateSnackBarMessage],
   );
 
   const readNotifications = useCallback(() => {
@@ -45,7 +68,7 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
     const updateNotifications = async (userId: string) => {
       await getNotifications().then((data: NotificationApiData) => {
         if (data.success) {
-          setNotifications(data.success.notifications);
+          setNotifications((data.success as NotificationApiDataGetAll).notifications);
           updateSnackBarMessage('Notifications loaded!');
         } else {
           if (data.error) updateSnackBarMessage(data.error.message);

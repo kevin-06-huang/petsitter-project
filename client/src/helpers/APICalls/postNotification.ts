@@ -1,8 +1,15 @@
 import { NotificationApiData } from '../../interface/NotificationApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
-import { Notification } from '../../interface/Notification';
 
-const postNotification = async (data: { notification: Notification }): Promise<NotificationApiData> => {
+const postNotification = async (data: {
+  type: string;
+  description: string;
+  read: boolean;
+  createdBy: string;
+  creatorName: string;
+  creatorPhotoKey: string;
+  receivedBy: string;
+}): Promise<NotificationApiData> => {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
