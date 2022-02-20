@@ -17,6 +17,8 @@ const stripeRouter = require( './routes/stripe' );
 const imageRouter = require( './routes/image' );
 
 const { json, urlencoded } = express;
+const jwt = require("jsonwebtoken");
+const { protectSocket } = require("./middleware/auth");
 
 connectDB();
 const app = express();
@@ -28,9 +30,11 @@ const io = socketio( server, {
   },
 } );
 
-io.on( "connection", ( socket ) => {
-  console.log( "connected" );
-} );
+io.use(protectSocket);
+
+io.on("connection", (socket) => {
+  console.log(`User ${socket.decoded.id} is online.`);
+});
 
 if ( process.env.NODE_ENV === "development" )
 {
