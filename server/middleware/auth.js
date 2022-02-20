@@ -35,5 +35,4 @@ const protectSocket = (socket, next) => {
   }
 };
 
-module.exports = protect;
-module.exports = protectSocket;
+module.exports = { protect, protectSocket };

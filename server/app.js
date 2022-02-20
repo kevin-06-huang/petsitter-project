@@ -17,7 +17,7 @@ const imageRouter = require('./routes/image');
 
 const { json, urlencoded } = express;
 const jwt = require("jsonwebtoken");
-const protectSocket = require("./middleware/auth");
+const { protectSocket } = require("./middleware/auth");
 
 connectDB();
 const app = express();
