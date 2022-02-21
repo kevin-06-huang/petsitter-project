@@ -38,6 +38,7 @@ io.use(protectSocket);
 io.on("connection", (socket) => {
   onlineUsers.push({userId: socket.decoded.id, socketId: socket.id});
   console.log(`User ${socket.decoded.id} is online.`);
+  console.log(`Socket id is ${socket.id}.`);
 
   socket.on("notification", (data) => {
     console.log("notification " + data);

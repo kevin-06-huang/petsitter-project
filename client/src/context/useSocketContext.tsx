@@ -21,7 +21,7 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
     });
     setSocket(newSocket);
     newSocket.on('connect', () => {
-      console.log('socket id ' + newSocket.id);
+      console.log('Socket id is ' + newSocket.id);
     });
     newSocket.on('disconnect', (reason) => {
       console.log('disconnect ' + reason);
