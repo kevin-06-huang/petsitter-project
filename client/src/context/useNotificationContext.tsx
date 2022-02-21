@@ -44,18 +44,13 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
       }).then((data: NotificationApiData) => {
         if (data.success) {
           const { notification } = data.success as NotificationApiDataGet;
-          socket?.emit('notification', notification.receivedBy);
-          if (notifications) {
-            notifications.push(notification);
-          } else {
-            setNotifications([notification]);
-          }
+          socket?.emit('notification', notification);
         } else {
           if (data.error) updateSnackBarMessage(data.error.message);
         }
       });
     },
-    [notifications, socket, updateSnackBarMessage],
+    [socket, updateSnackBarMessage],
   );
 
   const readNotifications = useCallback(() => {
@@ -71,7 +66,13 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
     const updateNotifications = async (userId: string) => {
       await getNotifications().then((data: NotificationApiData) => {
         if (data.success) {
-          setNotifications((data.success as NotificationApiDataGetAll).notifications);
+          const notifications = (data.success as NotificationApiDataGetAll).notifications;
+          setNotifications(notifications);
+          socket?.on('notification', (notification) => {
+            notification.updatedAt = new Date();
+            notifications.push(notification);
+            setNotifications(notifications);
+          });
           updateSnackBarMessage('Notifications loaded!');
         } else {
           if (data.error) updateSnackBarMessage(data.error.message);
@@ -79,7 +80,7 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
       });
     };
     profile && updateNotifications(profile.userId);
-  }, [profile, updateSnackBarMessage]);
+  }, [profile, socket, updateSnackBarMessage]);
 
   return (
     <NotificationContext.Provider value={{ notifications, pushNotification, readNotifications }}>
