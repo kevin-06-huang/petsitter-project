@@ -20,6 +20,9 @@ const { json, urlencoded } = express;
 const jwt = require("jsonwebtoken");
 const { protectSocket } = require("./middleware/auth");
 
+const onlineUsers = require("./onlineUsers");
+const { filterInPlace } = require("./utils/helpers");
+
 connectDB();
 const app = express();
 const server = http.createServer( app );
@@ -33,7 +36,19 @@ const io = socketio( server, {
 io.use(protectSocket);
 
 io.on("connection", (socket) => {
+  onlineUsers.push({userId: socket.decoded.id, socketId: socket.id});
   console.log(`User ${socket.decoded.id} is online.`);
+
+  socket.on("notification", (data) => {
+    console.log("notification " + data);
+  });
+
+  socket.on("disconnect", () => {
+    filterInPlace(onlineUsers, (user) => {
+      return user.userId !== socket.decoded.id
+    });
+    console.log(`User ${socket.decoded.id} is offline.`);
+  });
 });
 
 if ( process.env.NODE_ENV === "development" )

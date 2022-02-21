@@ -1,6 +1,7 @@
 import { useState, useContext, createContext, FunctionComponent, SyntheticEvent, useCallback, useEffect } from 'react';
 import { Notification } from '../interface/Notification';
 import { useAuth } from './useAuthContext';
+import { useSocket } from './useSocketContext';
 import getNotifications from '../helpers/APICalls/getNofitications';
 import postNotification from '../helpers/APICalls/postNotification';
 import patchNotifications from '../helpers/APICalls/patchNotifications';
@@ -27,6 +28,7 @@ export const NotificationContext = createContext<NotificationContext>({
 export const NotificationContextProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [notifications, setNotifications] = useState<[Notification] | undefined>(undefined);
   const { profile } = useAuth();
+  const { socket } = useSocket();
   const { updateSnackBarMessage } = useSnackBar();
 
   const pushNotification = useCallback(
@@ -42,6 +44,7 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
       }).then((data: NotificationApiData) => {
         if (data.success) {
           const { notification } = data.success as NotificationApiDataGet;
+          socket?.emit('notification', notification.receivedBy);
           if (notifications) {
             notifications.push(notification);
           } else {
@@ -52,7 +55,7 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
         }
       });
     },
-    [notifications, updateSnackBarMessage],
+    [notifications, socket, updateSnackBarMessage],
   );
 
   const readNotifications = useCallback(() => {
