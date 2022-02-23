@@ -38,15 +38,12 @@ io.use(protectSocket);
 io.on("connection", (socket) => {
   if (!onlineUsers.some(user => user.userId === socket.decoded.id)) {
     onlineUsers.push({userId: socket.decoded.id, socketId: socket.id});
-    console.log(`User ${socket.decoded.id} is online.`);
-    console.log(`Socket id is ${socket.id}.`);
   }
 
   socket.on("notification", (notification) => {
     if (onlineUsers.some(user => user.userId === notification.receivedBy)) {
       const user = onlineUsers.find(user => user.userId === notification.receivedBy);
       socket.to(user.socketId).emit("notification", notification);
-      console.log(`User ${user.userId} is online - sending notification`);
     }
   });
 

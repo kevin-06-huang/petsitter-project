@@ -16,7 +16,6 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const classes = useStyles();
-  let key = 0;
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     readNotifications();
     setAnchorEl(event.currentTarget);
@@ -27,9 +26,9 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
   const renderNotifications = () => {
     return notifications.length >= 1 ? (
       [
-        notifications.map((notification) => {
+        notifications.map((notification, index) => {
           return (
-            <NavLink key={`notification-${key++}`} className={classes.navbarItem} to={getResource(notification)}>
+            <NavLink key={`notification-${index++}`} className={classes.navbarItem} to={getResource(notification)}>
               <DropdownMenuItem
                 onClick={() => {
                   handleClose(notification);
@@ -56,7 +55,7 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
                   <Box className={classes.navbarItemDate}>{formatMMDDYYYY(new Date(notification.updatedAt))}</Box>
                 </ListItemText>
               </DropdownMenuItem>
-              {notifications.length - key > 1 && <Divider />}
+              {notifications.length - index > 1 && <Divider />}
             </NavLink>
           );
         }),

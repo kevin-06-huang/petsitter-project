@@ -4,10 +4,8 @@ const filterInPlace = (a, condition) => {
         const val = a[i];
         if (condition(val, i, a)) a[j++] = val;
         i++;
-    }
-
+    };
     a.length = j;
-
     return a;
 }
 
