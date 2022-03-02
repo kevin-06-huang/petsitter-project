@@ -35,30 +35,31 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
   const [isSubmitting, setSubmitting] = useState(false);
   const [imageKey, setImagesKey] = useState(currentProfile.photoKey);
 
+  const handleDelete = () => {
+    if (imageKey !== '') {
+      deletePhoto(imageKey);
+      setImagesKey('');
+      editProfilePhotoKey({ photoKey: '' });
+    }
+  };
+
   const fileSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files!;
     setSubmitting(true);
-    const promises = [];
-    for (let i = 0; i < files.length; i++) {
-      promises.push(postPhoto(files[i]));
-    }
-    Promise.all(promises)
-      .then((dataArray) => {
-        for (let j = 0; j < dataArray.length; j++) {
-          const data = dataArray[j];
-          if (data.error) {
-            console.error({ error: data.error.message });
-            updateSnackBarMessage(data.error.message);
-          } else if (data.success) {
-            const values = { photoKey: data.success.image as string };
-            editProfilePhotoKey(values);
-            setImagesKey(data.success.image as string);
-            updateSnackBarMessage('Photo updated!');
-          } else {
-            // should not get here from backend but this catch is for an unknown issue
-            console.error({ data });
-            updateSnackBarMessage('An unexpected error occurred. Please try again');
-          }
+    postPhoto(files[0])
+      .then((data) => {
+        if (data.error) {
+          console.error({ error: data.error.message });
+          updateSnackBarMessage(data.error.message);
+        } else if (data.success) {
+          const values = { photoKey: data.success.image as string };
+          editProfilePhotoKey(values);
+          setImagesKey(data.success.image as string);
+          updateSnackBarMessage('Photo updated!');
+        } else {
+          // should not get here from backend but this catch is for an unknown issue
+          console.error({ data });
+          updateSnackBarMessage('An unexpected error occurred. Please try again');
         }
       })
       .then(() => {
@@ -119,13 +120,7 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
             sx={{
               marginTop: '40px',
             }}
-            onClick={() => {
-              if (imageKey !== '') {
-                deletePhoto(imageKey);
-                setImagesKey('');
-                editProfilePhotoKey({ photoKey: '' });
-              }
-            }}
+            onClick={handleDelete}
           >
             <ListItemIcon>
               <DeleteOutline />
