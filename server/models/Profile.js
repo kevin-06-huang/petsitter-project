@@ -30,7 +30,7 @@ const profileSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
-  photo: {
+  photoKey: {
     type: String,
     default: "",
   },
@@ -43,7 +43,11 @@ const profileSchema = new mongoose.Schema({
   },
   rating: {
     type: String,
-    default: 0
+    default: 0,
+  },
+  activeSchedule:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Availability",
   },
   accountType: {
     type: String,

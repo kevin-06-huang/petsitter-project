@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { useAuth } from '../../context/useAuthContext';
+import { useNotificationContext } from '../../context/useNotificationContext';
 import {
   Button,
   Divider,
@@ -35,6 +36,12 @@ const menuItems = [
     resource: '/signup?accountType=pet_sitter',
     canView: null,
     authenticated: false,
+  },
+  {
+    item: 'Notifications',
+    resource: '/notifications',
+    canView: [AccountType.PET_SITTER, AccountType.PET_OWNER],
+    authenticated: true,
   },
   {
     item: 'My Jobs',
@@ -97,6 +104,7 @@ const Navbar: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { loggedInUser, profile, logout } = useAuth();
   const open = Boolean(anchorEl);
+  const { notifications, pushNotification } = useNotificationContext();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -115,7 +123,7 @@ const Navbar: React.FC = () => {
     // TODO: conditionally render based on profile type
     return menuItems
       .filter((menu) => {
-        return menu.canView?.includes(profile?.accountType);
+        return !menu.canView ? true : menu.canView?.includes(profile?.accountType);
       })
       .map((menu) => {
         if (menu.authenticated) {
