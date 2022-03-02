@@ -9,13 +9,13 @@ const { join } = require( "path" );
 const cookieParser = require( "cookie-parser" );
 const logger = require( "morgan" );
 
-const authRouter = require( "./routes/auth" );
-const userRouter = require( "./routes/user" );
-const profileRouter = require( './routes/profile' );
+const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
+const profileRouter = require('./routes/profile');
+const conversationRouter=require('./routes/conversation');
 const availabilityRouter = require( './routes/availability' );
-const stripeRouter = require( './routes/stripe' );
-const imageRouter = require( './routes/image' );
-
+const imageRouter = require('./routes/image');
+const stripeRouter =require('./routes/stripe');
 const { json, urlencoded } = express;
 
 connectDB();
@@ -46,12 +46,14 @@ app.use( ( req, res, next ) => {
   next();
 } );
 
-app.use( "/auth", authRouter );
-app.use( "/users", userRouter );
-app.use( "/profile", profileRouter );
+app.use("/auth", authRouter);
+app.use("/users", userRouter);
+app.use("/profile", profileRouter);
+app.use("/conversations",conversationRouter);
 app.use( "/availability", availabilityRouter );
-app.use( '/stripe', stripeRouter );
-app.use( "/image", imageRouter );
+app.use('/stripe',stripeRouter);
+app.use("/image", imageRouter);
+
 
 if ( process.env.NODE_ENV === "production" )
 {
