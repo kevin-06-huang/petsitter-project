@@ -1,7 +1,7 @@
 import { AuthApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
 
-const editPhotoUri = async (data: { photo: string }): Promise<AuthApiData> => {
+const editProfilePhotoKey = async (data: { photoKey: string }): Promise<AuthApiData> => {
   const fetchOptions: FetchOptions = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -15,4 +15,4 @@ const editPhotoUri = async (data: { photo: string }): Promise<AuthApiData> => {
     }));
 };
 
-export default editPhotoUri;
+export default editProfilePhotoKey;

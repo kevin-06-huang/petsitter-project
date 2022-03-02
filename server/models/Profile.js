@@ -30,9 +30,24 @@ const profileSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
-  photo: {
+  photoKey: {
     type: String,
     default: "",
+  },
+  tagLine: {
+    type: String,
+    default: ''
+  },
+  price: {
+    type: String,
+  },
+  rating: {
+    type: String,
+    default: 0,
+  },
+  activeSchedule:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Availability",
   },
   accountType: {
     type: String,

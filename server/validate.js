@@ -30,3 +30,17 @@ exports.validateLogin = [
     next();
   }
 ];
+
+exports.validateDays = [
+  check("name", "Name can not be empty").not().isEmpty(),
+  check("days", "days can not be empty").not().isEmpty(),
+  check("days.*.startTime", "Start time can not be empty").not().isEmpty(),
+  check("days.*.endTime", "End date time not be empty").not().isEmpty(),
+  check("days.*.active", "active field can not be empty").not().isEmpty(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+    next();
+  }
+];
