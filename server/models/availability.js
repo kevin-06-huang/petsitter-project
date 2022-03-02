@@ -10,13 +10,13 @@ const dayInformationSchema = {
         type: String,
         required: this.active,
         default: '00:00',
-        validate: [ startTimeValidator ]
+        validate: [startTimeValidator]
     },
     endTime: {
         type: String,
         required: this.active,
         default: '00:00',
-        validate: [ endTimeValidator ]
+        validate: [endTimeValidator]
     }
 }
 
@@ -39,7 +39,6 @@ const availabilitySchema = new mongoose.Schema( {
         friday: dayInformationSchema,
         saturday: dayInformationSchema
     },
-
 } );
 availabilitySchema.pre( 'validate', function ( next ) {
     let startHour;

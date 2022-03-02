@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     position: 'absolute',
   },
   navbarItem: {
-    color: 'white',
+    color: theme.palette.primary.main,
     fontWeight: 700,
     textDecoration: 'none',
     transition: 'color 120ms ease-in-out',
