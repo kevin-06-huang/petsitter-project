@@ -14,6 +14,7 @@ import { SnackBarProvider } from './context/useSnackbarContext';
 import { Navbar } from './components/Navbar/Navbar';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
+import { NotificationContextProvider } from './context/useNotificationContext';
 import ProfileLists from './pages/ProfileList/profileList';
 import { LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -27,19 +28,21 @@ function App(): JSX.Element {
           <SnackBarProvider>
             <AuthProvider>
               <SocketProvider>
-                <CssBaseline />
-                <Navbar />
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/signup" component={Signup} />
-                  <AuthRoute exact path="/dashboard" component={Dashboard} />
-                  <AuthRoute path="/profile/settings" component={Settings} />
-                  <AuthRoute path="/profile-Listings" component={ProfileLists} />
-                  <Route path="*">
-                    <NotFound />
-                  </Route>
-                </Switch>
+                <NotificationContextProvider>
+                  <CssBaseline />
+                  <Navbar />
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/signup" component={Signup} />
+                    <AuthRoute exact path="/dashboard" component={Dashboard} />
+                    <AuthRoute path="/profile/settings" component={Settings} />
+                    <AuthRoute path="/profile-Listings" component={ProfileLists} />
+                    <Route path="*">
+                      <NotFound />
+                    </Route>
+                  </Switch>
+                </NotificationContextProvider>
               </SocketProvider>
             </AuthProvider>
           </SnackBarProvider>
