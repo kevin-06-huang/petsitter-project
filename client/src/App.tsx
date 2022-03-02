@@ -14,6 +14,8 @@ import { SnackBarProvider } from './context/useSnackbarContext';
 import { Navbar } from './components/Navbar/Navbar';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
+import Availability from './pages/Availability/Availability';
+import ProfileLists from './pages/ProfileList/profileList';
 import { NotificationContextProvider } from './context/useNotificationContext';
 import ProfileLists from './pages/ProfileList/profileList';
 import { LocalizationProvider } from '@mui/lab';
@@ -38,6 +40,7 @@ function App(): JSX.Element {
                     <AuthRoute exact path="/dashboard" component={Dashboard} />
                     <AuthRoute path="/profile/settings" component={Settings} />
                     <AuthRoute path="/profile-Listings" component={ProfileLists} />
+                    <Route path="/availability" component={Availability} />
                     <Route path="*">
                       <NotFound />
                     </Route>
