@@ -45,8 +45,8 @@ function App(): JSX.Element {
                 </NotificationContextProvider>
               </SocketProvider>
             </AuthProvider>
-          </SnackBarProvider>
-        </BrowserRouter>
+        </SnackBarProvider>
+      </BrowserRouter>
       </LocalizationProvider>
     </ThemeProvider>
   );

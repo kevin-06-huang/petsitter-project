@@ -34,6 +34,17 @@ const profileSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  tagLine: {
+    type: String,
+    default: ''
+  },
+  price: {
+    type: String,
+  },
+  rating: {
+    type: String,
+    default: 0,
+  },
   activeSchedule:{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Availability",
