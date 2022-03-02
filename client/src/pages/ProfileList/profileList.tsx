@@ -7,7 +7,7 @@ import { Profile } from '../../interface/ProfileApiData';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 import ProfileCard from './profileCard/ProfileCard';
-import { getAllSitter } from '../../helpers/APICalls/getSitter';
+import { getAllSitters } from '../../helpers/APICalls/getSitter';
 import SearchBar from './searchBar';
 
 function ProfileList(): JSX.Element {
@@ -22,14 +22,14 @@ function ProfileList(): JSX.Element {
   useEffect(() => {
     setAddMore([]);
   }, [location]);
-  const saveProfiles = async (profilesdata: Profile[]) => {
+  const saveProfiles = async (profilesData: Profile[]) => {
     setProfiles([]);
     setFilterProfiles([]);
     addMore.length = 0;
-    const length = profilesdata.length;
-    setProfiles([...profilesdata]);
-    setFilterProfiles([...profilesdata]);
-    const data = profilesdata.splice(0, 6);
+    const length = profilesData.length;
+    setProfiles([...profilesData]);
+    setFilterProfiles([...profilesData]);
+    const data = profilesData.splice(0, 6);
     data.map((ele) => {
       addMore.push(ele);
     });
@@ -59,7 +59,7 @@ function ProfileList(): JSX.Element {
     }
   };
   const getAllProfiles = () => {
-    getAllSitter(location).then((response) => {
+    getAllSitters(location).then((response) => {
       if (response.error) {
         updateSnackBarMessage(JSON.stringify(response.error));
       } else if (response.success) {

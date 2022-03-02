@@ -5,7 +5,7 @@ interface Props {
   location: string;
 }
 
-export async function getAllSitter(location: string): Promise<ProfileApiData> {
+export async function getAllSitters(location: string): Promise<ProfileApiData> {
   const fetchOptions: FetchOptions = {
     method: 'GET',
     credentials: 'include',

@@ -41,10 +41,6 @@ const profileSchema = new mongoose.Schema({
   price: {
     type: String,
   },
-  isSitter: {
-    type: Boolean,
-    default: false
-  },
   rating: {
     type: String,
     default: 0
