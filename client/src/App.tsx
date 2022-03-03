@@ -17,7 +17,6 @@ import NotFound from './pages/NotFound/NotFound';
 import Availability from './pages/Availability/Availability';
 import ProfileLists from './pages/ProfileList/profileList';
 import { NotificationContextProvider } from './context/useNotificationContext';
-import ProfileLists from './pages/ProfileList/profileList';
 import { LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { AuthRoute } from './components/AuthRoute/AuthRoute';
@@ -48,8 +47,8 @@ function App(): JSX.Element {
                 </NotificationContextProvider>
               </SocketProvider>
             </AuthProvider>
-        </SnackBarProvider>
-      </BrowserRouter>
+          </SnackBarProvider>
+        </BrowserRouter>
       </LocalizationProvider>
     </ThemeProvider>
   );

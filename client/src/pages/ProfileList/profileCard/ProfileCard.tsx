@@ -20,7 +20,6 @@ interface Props {
   photo?: string;
 }
 function ProfileCard({ photo, name, rating, tagLine, description, address, price }: Props): JSX.Element {
-
   const classes = useStyle();
   return (
     <Card sx={{ maxWidth: 300 }}>
