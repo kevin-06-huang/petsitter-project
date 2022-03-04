@@ -1,3 +1,4 @@
+
 const colors = require( "colors" );
 const path = require( "path" );
 const http = require( "http" );
@@ -8,14 +9,18 @@ const connectDB = require( "./db" );
 const { join } = require( "path" );
 const cookieParser = require( "cookie-parser" );
 const logger = require( "morgan" );
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const { uploadFile } = require("./utils/s3");
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const profileRouter = require('./routes/profile');
 const conversationRouter=require('./routes/conversation');
 const availabilityRouter = require( './routes/availability' );
-const imageRouter = require('./routes/image');
-const stripeRouter =require('./routes/stripe');
+const bookingRouter = require("./routes/booking");
+const stripeRouter = require( './routes/stripe' );
+const imageRouter = require( './routes/image' );
 const { json, urlencoded } = express;
 
 connectDB();
@@ -49,11 +54,11 @@ app.use( ( req, res, next ) => {
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profile", profileRouter);
-app.use("/conversations",conversationRouter);
 app.use( "/availability", availabilityRouter );
 app.use('/stripe',stripeRouter);
 app.use("/image", imageRouter);
-
+app.use("/bookings", bookingRouter);
+app.use("/conversations",conversationRouter);
 
 if ( process.env.NODE_ENV === "production" )
 {
