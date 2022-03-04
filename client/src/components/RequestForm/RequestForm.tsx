@@ -1,9 +1,9 @@
-import { Star } from '@mui/icons-material';
 import { DatePicker } from '@mui/lab';
 import { Autocomplete, Box, Card, Grid, InputLabel, Rating, TextField, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Form, Formik, FormikHelpers } from 'formik';
+import { useAuth } from '../../context/useAuthContext';
 import { Profile } from '../../interface/Profile';
 import { useStyles } from './useStyles';
 
@@ -31,6 +31,7 @@ const getTimes = (hour: number) => {
 const RequestForm = ({ className, profile, handleSubmit }: Props): JSX.Element => {
   const classes = useStyles();
   const today = new Date();
+  const { loggedInUser } = useAuth();
 
   return (
     <Card elevation={8} className={className}>
@@ -110,6 +111,7 @@ const RequestForm = ({ className, profile, handleSubmit }: Props): JSX.Element =
                     color="primary"
                     className={classes.submit}
                     disableElevation
+                    disabled={!loggedInUser}
                   >
                     {props.isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Send request'}
                   </Button>

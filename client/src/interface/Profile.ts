@@ -1,4 +1,5 @@
 export interface Profile {
+  userId: string;
   name: string;
   description: string;
   gender: string;
@@ -9,4 +10,6 @@ export interface Profile {
   accountType: string;
   price: number;
   rank: number;
+  coverImage: string;
+  gallery: string[];
 }

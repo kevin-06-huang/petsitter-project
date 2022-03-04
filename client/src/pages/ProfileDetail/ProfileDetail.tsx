@@ -1,30 +1,34 @@
-import { Avatar, Card, CircularProgress, Grid, Typography } from '@mui/material';
-import React from 'react';
-import { useStyles } from './useStyles';
 import { LocationOn } from '@mui/icons-material';
-import RequestForm from '../../components/RequestForm/RequestForm';
+import { Avatar, Card, CircularProgress, Grid, Snackbar, Typography } from '@mui/material';
 import { FormikHelpers } from 'formik';
-import { makeBooking } from '../../helpers/APICalls/bookingInfo';
-import { BookingInfo } from '../../interface/BookingInfo';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import ProfileGallery from '../../components/ProfileGallery/ProfileGallery';
+import RequestForm from '../../components/RequestForm/RequestForm';
 import { useAuth } from '../../context/useAuthContext';
+import { makeBooking } from '../../helpers/APICalls/bookingInfo';
+import { loadProfile } from '../../helpers/APICalls/loadProfile';
+import { BookingInfo } from '../../interface/BookingInfo';
+import { Profile } from '../../interface/Profile';
+import { useStyles } from './useStyles';
 
 const ProfileDetail = (): JSX.Element => {
   const classes = useStyles();
   const { loggedInUser } = useAuth();
+  const { profileId } = useParams<{ profileId: string }>();
+  const [profile, setProfile] = useState<Profile>();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const profile = {
-    userId: '6204aa0e6d1e83d0824f9b17',
-    name: 'Jun Zheng',
-    description: "Jun's description",
-    gender: 'Male',
-    address: 'New York NY',
-    telephone: '1234567890',
-    birthday: new Date(),
-    photo: '',
-    accountType: 'pet_sitter',
-    price: 14,
-    rank: 4,
-  };
+  useEffect(() => {
+    !profile &&
+      loadProfile(profileId).then((data) => {
+        if (data.success) {
+          setProfile(data.success.profile);
+        } else {
+          setSnackbarOpen(true);
+        }
+      });
+  }, [profile, profileId]);
 
   const handleSubmit = (
     {
@@ -46,35 +50,28 @@ const ProfileDetail = (): JSX.Element => {
       dropOffDate.setHours(parseInt(dropOffTime), 0, 0, 0);
     }
 
-    if (loggedInUser) {
+    if (loggedInUser && profile) {
       const bookingInfo: BookingInfo = {
         _id: undefined,
-        petOwner: loggedInUser,
         sitter: profile.userId,
         startDate: dropInDate,
         endDate: dropOffDate,
         status: 'pending',
-        paid: true,
+        paid: false,
       };
 
       makeBooking(bookingInfo);
       setSubmitting(false);
-    } else {
-      // add a snake bar for request login
     }
   };
 
   return profile ? (
     <Grid container justifyContent="space-evenly">
-      <Grid item md={5}>
+      <Grid item md={6}>
         <Card elevation={8} className={classes.card}>
           <Grid container direction="column">
             <Grid item>
-              <img
-                className={classes.userBackground}
-                src="http://pic.616pic.com/bg_w1180/00/03/56/J9aghMknMg.jpg"
-                alt="user background"
-              />
+              <img className={classes.userBackground} src={profile.coverImage} alt="user cover image" />
             </Grid>
             <Grid item alignSelf="center">
               <Avatar src={profile.photo} sx={{ width: 100, height: 100, border: 3 }} className={classes.avatar} />
@@ -88,25 +85,27 @@ const ProfileDetail = (): JSX.Element => {
               </Typography>
             </Grid>
             <Grid item alignSelf="center">
-              <Typography variant="h6" sx={{ fontWeight: 'light' }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 'light' }}>
                 <LocationOn color="primary" />
                 {profile.address}
               </Typography>
             </Grid>
             <Grid item display="flex" justifyContent="center">
-              <Card elevation={2} className={classes.descriptionCard}>
+              <Card elevation={0} className={classes.descriptionCard}>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                   About me
                 </Typography>
                 <Typography variant="body1">{profile.description}</Typography>
+                <ProfileGallery images={profile.gallery} />
               </Card>
             </Grid>
           </Grid>
         </Card>
       </Grid>
-      <Grid item md={4}>
+      <Grid item md={3}>
         <RequestForm className={classes.card} profile={profile} handleSubmit={handleSubmit} />
       </Grid>
+      <Snackbar open={snackbarOpen} autoHideDuration={1000} message="Profile not found" />
     </Grid>
   ) : (
     <CircularProgress />

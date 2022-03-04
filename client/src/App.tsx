@@ -41,7 +41,7 @@ function App(): JSX.Element {
                     <AuthRoute exact path="/dashboard" component={Dashboard} />
                     <AuthRoute path="/profile/settings" component={Settings} />
                     <AuthRoute path="/booking" component={Booking} />
-                    <AuthRoute path="/profile" component={ProfileDetail} />
+                    <AuthRoute path="/profile/:profileId" component={ProfileDetail} />
                     <AuthRoute path="/profile-Listings" component={ProfileLists} />
                     <Route path="/availability" component={Availability} />
                     <Route path="*">
