@@ -4,7 +4,7 @@ const {
   makeBooking,
   updateBooking,
 } = require("../controllers/booking");
-const protect = require("../middleware/auth");
+const { protect } = require("../middleware/auth");
 const bookingValidation = require("../middleware/booking");
 const router = express.Router();
 
