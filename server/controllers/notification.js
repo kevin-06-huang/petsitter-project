@@ -2,32 +2,6 @@ const Notification = require("../models/Notification");
 const asyncHandler = require("express-async-handler");
 
 exports.createNotification = asyncHandler(async (req, res) => {
-<<<<<<< HEAD
-    const {
-        type,
-        description,
-        read,
-        createdBy,
-        creatorName,
-        creatorPhotoKey,
-        receivedBy
-    } = req.body;
-    notification = new Notification({
-        type,
-        description,
-        read,
-        createdBy,
-        creatorName,
-        creatorPhotoKey,
-        receivedBy
-    });
-    notification.save()
-        .then(res.status(200).json({
-            success: {
-                notification: notification
-            }
-        }));
-=======
     const { type, description, receivedBy } = JSON.parse(req.body)
     const userId = req.user.id
     
@@ -50,7 +24,6 @@ exports.createNotification = asyncHandler(async (req, res) => {
         }
     })
     
->>>>>>> main
 });
 exports.readNotifications = asyncHandler(async (req, res) => {
     const { id } = req.user;
