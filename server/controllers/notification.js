@@ -2,7 +2,7 @@ const Notification = require("../models/Notification");
 const asyncHandler = require("express-async-handler");
 
 exports.createNotification = asyncHandler(async (req, res) => {
-    const { type, description, receivedBy } = req.body
+    const { type, description, createdBy } = req.body
     const userId = req.user.id
     
     const profile = await Profile.find({ userId: userId });
@@ -13,8 +13,8 @@ exports.createNotification = asyncHandler(async (req, res) => {
     const newNotification = await Notification.create({
         type,
         description,
-        receivedBy,
-        createdBy: profile[0].userId.toString()
+        receivedBy: profile[0].userId.toString(),
+        createdBy
     });
 
     res.status(201).json({
