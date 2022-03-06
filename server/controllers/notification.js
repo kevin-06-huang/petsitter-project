@@ -27,7 +27,11 @@ exports.readNotifications = asyncHandler(async (req, res) => {
     const { id } = req.user;
     Notification
         .updateMany({ receivedBy: id }, { $set: { read: true } })
-        .then(res.status(200));
+        .then(res.status(200).json({
+            success: {
+                message: 'Notifications read.',
+            },
+        }));
 });
 exports.getAll = asyncHandler(async (req, res) => {
     const { id } = req.user;

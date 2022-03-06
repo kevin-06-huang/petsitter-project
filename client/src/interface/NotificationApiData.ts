@@ -18,5 +18,5 @@ export interface NotificationApiDataPost {
 
 export interface NotificationApiData {
     error?: { message: string };
-    success?: NotificationApiDataGet | NotificationApiDataGetAll | NotificationApiDataPost;
+    success?: NotificationApiDataGet | NotificationApiDataGetAll | NotificationApiDataPost | { message: string };
 }

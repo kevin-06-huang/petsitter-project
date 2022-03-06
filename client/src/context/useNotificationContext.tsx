@@ -51,12 +51,14 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
     [socket, updateSnackBarMessage],
   );
 
-  const readNotifications = useCallback(() => {
-    if (notifications && notifications.length >= 1) {
-      const newNotifications = [...notifications];
-      newNotifications.forEach((notification) => (notification.read = true));
-      setNotifications(newNotifications as any);
-      patchNotifications();
+  const readNotifications = useCallback(async () => {
+    const res = await patchNotifications();
+    if (res.success) {
+      if (notifications && notifications.length) {
+        const newNotifications = [...notifications];
+        newNotifications.forEach((notification) => (notification.read = true));
+        setNotifications(newNotifications as any);
+      }
     }
   }, [notifications]);
 

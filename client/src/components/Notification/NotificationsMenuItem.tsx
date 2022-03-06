@@ -18,7 +18,7 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
     setAnchorEl(null);
   };
   const renderNotifications = () => {
-    return notifications.length >= 1 ? (
+    return notifications.length ? (
       [
         notifications.map((notification, index) => {
           return (
