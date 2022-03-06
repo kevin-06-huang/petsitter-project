@@ -6,7 +6,8 @@ import moment from 'moment';
 import DateRangePicker, { DateRange } from '@mui/lab/DateRangePicker';
 import React, { useState } from 'react';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-function SearchBar(): JSX.Element {
+function SearchBar(props: any): JSX.Element {
+  const { location, getAllProfiles, changeLocation } = props;
   const classes = useStyle();
   const [value, setValue] = React.useState<DateRange<Date>>([new Date(), new Date()]);
 
@@ -19,10 +20,19 @@ function SearchBar(): JSX.Element {
         type="text"
         name="location"
         placeholder="location"
+        value={location}
+        onKeyPress={(e) => {
+          if (e.charCode == 13) {
+            getAllProfiles();
+          }
+        }}
+        onChange={(e) => {
+          changeLocation(e);
+        }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon />
+              <SearchIcon onClick={getAllProfiles} />
             </InputAdornment>
           ),
         }}

@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => ({
   },
   showMore: {
     paddingBottom: 40,
+    display: 'none',
   },
   box: {
     paddingLeft: 170,

@@ -8,13 +8,18 @@ const connectDB = require( "./db" );
 const { join } = require( "path" );
 const cookieParser = require( "cookie-parser" );
 const logger = require( "morgan" );
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const { uploadFile } = require("./utils/s3");
 
-const authRouter = require( "./routes/auth" );
-const userRouter = require( "./routes/user" );
-const profileRouter = require( './routes/profile' );
-const availabilityRouter = require( './routes/availability' );
-const stripeRouter = require( './routes/stripe' );
-const imageRouter = require( './routes/image' );
+const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
+const profileRouter = require("./routes/profile");
+const conversationRouter = require("./routes/conversation");
+const availabilityRouter = require("./routes/availability");
+const bookingRouter = require("./routes/booking");
+const stripeRouter = require("./routes/stripe");
+const imageRouter = require("./routes/image");
 
 const { json, urlencoded } = express;
 const jwt = require("jsonwebtoken");
@@ -25,13 +30,13 @@ const { filterInPlace } = require("./utils/helpers");
 
 connectDB();
 const app = express();
-const server = http.createServer( app );
+const server = http.createServer(app);
 
-const io = socketio( server, {
+const io = socketio(server, {
   cors: {
     origin: "*",
   },
-} );
+});
 
 io.use(protectSocket);
 
@@ -55,49 +60,48 @@ io.on("connection", (socket) => {
   });
 });
 
-if ( process.env.NODE_ENV === "development" )
-{
-  app.use( logger( "dev" ) );
+if (process.env.NODE_ENV === "development") {
+  app.use(logger("dev"));
 }
-app.use( json() );
-app.use( urlencoded( { extended: false } ) );
-app.use( cookieParser() );
-app.use( express.static( join( __dirname, "public" ) ) );
+app.use(json());
+app.use(urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(join(__dirname, "public")));
 
-app.use( ( req, res, next ) => {
+app.use((req, res, next) => {
   req.io = io;
   next();
-} );
+});
 
-app.use( "/auth", authRouter );
-app.use( "/users", userRouter );
-app.use( "/profile", profileRouter );
-app.use( "/availability", availabilityRouter );
-app.use( '/stripe', stripeRouter );
-app.use( "/image", imageRouter );
+app.use("/auth", authRouter);
+app.use("/users", userRouter);
+app.use("/profile", profileRouter);
+app.use("/availability", availabilityRouter);
+app.use("/stripe", stripeRouter);
+app.use("/image", imageRouter);
+app.use("/bookings", bookingRouter);
+app.use("/conversations", conversationRouter);
 
-if ( process.env.NODE_ENV === "production" )
-{
-  app.use( express.static( path.join( __dirname, "/client/build" ) ) );
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/build")));
 
-  app.get( "*", ( req, res ) =>
-    res.sendFile( path.resolve( __dirname ), "client", "build", "index.html" )
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname), "client", "build", "index.html")
   );
-} else
-{
-  app.get( "/", ( req, res ) => {
-    res.send( "API is running" );
-  } );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running");
+  });
 }
 
-app.use( notFound );
-app.use( errorHandler );
+app.use(notFound);
+app.use(errorHandler);
 
 // Handle unhandled promise rejections
-process.on( "unhandledRejection", ( err, promise ) => {
-  console.log( `Error: ${ err.message }`.red );
+process.on("unhandledRejection", (err, promise) => {
+  console.log(`Error: ${err.message}`.red);
   // Close server & exit process
-  server.close( () => process.exit( 1 ) );
-} );
+  server.close(() => process.exit(1));
+});
 
 module.exports = { app, server };
