@@ -30,9 +30,20 @@ const profileSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
-  photo: {
+  photoKey: {
     type: String,
     default: "",
+  },
+  tagLine: {
+    type: String,
+    default: ''
+  },
+  price: {
+    type: String,
+  },
+  rating: {
+    type: String,
+    default: 0,
   },
   activeSchedule:{
     type: mongoose.Schema.Types.ObjectId,
@@ -42,7 +53,16 @@ const profileSchema = new mongoose.Schema({
     type: String,
     enum: ["pet_sitter", "pet_owner"],
     default: "pet_owner",
-  }
+  },
+  coverImage: {
+    type: String,
+    default:
+      "https://i.pinimg.com/originals/4f/0a/2e/4f0a2ea336fb5ba3f6252f77fd02e7ed.jpg",
+  },
+  gallery: {
+    type: [String],
+    default: [],
+  },
 });
 
 module.exports = Profile = mongoose.model("Profile", profileSchema);

@@ -5,6 +5,7 @@ import React from 'react';
 
 export const AuthRoute = (props: RouteProps) => {
   const { loggedInUser } = useAuth();
+
   if (!loggedInUser) {
     return <CircularProgress />;
   }

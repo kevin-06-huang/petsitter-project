@@ -2,11 +2,8 @@ import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
+  card: {
     marginTop: '2%',
-    marginLeft: '4%',
-    width: '60%',
-    borderRadius: '50%',
   },
   avatar: {
     position: 'relative',
@@ -14,6 +11,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   userBackground: {
     width: '100%',
+    height: '300px',
     borderRadius: '8px',
   },
   name: {

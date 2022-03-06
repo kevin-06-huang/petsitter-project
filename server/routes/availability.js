@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { validateDays } = require("../validate");
-const protect = require("../middleware/auth");
+const { protect } = require("../middleware/auth");
 const {
   createSchedule,
   getActiveSchedule,

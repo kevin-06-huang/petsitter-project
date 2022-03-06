@@ -1,5 +1,3 @@
-
-   
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
 
@@ -26,7 +24,7 @@ exports.editProfile = asyncHandler(async (req, res, next) => {
 // @desc Get user profile data
 // @access Private
 exports.loadProfile = asyncHandler(async (req, res, next) => {
-  const profile = await User.findById(req.user.id, "profile");
+  const profile = await Profile.findOne({ userId: req.params.userId });
 
   if (!profile) {
     res.status(401);
@@ -38,4 +36,23 @@ exports.loadProfile = asyncHandler(async (req, res, next) => {
       profile: profile,
     },
   });
+});
+
+// @route GET /profile/sitter
+// @desc Get all profile data
+// @access Private
+exports.getAllSitters = asyncHandler(async (req, res) => {
+  const result = [];
+  const profiles = await Profile.find({ isSitter: true, price: { $ne: null } })
+  profiles.forEach((profile) => {
+    const address = profile.address;
+    if (address.toLowerCase().search(req.query.location.toLowerCase()) > -1) {
+      result.push(profile);
+    }
+  })
+  res.status(200).json({
+    success: {
+      profiles: result
+    },
+  })
 });

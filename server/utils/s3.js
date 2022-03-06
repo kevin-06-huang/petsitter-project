@@ -6,21 +6,45 @@ const accessKeyId = process.env.AWS_ACCESS_KEY
 const secretAccessKey = process.env.AWS_SECRET_KEY
 
 const s3 = new S3({
-    region,
-    accessKeyId,
-    secretAccessKey
+  region,
+  accessKeyId,
+  secretAccessKey
 });
 
 const uploadFile = (file) => {
-    const fileStream = fs.createReadStream(file.path)
+  const fileStream = fs.createReadStream(file.path)
 
-    const uploadParams = {
-      Bucket: bucketName,
-      Body: fileStream,
-      Key: file.filename
-    }
+  const uploadParams = {
+    Bucket: bucketName,
+    Body: fileStream,
+    Key: file.filename
+  }
 
-    return s3.upload(uploadParams).promise()
+  return s3.upload(uploadParams).promise()
 };
 
-module.exports = uploadFile;
+const getFileStream = (fileKey) => {
+  const downloadParams = {
+    Key: fileKey,
+    Bucket: bucketName
+  }
+
+  return s3.getObject(downloadParams).createReadStream()
+};
+
+const deleteFile = (fileKey) => {
+  const deleteParams = {
+    Key: fileKey,
+    Bucket: bucketName
+  }
+
+  s3.deleteObject(deleteParams, function(error) {
+    if (error) {
+      console.log(error, error.stack)
+    } else {
+      console.log(`File ${fileKey} has been deleted.`)
+    };
+  });
+};
+
+module.exports = { uploadFile, getFileStream, deleteFile };
