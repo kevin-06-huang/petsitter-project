@@ -16,11 +16,16 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
 
   const initSocket = useCallback(() => {
     console.log('trying to connect');
-    setSocket(
-      io('/', {
-        withCredentials: true,
-      }),
-    );
+    const newSocket = io('/', {
+      withCredentials: true,
+    });
+    setSocket(newSocket);
+    newSocket.on('connect', () => {
+      console.log('socket connected');
+    });
+    newSocket.on('disconnect', (reason) => {
+      console.log('disconnect ' + reason);
+    });
   }, []);
 
   return <SocketContext.Provider value={{ socket, initSocket }}>{children}</SocketContext.Provider>;

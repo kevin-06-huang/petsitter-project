@@ -22,6 +22,11 @@ const stripeRouter = require("./routes/stripe");
 const imageRouter = require("./routes/image");
 
 const { json, urlencoded } = express;
+const jwt = require("jsonwebtoken");
+const { protectSocket } = require("./middleware/auth");
+
+const onlineUsers = require("./onlineUsers");
+const { filterInPlace } = require("./utils/helpers");
 
 connectDB();
 const app = express();
@@ -33,8 +38,26 @@ const io = socketio(server, {
   },
 });
 
+io.use(protectSocket);
+
 io.on("connection", (socket) => {
-  console.log("connected");
+  if (!onlineUsers.some(user => user.userId === socket.decoded.id)) {
+    onlineUsers.push({userId: socket.decoded.id, socketId: socket.id});
+  }
+
+  socket.on("notification", (notification) => {
+    if (onlineUsers.some(user => user.userId === notification.receivedBy)) {
+      const user = onlineUsers.find(user => user.userId === notification.receivedBy);
+      socket.to(user.socketId).emit("notification", notification);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    filterInPlace(onlineUsers, (user) => {
+      return user.userId !== socket.decoded.id
+    });
+    console.log(`User ${socket.decoded.id} is offline.`);
+  });
 });
 
 if (process.env.NODE_ENV === "development") {

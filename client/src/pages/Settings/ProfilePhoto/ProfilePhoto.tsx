@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { Input } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 
-import editProfilePhotoKey from '../../../helpers/APICalls/editProfilePhotoKey';
+import editProfilePhoto from '../../../helpers/APICalls/editProfilePhoto';
 import { DeleteOutline } from '@mui/icons-material';
 
 const useStyles = makeStyles({
@@ -33,13 +33,13 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
   const classes = useStyles();
   const { updateSnackBarMessage } = useSnackBar();
   const [isSubmitting, setSubmitting] = useState(false);
-  const [imageKey, setImagesKey] = useState(currentProfile.photoKey);
+  const [imageKey, setImagesKey] = useState(currentProfile.photo);
 
   const handleDelete = () => {
     if (imageKey !== '') {
       deletePhoto(imageKey);
       setImagesKey('');
-      editProfilePhotoKey({ photoKey: '' });
+      editProfilePhoto({ photo: '' });
     }
   };
 
@@ -52,8 +52,8 @@ const ProfilePhoto: React.FC<ProfilePhotoProps> = ({ header, currentUser, curren
           console.error({ error: data.error.message });
           updateSnackBarMessage(data.error.message);
         } else if (data.success) {
-          const values = { photoKey: data.success.image as string };
-          editProfilePhotoKey(values);
+          const values = { photo: data.success.image as string };
+          editProfilePhoto(values);
           setImagesKey(data.success.image as string);
           updateSnackBarMessage('Photo updated!');
         } else {

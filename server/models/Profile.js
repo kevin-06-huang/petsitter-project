@@ -30,7 +30,7 @@ const profileSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
-  photoKey: {
+  photo: {
     type: String,
     default: "",
   },
