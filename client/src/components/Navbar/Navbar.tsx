@@ -12,13 +12,16 @@ import {
   Menu,
   MenuItem as DropdownMenuItem,
   styled,
+  Badge,
 } from '@mui/material';
 import { AccountType } from '../../types/AccountType';
 
 import lovingSitterLogo from '../../images/logo.svg';
 import { useStyles } from './useStyles';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Settings, Logout, Person } from '@mui/icons-material';
+import { Settings, Logout, Person, NotificationsActiveOutlined } from '@mui/icons-material';
+import { Notification } from '../../interface/Notification';
+import NotificationsMenuItem from '../Notification/NotificationsMenuItem';
 
 const NavbarButton = styled(Button)({
   padding: '15px 0',
@@ -38,8 +41,8 @@ const menuItems = [
     authenticated: false,
   },
   {
-    item: 'Notifications',
-    resource: '/notifications',
+    item: NotificationsMenuItem,
+    resource: '#',
     canView: [AccountType.PET_SITTER, AccountType.PET_OWNER],
     authenticated: true,
   },
@@ -85,14 +88,16 @@ const menuItems = [
 
 const MenuItem: React.FC<{
   resource: string;
-  item: string | JSX.Element;
-}> = ({ resource, item }) => {
+  item: string | JSX.Element | { (notifications: [Notification], readNotifications: () => void): JSX.Element };
+  notifications?: [Notification];
+  readNotifications?: () => void;
+}> = ({ resource, item, notifications, readNotifications }) => {
   const classes = useStyles();
 
   return (
     <Grid key={resource} sx={{ textAlign: 'center' }} xs={2} justifySelf="flex-end" item>
       <NavLink className={classes.navbarItem} to={resource}>
-        {item}
+        {item instanceof Function ? item(notifications as any, readNotifications as any) : item}
       </NavLink>
     </Grid>
   );
@@ -104,7 +109,7 @@ const Navbar: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { loggedInUser, profile, logout } = useAuth();
   const open = Boolean(anchorEl);
-  const { notifications, pushNotification } = useNotificationContext();
+  const { notifications, pushNotification, readNotifications } = useNotificationContext();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -123,11 +128,20 @@ const Navbar: React.FC = () => {
     // TODO: conditionally render based on profile type
     return menuItems
       .filter((menu) => {
-        return !menu.canView ? true : menu.canView?.includes(profile?.accountType);
+        return menu.canView?.includes(profile?.accountType);
       })
       .map((menu) => {
         if (menu.authenticated) {
-          return loggedInUser && <MenuItem key={menu.resource} {...menu} />;
+          return (
+            loggedInUser && (
+              <MenuItem
+                key={menu.resource}
+                notifications={notifications}
+                readNotifications={readNotifications}
+                {...menu}
+              />
+            )
+          );
         } else {
           return !loggedInUser && <MenuItem key={menu.resource} {...menu} />;
         }
