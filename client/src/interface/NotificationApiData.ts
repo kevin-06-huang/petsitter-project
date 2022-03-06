@@ -13,8 +13,6 @@ export interface NotificationApiDataPost {
     description: string;
     read: boolean;
     createdBy: string;
-    creatorName: string;
-    creatorPhotoKey: string;
     receivedBy: string;
 }
 

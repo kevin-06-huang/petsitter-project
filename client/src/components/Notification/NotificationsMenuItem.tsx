@@ -2,15 +2,9 @@ import React, { useState } from 'react';
 import { Box, Divider, ListItemText, Menu, MenuItem as DropdownMenuItem, Badge } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { Notification } from '../../interface/Notification';
-import Avatar from '@mui/material/Avatar';
 import { useStyles } from './useStyles';
-import {
-  getWindowDimensions,
-  getResource,
-  unreadNotifications,
-  formatMMDDYYYY,
-  getDescriptiveType,
-} from '../../helpers/NoficationsMenuItemHelper';
+import { getResource, getWindowDimensions, unreadNotifications } from '../../helpers/NoficationsMenuItemHelper';
+import NotificationComponent from './NotificationComponent';
 
 const NotificationsMenuItem = (notifications: [Notification], readNotifications: () => void) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -20,7 +14,7 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
     readNotifications();
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (notification?: Notification) => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
   const renderNotifications = () => {
@@ -28,44 +22,15 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
       [
         notifications.map((notification, index) => {
           return (
-            <NavLink key={`notification-${index++}`} className={classes.navbarItem} to={getResource(notification)}>
-              <DropdownMenuItem
-                onClick={() => {
-                  handleClose(notification);
-                }}
-              >
-                {notification.creatorPhotoKey == '' ? (
-                  <Avatar
-                    src={`https://robohash.org/${notification.createdBy}.png`}
-                    sx={{ width: 50, height: 50, margin: 'auto' }}
-                  />
-                ) : (
-                  <Avatar
-                    src={`/image/${notification.creatorPhotoKey}`}
-                    sx={{ width: 50, height: 50, margin: 'auto' }}
-                  />
-                )}
-                <ListItemText>
-                  <Box className={classes.navbarItemDescription}>
-                    {notification.creatorName + ' ' + notification.description}
-                  </Box>
-                  {<br />}
-                  <Box className={classes.navbarItemType}>{getDescriptiveType(notification.type)}</Box>
-                  {<br />}
-                  <Box className={classes.navbarItemDate}>{formatMMDDYYYY(new Date(notification.updatedAt))}</Box>
-                </ListItemText>
-              </DropdownMenuItem>
+            <NavLink key={notification._id} className={classes.navbarItem} to={getResource(notification)}>
+              <NotificationComponent notification={notification} handleClose={handleClose} />
               {notifications.length - index > 1 && <Divider />}
             </NavLink>
           );
         }),
       ]
     ) : (
-      <DropdownMenuItem
-        onClick={() => {
-          handleClose();
-        }}
-      >
+      <DropdownMenuItem onClick={handleClose}>
         <ListItemText className={classes.navbarItemDescription}>You have no notifications.</ListItemText>
       </DropdownMenuItem>
     );
@@ -95,9 +60,7 @@ const NotificationsMenuItem = (notifications: [Notification], readNotifications:
           width: getWindowDimensions().width * 0.7,
         }}
         open={open}
-        onClose={() => {
-          handleClose();
-        }}
+        onClose={handleClose}
       >
         {notifications && renderNotifications()}
       </Menu>

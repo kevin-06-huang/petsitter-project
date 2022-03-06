@@ -6,8 +6,6 @@ const postNotification = async (data: {
   description: string;
   read: boolean;
   createdBy: string;
-  creatorName: string;
-  creatorPhotoKey: string;
   receivedBy: string;
 }): Promise<NotificationApiData> => {
   const fetchOptions: FetchOptions = {

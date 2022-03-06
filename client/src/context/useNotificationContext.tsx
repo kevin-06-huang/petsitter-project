@@ -38,8 +38,6 @@ export const NotificationContextProvider: FunctionComponent = ({ children }): JS
         description: data.description,
         read: data.read,
         createdBy: data.createdBy,
-        creatorName: data.creatorName,
-        creatorPhotoKey: data.creatorPhotoKey,
         receivedBy: data.receivedBy,
       }).then((data: NotificationApiData) => {
         if (data.success) {
