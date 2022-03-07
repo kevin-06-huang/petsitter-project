@@ -8,15 +8,17 @@ import SearchBar from './SearchBar';
 import SearchDisplay from './SearchDisplay';
 import useStyle from './useStyles';
 import { Profile } from '../../interface/Profile';
+import searchProfiles from '../../helpers/APICalls/searchProfiles';
 
 export default function Dashboard(): JSX.Element {
   const { loggedInUser } = useAuth();
   const { initSocket } = useSocket();
   const history = useHistory();
   const classes = useStyle();
-  const [profiles, setProfiles] = useState<[Profile] | undefined>(undefined);
+  const [profiles, setProfiles] = useState<[Profile]>();
 
   useEffect(() => {
+    searchProfiles('');
     initSocket();
   }, [initSocket]);
 

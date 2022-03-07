@@ -38,6 +38,10 @@ exports.loadProfile = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.searchProfiles = asyncHandler(async (req, res) => {
+  res.status(200).json();
+});
+
 // @route GET /profile/sitter
 // @desc Get all profile data
 // @access Private
