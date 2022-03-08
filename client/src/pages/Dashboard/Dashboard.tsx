@@ -34,22 +34,19 @@ export default function Dashboard(): JSX.Element {
     { searchString }: { searchString: string },
     { setSubmitting }: FormikHelpers<{ searchString: string }>,
   ) => {
-    console.log('dash ' + searchString);
-    /*register(name, email, password).then((data) => {
+    searchProfiles(searchString).then((data) => {
       if (data.error) {
         console.error({ error: data.error.message });
         setSubmitting(false);
-        updateSnackBarMessage(data.error.message);
       } else if (data.success) {
-        updateLoginContext(data.success);
+        const { profiles } = data.success;
+        setProfiles(profiles as [Profile]);
       } else {
         // should not get here from backend but this catch is for an unknown issue
         console.error({ data });
-
         setSubmitting(false);
-        updateSnackBarMessage('An unexpected error occurred. Please try again');
       }
-    });*/
+    });
   };
 
   return (
