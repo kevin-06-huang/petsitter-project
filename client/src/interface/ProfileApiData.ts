@@ -2,7 +2,7 @@ import Decimal from 'decimal.js';
 import { Profile } from './Profile';
 
 export interface ProfileApiDataSuccess {
-  profiles: [Profile];
+  profiles: Profile[];
 }
 
 export interface ProfileApiData {

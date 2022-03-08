@@ -16,12 +16,11 @@ export default function Dashboard(): JSX.Element {
   const { initSocket } = useSocket();
   const history = useHistory();
   const classes = useStyle();
-  const [profiles, setProfiles] = useState<[Profile]>();
+  const [profiles, setProfiles] = useState<Profile[]>([]);
 
   useEffect(() => {
-    searchProfiles('');
     initSocket();
-  }, [initSocket]);
+  }, [initSocket, profiles]);
 
   if (loggedInUser === undefined) return <CircularProgress />;
   if (!loggedInUser) {
@@ -40,7 +39,7 @@ export default function Dashboard(): JSX.Element {
         setSubmitting(false);
       } else if (data.success) {
         const { profiles } = data.success;
-        setProfiles(profiles as [Profile]);
+        setProfiles(profiles as Profile[]);
       } else {
         // should not get here from backend but this catch is for an unknown issue
         console.error({ data });

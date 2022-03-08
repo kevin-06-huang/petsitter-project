@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import ProfileCard from './ProfileCard';
 import { Profile } from '../../interface/Profile';
 interface Props {
-  profiles: [Profile];
+  profiles: Profile[];
 }
 const SearchDisplay = ({ profiles }: Props) => {
   const classes = useStyle();
@@ -19,8 +19,8 @@ const SearchDisplay = ({ profiles }: Props) => {
       alignItems="center"
       justifyContent="center"
     >
-      {[1, 2, 3, 4, 5, 6].map((card) => (
-        <Box key={card} className={classes.card}>
+      {profiles.map((card, index) => (
+        <Box key={index} className={classes.card}>
           <ProfileCard name={`${card}`} />
         </Box>
       ))}

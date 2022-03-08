@@ -39,7 +39,22 @@ exports.loadProfile = asyncHandler(async (req, res, next) => {
 });
 
 exports.searchProfiles = asyncHandler(async (req, res) => {
-  res.status(200).json();
+  if (req.params.searchString) {
+    const { searchString } = req.params;
+    const profiles = await Profile.find({"address" : {$regex : searchString}});
+    res.status(200).json({
+      success: {
+        profiles: profiles,
+      },
+    });
+  } else {
+    const profiles = await Profile.find();
+    res.status(200).json({
+      success: {
+        profiles: profiles,
+      },
+    });
+  };
 });
 
 // @route GET /profile/sitter
