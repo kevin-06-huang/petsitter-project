@@ -9,6 +9,7 @@ import SearchDisplay from './SearchDisplay';
 import useStyle from './useStyles';
 import { Profile } from '../../interface/Profile';
 import searchProfiles from '../../helpers/APICalls/searchProfiles';
+import { FormikHelpers } from 'formik';
 
 export default function Dashboard(): JSX.Element {
   const { loggedInUser } = useAuth();
@@ -29,6 +30,28 @@ export default function Dashboard(): JSX.Element {
     return <CircularProgress />;
   }
 
+  const handleSubmit = (
+    { searchString }: { searchString: string },
+    { setSubmitting }: FormikHelpers<{ searchString: string }>,
+  ) => {
+    console.log('dash ' + searchString);
+    /*register(name, email, password).then((data) => {
+      if (data.error) {
+        console.error({ error: data.error.message });
+        setSubmitting(false);
+        updateSnackBarMessage(data.error.message);
+      } else if (data.success) {
+        updateLoginContext(data.success);
+      } else {
+        // should not get here from backend but this catch is for an unknown issue
+        console.error({ data });
+
+        setSubmitting(false);
+        updateSnackBarMessage('An unexpected error occurred. Please try again');
+      }
+    });*/
+  };
+
   return (
     <PageContainer>
       <Grid container>
@@ -38,7 +61,7 @@ export default function Dashboard(): JSX.Element {
           </Typography>
         </Grid>
         <Box className={classes.title}> </Box>
-        <SearchBar />
+        <SearchBar handleSubmit={handleSubmit} />
         {profiles && <SearchDisplay profiles={profiles} />}
         <Box textAlign="center" marginTop={5} className={classes.showMore}>
           <Button
