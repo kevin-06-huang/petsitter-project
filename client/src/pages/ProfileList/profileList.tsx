@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import React, { useState, useEffect } from 'react';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import useStyle from './useStyles';
-import { Profile } from '../../interface/ProfileApiData';
+import { Profile } from '../../interface/hackProfile';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 import ProfileCard from './profileCard/ProfileCard';
@@ -64,7 +64,7 @@ function ProfileList(): JSX.Element {
         updateSnackBarMessage(JSON.stringify(response.error));
       } else if (response.success) {
         setNoRecord('');
-        saveProfiles(response.success.profiles as Profile[]);
+        saveProfiles(response.success.profiles as any);
       } else {
         setNoRecord('No record found');
         updateSnackBarMessage('An unexpected error has occurred. Please try again later.');

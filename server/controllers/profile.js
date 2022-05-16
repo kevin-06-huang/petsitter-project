@@ -38,6 +38,25 @@ exports.loadProfile = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.searchProfiles = asyncHandler(async (req, res) => {
+  if (req.params.searchString) {
+    const { searchString } = req.params;
+    const profiles = await Profile.find({"address" : {$regex : searchString}});
+    res.status(200).json({
+      success: {
+        profiles: profiles,
+      },
+    });
+  } else {
+    const profiles = await Profile.find();
+    res.status(200).json({
+      success: {
+        profiles: profiles,
+      },
+    });
+  };
+});
+
 // @route GET /profile/sitter
 // @desc Get all profile data
 // @access Private

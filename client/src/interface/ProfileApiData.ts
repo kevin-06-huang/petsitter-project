@@ -1,24 +1,11 @@
 import Decimal from 'decimal.js';
-
-export interface Profile {
-  name: string;
-  gender: string;
-  birthDate: Date | null;
-  phoneNumber: string;
-  address: string;
-  description: string;
-  _id?: string;
-  price?: string;
-  rating?: string;
-  tagLine?: string;
-  photo?: string;
-}
+import { Profile } from './Profile';
 
 export interface ProfileApiDataSuccess {
-  profiles?: Profile[];
+  profiles: Profile[];
 }
 
 export interface ProfileApiData {
-  error?: string;
+  error?: { message: string };
   success?: ProfileApiDataSuccess;
 }

@@ -12,4 +12,5 @@ export interface Profile {
   rank: number;
   coverImage: string;
   gallery: string[];
+  _id?: string;
 }
