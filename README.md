@@ -2,7 +2,7 @@
 
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
 
-**Contributors**: kevin-06-huang, panwaramita, JunZheng007 Jun Zheng
+**Contributors**: kevin-06-huang, panwaramita, JunZheng007, rajivtitus
 
 ---
 
