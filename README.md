@@ -1,10 +1,8 @@
 ## Project Name
 
-This is a little description about your project.
-
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
 
-**Contributors**: [Hatchways](https://github.com/hatchways) (replace)
+**Contributors**: kevin-06-huang, panwaramita, JunZheng007 Jun Zheng
 
 ---
 
